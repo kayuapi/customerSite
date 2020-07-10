@@ -19,10 +19,6 @@ import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { useInjectReducer } from 'utils/injectReducer';
-import makeSelectVariantDialog from './selectors';
-import reducer from './reducer';
-import messages from './messages';
-
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -30,7 +26,12 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { selectVariantDialogDomain } from '../VariantDialog/selectors';
+import reducer from './reducer';
+import messages from './messages';
+import {
+  selectVariantDialogDomain,
+  makeSelectVariantDialog,
+} from './selectors';
 import { setVariantsInProductCart } from '../Product/actions';
 
 import VariantDialogProductRow from '../VariantDialogProductRow';

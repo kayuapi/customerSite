@@ -7,22 +7,22 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
+// import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
 import { makeStyles } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+// import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
-import Avatar from '@material-ui/core/Avatar';
+// import Avatar from '@material-ui/core/Avatar';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 
 import { useInjectReducer } from 'utils/injectReducer';
 import makeSelectOrderedProduct from './selectors';
 import reducer from './reducer';
-import messages from './messages';
+// import messages from './messages';
 
 const useStyles = makeStyles(theme => ({
   large: {

@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import { FormattedMessage } from 'react-intl';
+// import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
@@ -19,15 +19,14 @@ import { makeStyles } from '@material-ui/core/styles';
 import PaymentIcon from '@material-ui/icons/Payment';
 import Fab from '@material-ui/core/Fab';
 
-import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import { selectChmtokenUid } from 'containers/TokenGuard/selectors';
+import request from 'utils/request';
 import makeSelectOrderPage from './selectors';
 import reducer from './reducer';
-import saga from './saga';
-import messages from './messages';
+// import saga from './saga';
+// import messages from './messages';
 
-import request from 'utils/request';
 
 const useStyles = makeStyles(theme => ({
   toolbar: theme.mixins.toolbar,
@@ -51,77 +50,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const orderedItems = [
-  {
-    title: 'Korean Chicken',
-    price: 'RM 10.00',
-    quantity: '1',
-  },
-  {
-    title: 'BBQ Chicken',
-    price: 'RM 5.00',
-    quantity: '2',
-  },
-  {
-    title: 'Korean Chicken',
-    price: 'RM 10.00',
-    quantity: '1',
-  },
-  {
-    title: 'BBQ Chicken',
-    price: 'RM 5.00',
-    quantity: '2',
-  },
-  {
-    title: 'Korean Chicken',
-    price: 'RM 10.00',
-    quantity: '1',
-  },
-  {
-    title: 'BBQ Chicken',
-    price: 'RM 5.00',
-    quantity: '2',
-  },
-  {
-    title: 'Korean Chicken',
-    price: 'RM 10.00',
-    quantity: '1',
-  },
-  {
-    title: 'BBQ Chicken',
-    price: 'RM 5.00',
-    quantity: '2',
-  },
-  {
-    title: 'Korean Chicken',
-    price: 'RM 10.00',
-    quantity: '1',
-  },
-  {
-    title: 'BBQ Chicken',
-    price: 'RM 5.00',
-    quantity: '2',
-  },
-  {
-    title: 'Korean Chicken',
-    price: 'RM 10.00',
-    quantity: '1',
-  },
-  {
-    title: 'BBQ Chicken',
-    price: 'RM 5.00',
-    quantity: '2',
-  }
-];
-
 export function OrderPage() {
-  console.log('i;m here');
+
   useInjectReducer({ key: 'orderPage', reducer });
 //  useInjectSaga({ key: 'orderPage', saga });
   const classes = useStyles();
-  console.log('kk');
   const chmtokenUid = useSelector(selectChmtokenUid);
-  console.log(chmtokenUid);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');

@@ -16,8 +16,7 @@ import { ConnectedRouter } from 'connected-react-router';
 import history from 'utils/history';
 import 'sanitize.css/sanitize.css';
 
-
-import Auth from '@aws-amplify/auth';
+import { Auth } from '@aws-amplify/auth';
 import API from '@aws-amplify/api';
 
 // Import root app

@@ -23,7 +23,7 @@ import makeSelectShopInfo from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 // import businessLogo from '../../images/icon-512x512.png';
-import messages from './messages';
+// import messages from './messages';
 import { MyMapComponent } from '../../components/MyMapComponent';
 import 'leaflet/dist/leaflet.css';
 const useStyles = makeStyles(theme => ({

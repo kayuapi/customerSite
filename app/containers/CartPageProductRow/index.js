@@ -7,13 +7,11 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
+// import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { makeStyles } from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
@@ -26,10 +24,9 @@ import {
   removeProductWithVariantFromCart,
 } from '../Product/actions';
 
-import { useInjectReducer } from 'utils/injectReducer';
 import makeSelectCartPageProductRow from './selectors';
 import reducer from './reducer';
-import messages from './messages';
+// import messages from './messages';
 
 const useStyles = makeStyles(theme => ({
   tableCell: {

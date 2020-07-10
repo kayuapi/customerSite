@@ -10,7 +10,7 @@ import { useFirestore } from 'react-redux-firebase';
 import PropTypes from 'prop-types';
 import { connect, useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import { createStructuredSelector } from 'reselect';
+// import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
 import Grid from '@material-ui/core/Grid';
@@ -22,18 +22,15 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import Box from '@material-ui/core/Box';
 
 import CardActionArea from '@material-ui/core/CardActionArea';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import { blue } from '@material-ui/core/colors';
-import PersonIcon from '@material-ui/icons/Person';
-import AddIcon from '@material-ui/icons/Add';
 import DialogActions from '@material-ui/core/DialogActions';
 
 import { useInjectReducer } from 'utils/injectReducer';
-import makeSelectProduct from './selectors';
+// import makeSelectProduct from './selectors';
 import reducer from './reducer';
 import messages from './messages';
 

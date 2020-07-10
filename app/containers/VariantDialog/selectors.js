@@ -22,4 +22,4 @@ const makeSelectVariantDialog = () =>
   );
 
 export default makeSelectVariantDialog;
-export { selectVariantDialogDomain };
+export { selectVariantDialogDomain, makeSelectVariantDialog };

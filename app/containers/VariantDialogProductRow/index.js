@@ -7,28 +7,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
+// import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { useInjectReducer } from 'utils/injectReducer';
-import makeSelectVariantDialogProductRow from './selectors';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
-import { addProductToCart, removeProductFromCart } from '../Product/actions';
-import { makeSelectProductVariantQuantity } from '../Product/selectors';
+import makeSelectVariantDialogProductRow from './selectors';
+// import { addProductToCart, removeProductFromCart } from '../Product/actions';
+// import { makeSelectProductVariantQuantity } from '../Product/selectors';
 import reducer from './reducer';
 import {
   addVariantToProduct,
   removeVariantFromProduct,
 } from '../VariantDialog/actions';
 
-import messages from './messages';
+// import messages from './messages';
 const useStyles = makeStyles(theme => ({
   tableCell: {
     minWidth: '2rem',
