@@ -14,14 +14,14 @@ import MenuPage from 'containers/MenuPage/Loadable';
 import DetailsPage from 'containers/DetailsPage/Loadable';
 import ShopInfoPage from 'containers/ShopInfo/Loadable';
 
-import AppBar from 'components/MyAppBar';
+import AppBar from 'components/MyAppBar/Loadable';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import { grey } from '@material-ui/core/colors';
 
-import BottomNavigation from 'components/MyBottomNavigation';
+import BottomNavigation from 'components/MyBottomNavigation/Loadable';
 import PopUpInfo from '../PopUpInfo';
 // import GlobalStyle from '../../global-styles';
 

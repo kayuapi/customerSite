@@ -4,7 +4,6 @@
  *
  */
 
-
  //TODO 10/03/2020: this is no longer a presentational component
 
 import React, { memo } from 'react';

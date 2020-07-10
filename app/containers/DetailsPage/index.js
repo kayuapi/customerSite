@@ -84,7 +84,6 @@ export function DetailsPage({
   configureBusinessName,
 }) {
   const classes = useStyles();
-  console.log('orderNumber', orderNumber);
   const [activeStep, setActiveStep] = React.useState(0);
   React.useEffect(() => {
     configureBusinessName({ businessName: process.env.BUSINESS_NAME });

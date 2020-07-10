@@ -28,7 +28,6 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
 
 import { useInjectSaga } from 'utils/injectSaga';
@@ -44,79 +43,9 @@ import messages from './messages';
 
 const TAX_RATE = 0.00;
 
-const useStyles = makeStyles(theme => ({
-  icon: {
-    marginRight: theme.spacing(2),
-  },
-  heroContent: {
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(8, 0, 6),
-  },
-  heroButtons: {
-    marginTop: theme.spacing(4),
-  },
-  cardGrid: {
-    paddingTop: theme.spacing(8),
-    paddingBottom: theme.spacing(8),
-  },
-  card: {
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  cardMedia: {
-    paddingTop: '56.25%', // 16:9
-  },
-  cardContent: {
-    flexGrow: 1,
-  },
-  cardActions: {
-    justifyContent: 'center',
-  },
-  toolbar: {
-    minHeight: '100px',
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-  },
+const useStyles = makeStyles({
   dialogActions: {
     marginBottom: 64,
-  },
-  fab: {
-    // position: 'fix',
-    // bottom: theme.spacing(10),
-    // right: theme.spacing(2),
-    margin: 0,
-    top: 'auto',
-    right: theme.spacing(2),
-    bottom: theme.spacing(10),
-    left: 'auto',
-    position: 'fixed',
-  },
-  flexContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    padding: 0,
-    'flex-basis': '50%',
-  },
-  root: {
-    background: 'linear-gradient(to top, transparent 90px, #ffd54f 90px, #ffd54f 0)',
-    flexGrow: 1,
-    width: '100%',
-
-    // backgroundColor: theme.palette.background.paper,
-    // backgroundColor: '#ffd54f',
-    bottom: theme.spacing(10),
-  },
-  root2: {
-    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-    borderRadius: 3,
-    border: 0,
-    color: 'white',
-    height: 48,
-    padding: '0 30px',
-    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
   },
   table: {
     minWidth: 300,
@@ -125,23 +54,7 @@ const useStyles = makeStyles(theme => ({
     // fontSize: '8pt',
     minWidth: '4rem',
   },
-  footer: {
-    fontSize: '8pt',
-    position: 'sticky -webkit-sticky',
-    bottom: 0,
-    zIndex: '-1',
-    height: '80px',
-    backgroundColor: 'white',
-    color: 'black',
-    // textShadow: '2px 2px black',
-    padding: '5px 0',
-    textAlign: 'center',
-  },
-  buttons: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-  },
-}));
+});
 
 function ccyFormat(num) {
   return `${num.toFixed(2)}`;

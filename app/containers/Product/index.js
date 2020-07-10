@@ -36,7 +36,7 @@ import { useInjectReducer } from 'utils/injectReducer';
 import reducer from './reducer';
 import { addProductToCart, removeProductFromCart } from './actions';
 import messages from './messages';
-import VariantDialog from '../VariantDialog';
+import VariantDialog from '../VariantDialog/Loadable';
 import { initVariantOfProduct } from '../VariantDialog/actions';
 import 'jquery-ui/ui/effects/effect-slide';
 
