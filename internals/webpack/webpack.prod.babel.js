@@ -48,21 +48,32 @@ module.exports = require('./webpack.base.babel')({
     concatenateModules: true,
     runtimeChunk: 'single',
     splitChunks: {
-      chunks: 'all',
-      maxInitialRequests: 10,
-      minSize: 0,
+      name: false,
       cacheGroups: {
-        vendor: {
-          test: /[\\/]node_modules[\\/]/,
-          name(module) {
-            const packageName = module.context.match(
-              /[\\/]node_modules[\\/](.*?)([\\/]|$)/,
-            )[1];
-            return `npm.${packageName.replace('@', '')}`;
-          },
+        commons: {
+          test: /[\\/]node_modules\/(react|react-dom|material-ui|react-router)[\\/]/,
+          name: 'vendor',
+          chunks: 'all',
+          reuseExistingChunk: true,
         },
       },
     },
+    // splitChunks: {
+    //   chunks: 'all',
+    //   maxInitialRequests: 10,
+    //   minSize: 0,
+    //   cacheGroups: {
+    //     vendor: {
+    //       test: /[\\/]node_modules[\\/]/,
+    //       name(module) {
+    //         const packageName = module.context.match(
+    //           /[\\/]node_modules[\\/](.*?)([\\/]|$)/,
+    //         )[1];
+    //         return `npm.${packageName.replace('@', '')}`;
+    //       },
+    //     },
+    //   },
+    // },
   },
 
   plugins: [
