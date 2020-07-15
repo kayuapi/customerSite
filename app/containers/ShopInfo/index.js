@@ -12,13 +12,16 @@ import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { makeStyles } from '@material-ui/core/styles';
-
+import LocationIcon from '@material-ui/icons/Room';
+import PhoneIcon from '@material-ui/icons/Phone';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
+import FacebookIcon from '@material-ui/icons/Facebook';
+import InstagramIcon from '@material-ui/icons/Instagram';
 import makeSelectShopInfo from './selectors';
 import reducer from './reducer';
 import saga from './saga';
@@ -89,21 +92,54 @@ export function ShopInfo() {
               <br />
               <br />
               <br />
-              地址: {process.env.SHOP_INFO_BUSINESS_ADDRESS}
+              <LocationIcon />
+              &nbsp; 地址: {process.env.SHOP_INFO_BUSINESS_ADDRESS}
               <br />
-              联络电话：{process.env.SHOP_INFO_BUSINESS_PHONE_NUMBER} &nbsp;
+              <PhoneIcon />
+              &nbsp; 联络电话：{process.env.SHOP_INFO_BUSINESS_PHONE_NUMBER}
+              &nbsp;
               <a href={whatsappLink}>
                 <WhatsAppIcon />
               </a>
               <br />
+              <FacebookIcon />
+              &nbsp; Facebook：
+              <a
+                href={process.env.SHOP_INFO_BUSINESS_FACEBOOK_LINK}
+                style={{ textDecoration: 'none', color: 'black' }}
+              >
+                {process.env.SHOP_INFO_BUSINESS_FACEBOOK}
+              </a>
+              <br />
+              <InstagramIcon />
+              &nbsp; Instagram：
+              <a
+                href={process.env.SHOP_INFO_BUSINESS_INSTAGRAM_LINK}
+                style={{ textDecoration: 'none', color: 'black' }}
+              >
+                {process.env.SHOP_INFO_BUSINESS_INSTAGRAM}
+              </a>
+              <br />
             </Typography>
-            <MyMapComponent
+            <br />
+            <br />
+            <iframe
+              title="map"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2370.849011725798!2d102.5985398247281!3d2.0451488801042244!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31d1b9bcd9c0df01%3A0x913d532452fe9c88!2zZ3VvYmHplIXniLgg5Y-w5rm-54Gr6ZSF77yI6bq75Z2h5bqX77yJ!5e0!3m2!1sen!2smy!4v1594723819342!5m2!1sen!2smy"
+              width="400"
+              height="300"
+              frameBorder="0"
+              style={{ border: 0 }}
+              allowFullScreen=""
+              aria-hidden="false"
+            />
+            {/* <MyMapComponent
               center={[
                 Number(process.env.SHOP_INFO_LATITUDE),
                 Number(process.env.SHOP_INFO_LONGITUDE),
               ]}
               zoom={18}
-            />
+            /> */}
           </Paper>
         </Container>
       </main>

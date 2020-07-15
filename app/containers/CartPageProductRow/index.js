@@ -17,6 +17,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
+import { useInjectReducer } from 'utils/injectReducer';
 import {
   addProductToCart,
   removeProductFromCart,
