@@ -24,7 +24,6 @@ import {
   addProductWithVariantToCart,
   removeProductWithVariantFromCart,
 } from '../Product/actions';
-
 import makeSelectCartPageProductRow from './selectors';
 import reducer from './reducer';
 // import messages from './messages';

@@ -71,7 +71,7 @@ export function VariantDialogProductRow({
       {/* <TableCell align="right">
         <Typography color="primary">{row.unit}</Typography>
       </TableCell> */}
-      <TableCell align="right">
+      <TableCell style={{ minWidth: '4rem' }} align="right">
         <Typography color="primary">
           {Number(price.replace(/[^0-9\.]+/g, '')).toFixed(2)}
         </Typography>
