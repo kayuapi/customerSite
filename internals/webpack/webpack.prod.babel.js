@@ -127,9 +127,9 @@ module.exports = require('./webpack.base.babel')({
     }),
 
     new WebpackPwaManifest({
-      name: 'Patio Web',
-      short_name: 'Patio',
-      description: 'Patio ordering system!',
+      name: 'Web',
+      short_name: 'Web',
+      description: 'New ordering system!',
       background_color: '#fafafa',
       theme_color: '#b1624d',
       inject: true,
