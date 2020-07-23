@@ -132,7 +132,6 @@ export function MenuPage({ openCart2, quantityOfInCartProducts }) {
         headers: {},
         response: false,
       };
-      console.log('item is', item);
       const path = `${basePath}/${hostName}/${encodeURIComponent(item)}`;
       const retrievedItem = await API.get(apiName, path, myInit);
       return retrievedItem;
