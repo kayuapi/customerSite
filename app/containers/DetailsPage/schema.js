@@ -1,14 +1,14 @@
 export const FULFILLMENT_METHODS = {
-  DELIVERY: 'delivery',
-  SELF_PICKUP: 'self pick-up',
-  DINE_IN: 'dine in',
+  DELIVERY: 'DELIVERY',
+  SELF_PICKUP: 'SELF_PICKUP',
+  DINE_IN: 'DINE_IN',
 };
 
 export const PAYMENT_METHODS = {
-  E_WALLET: 'e-wallet',
-  E_WALLET_TOUCH_N_GO: 'touch n go',
-  E_WALLET_BOOST: 'boost',
-  COD: 'cash',
-  ONLINE_BANKING: 'online banking',
-  CARD: 'card',
+  E_WALLET: 'E_WALLET',
+  E_WALLET_TOUCH_N_GO: 'E_WALLET_TOUCHNGO',
+  E_WALLET_BOOST: 'E_WALLET_BOOST',
+  COD: 'CASH_ON_DELIVERY',
+  ONLINE_BANKING: 'ONLINE_BANKING',
+  CARD: 'CARD',
 };
