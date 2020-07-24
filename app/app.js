@@ -54,6 +54,9 @@ API.configure({
       region: 'ap-southeast-1',
     },
   ],
+  aws_appsync_region: 'ap-southeast-1',
+  aws_appsync_graphqlEndpoint: process.env.GRAPHQL_API,
+  aws_appsync_authenticationType: 'AWS_IAM',
 });
 
 const render = messages => {
