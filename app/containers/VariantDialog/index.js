@@ -37,21 +37,13 @@ import { setVariantsInProductCart } from '../Product/actions';
 import VariantDialogProductRow from '../VariantDialogProductRow';
 
 const useStyles = makeStyles(theme => ({
-  dialogActions: {
-    marginBottom: 64,
-  },
   table: {
     minWidth: 300,
-  },
-  tablecell: {
-    // fontSize: '8pt',
-    minWidth: '4rem',
   },
 }));
 
 export function VariantDialog({
   name,
-  // variants,
   isOpen,
   handleClose,
   variantItems,
@@ -73,9 +65,9 @@ export function VariantDialog({
       open={isOpen}
       onClose={handleClose}
       aria-labelledby="alert-variant-dialog-title"
-      aria-describedby="alert-variant-dialog-description"
+      aria-describedby="variant-dialog-description"
     >
-      <DialogTitle id="alert-dialog-title">
+      <DialogTitle id="variant-dialog-title">
         <FormattedMessage {...messages.variantDialogTitle} />
       </DialogTitle>
 
@@ -101,26 +93,14 @@ export function VariantDialog({
               </TableRow>
             </TableHead>
             <TableBody>
-              {/* {console.log('variantItemsinDialog', variantItems)} */}
-              {variantItems.map(variant => {
-                // console.log('hey');
-                // console.log(variant);
-                return (
-                  <VariantDialogProductRow
-                    name={name}
-                    key={variant.name}
-                    variant={variant.name}
-                    qty={variant.quantity}
-                    price={variant.price}
-                    // ccyFormat={ccyFormat}
-                  />
-                );
-              })}
+              {variantItems.map(variant => (
+                <VariantDialogProductRow key={variant.id} variant={variant} />
+              ))}
             </TableBody>
           </Table>
         </TableContainer>
       </DialogContent>
-      <DialogActions className={classes.variantDialogActions}>
+      <DialogActions>
         <Button onClick={handleClose} color="primary">
           <FormattedMessage {...messages.variantDialogCancel} />
         </Button>
