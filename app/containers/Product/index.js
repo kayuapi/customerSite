@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     'flex-direction': 'column',
     'justify-content': 'space-between',
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: theme.mixins.productDisplay.main,
   },
   cardMedia: {
     // paddingTop: '56.25%', // 16:9

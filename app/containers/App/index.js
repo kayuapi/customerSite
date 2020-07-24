@@ -19,7 +19,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
-import { grey } from '@material-ui/core/colors';
+import { amber } from '@material-ui/core/colors';
 
 import BottomNavigation from 'components/MyBottomNavigation/Loadable';
 import PopUpInfo from '../PopUpInfo';
@@ -28,17 +28,25 @@ import PopUpInfo from '../PopUpInfo';
 const theme = createMuiTheme({
   palette: {
     primary: {
-      light: grey[50],
-      main: grey[700],
-      dark: grey[900],
+      light: amber[50],
+      main: amber[500],
+      dark: amber[900],
     },
     secondary: {
-      main: grey[900],
+      main: amber[900],
     },
-    // background: {
-    //   default: amber,
-    //   // paper: amber,
-    // },
+    background: {
+      paper: '#fff',
+      default: amber[300],
+    },
+  },
+  mixins: {
+    banner: {
+      height: '150px',
+    },
+    productDisplay: {
+      main: amber[200],
+    },
   },
 });
 

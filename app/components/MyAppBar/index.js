@@ -11,7 +11,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import API from '@aws-amplify/api';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   '@global': {
     ul: {
       margin: 0,
@@ -23,12 +23,12 @@ const useStyles = makeStyles({
   },
   logo: {
     width: '100%',
-    height: '150px',
+    height: theme.mixins.banner.height,
     top: 0,
     left: 0,
     position: 'absolute',
   },
-});
+}));
 
 async function grabFromDb(hostName, item) {
   // await Auth.currentCredentials;
