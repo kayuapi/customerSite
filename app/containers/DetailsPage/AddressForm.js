@@ -22,17 +22,19 @@ import {
   makeSelectFulfillmentMethod,
   makeSelectFulfillmentDerivatives,
   makeSelectPostScript,
+  makeSelectPaymentMethod,
 } from './selectors';
 import {
   configureFulfillmentMethod,
   configureFulfillmentDerivatives,
   configurePostScript,
+  configurePaymentMethod,
 } from './actions';
 
 import 'date-fns';
 import messages from './messages';
 
-import { FULFILLMENT_METHODS } from './schema';
+import { FULFILLMENT_METHODS, PAYMENT_METHODS } from './schema';
 
 const useStyles = makeStyles(theme => ({
   toolbar: {
@@ -77,12 +79,15 @@ export function AddressForm({
   fulfillmentMethod,
   fulfillmentDerivatives,
   postScript,
+  paymentMethod,
   // eslint-disable-next-line no-shadow
   configureFulfillmentMethod,
   // eslint-disable-next-line no-shadow
   configureFulfillmentDerivatives,
   // eslint-disable-next-line no-shadow
   configurePostScript,
+  // eslint-disable-next-line no-shadow
+  configurePaymentMethod,
   currentPage,
   handleNext,
   handleBack,
@@ -93,17 +98,24 @@ export function AddressForm({
     fulfillmentMethod,
     ...fulfillmentDerivatives,
     postScript,
+    paymentMethod,
   };
   const { handleSubmit, watch, control, register, errors } = useForm({
     formUIState,
   });
   const watchDeliveryOption = watch('fulfillmentMethod', fulfillmentMethod);
   const onSubmit = data => {
-    // eslint-disable-next-line no-shadow
-    const { fulfillmentMethod, postScript, ...fulfillmentDerivatives } = data;
-    configurePostScript(postScript);
-    configureFulfillmentMethod(fulfillmentMethod);
+    const {
+      fulfillmentMethod: submittedFulfillmentMethod,
+      postScript: submittedPostscript,
+      paymentMethod: submittedPaymentMethod,
+      // eslint-disable-next-line no-shadow
+      ...fulfillmentDerivatives
+    } = data;
+    configurePostScript(submittedPostscript);
+    configureFulfillmentMethod(submittedFulfillmentMethod);
     configureFulfillmentDerivatives(fulfillmentDerivatives);
+    configurePaymentMethod(submittedPaymentMethod);
     handleNext();
   };
 
@@ -282,6 +294,32 @@ export function AddressForm({
                   />
                 </Grid> */}
               </MuiPickersUtilsProvider>
+              <Grid item xs={12}>
+                <Typography variant="h6" gutterBottom>
+                  <FormattedMessage {...messages.paymentMethods} />
+                </Typography>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Controller
+                  as={
+                    <Select fullWidth>
+                      <MenuItem value={PAYMENT_METHODS.COD}>
+                        <FormattedMessage {...messages.cashOnDelivery} />
+                      </MenuItem>
+                      <MenuItem value={PAYMENT_METHODS.ONLINE_BANKING}>
+                        <FormattedMessage {...messages.onlineBanking} />
+                      </MenuItem>
+                      <MenuItem value={PAYMENT_METHODS.E_WALLET}>
+                        <FormattedMessage {...messages.eWallet} />
+                      </MenuItem>
+                    </Select>
+                  }
+                  control={control}
+                  rules={{ required: true }}
+                  name="paymentMethod"
+                  defaultValue={paymentMethod}
+                />
+              </Grid>
             </>
           )}
 
@@ -453,6 +491,32 @@ export function AddressForm({
                   />
                 </Grid> */}
               </MuiPickersUtilsProvider>
+              <Grid item xs={12}>
+                <Typography variant="h6" gutterBottom>
+                  <FormattedMessage {...messages.paymentMethods} />
+                </Typography>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Controller
+                  as={
+                    <Select fullWidth>
+                      <MenuItem value={PAYMENT_METHODS.COD}>
+                        <FormattedMessage {...messages.cashOnDelivery} />
+                      </MenuItem>
+                      <MenuItem value={PAYMENT_METHODS.ONLINE_BANKING}>
+                        <FormattedMessage {...messages.onlineBanking} />
+                      </MenuItem>
+                      <MenuItem value={PAYMENT_METHODS.E_WALLET}>
+                        <FormattedMessage {...messages.eWallet} />
+                      </MenuItem>
+                    </Select>
+                  }
+                  control={control}
+                  rules={{ required: true }}
+                  name="paymentMethod"
+                  defaultValue={paymentMethod}
+                />
+              </Grid>
             </>
           )}
 
@@ -499,10 +563,12 @@ AddressForm.propTypes = {
   fulfillmentMethod: PropTypes.string.isRequired,
   fulfillmentDerivatives: PropTypes.object.isRequired,
   postScript: PropTypes.string,
+  paymentMethod: PropTypes.string,
 
   configureFulfillmentMethod: PropTypes.func.isRequired,
   configureFulfillmentDerivatives: PropTypes.func.isRequired,
   configurePostScript: PropTypes.func.isRequired,
+  configurePaymentMethod: PropTypes.func,
 
   currentPage: PropTypes.number.isRequired,
   handleNext: PropTypes.func.isRequired,
@@ -514,10 +580,13 @@ const mapStateToProps = createStructuredSelector({
   fulfillmentMethod: makeSelectFulfillmentMethod(),
   fulfillmentDerivatives: makeSelectFulfillmentDerivatives(),
   postScript: makeSelectPostScript(),
+  paymentMethod: makeSelectPaymentMethod(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
+    configurePaymentMethod: paymentMethod =>
+      dispatch(configurePaymentMethod({ paymentMethod })),
     configureFulfillmentMethod: fulfillmentMethod =>
       dispatch(configureFulfillmentMethod({ fulfillmentMethod })),
     configureFulfillmentDerivatives: ({ ...addressForm }) =>

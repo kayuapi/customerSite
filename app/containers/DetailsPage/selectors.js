@@ -83,7 +83,7 @@ const makeSelectAddressFormSubmission = () =>
       lastName: substate.lastName,
       phoneNumber: substate.phoneNumber,
       tableNumber: substate.tableNumber,
-      postScriptum: substate.postScriptum,
+      postScript: substate.postScript,
       fulfillmentMethod: substate.fulfillmentMethod,
       deliveryAddress: `${
         substate.addressLine1 ? `${substate.addressLine1}, ` : ''

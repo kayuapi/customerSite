@@ -13,8 +13,10 @@ import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
+import { API, graphqlOperation } from '@aws-amplify/api';
 import { FULFILLMENT_METHODS, PAYMENT_METHODS } from './schema';
 import { makeSelectAddressFormSubmission } from './selectors';
+import * as mutations from '../../graphql/mutations';
 import {
   ccyFormat,
   priceRow,
@@ -88,12 +90,21 @@ export function Review({
 
   const onSubmit = () => {
     console.log('fullOrderToSubmit', fullOrderToSubmit);
-    const { cartItems } = fullOrderToSubmit;
-    const items = extractItemsFromCartItems(cartItems);
-    console.log('checking', items);
-    console.log('fullOrderToSubmit', JSON.stringify(fullOrderToSubmit));
+    // const testData = {
+    //   shopId: 'demo',
+    //   fulfillmentMethod: 'DINE_IN',
+    //   orderId: '12341211',
+    //   status: 'UNFULFILLED',
+    //   postscript: 'abcd',
+    // };
+    // API.graphql({
+    //   query: mutations.createOrder,
+    //   variables: { input: testData },
+    //   authMode: 'AWS_IAM',
+    // }).then(res => console.log(res));
+
     // submitOrders(fullOrderToSubmit);
-    clearForm();
+    // clearForm();
     handleNext();
   };
   const [rows, setRows] = useState([{ orders: [], uncommittedOrders: [] }]);
@@ -207,7 +218,7 @@ export function Review({
           <Grid container>
             <Grid item xs={12}>
               <Typography gutterBottom>
-                {fullOrderToSubmit.postScriptum}
+                {fullOrderToSubmit.postScript}
               </Typography>
             </Grid>
           </Grid>
