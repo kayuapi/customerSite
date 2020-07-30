@@ -92,6 +92,7 @@ const makeSelectAddressFormSubmission = () =>
       pickUpDate: substate.pickUpDate,
       pickUpTime: substate.pickUpTime,
       deliveryDate: substate.deliveryDate,
+      deliveryTime: substate.deliveryTime,
       vehiclePlateNumber: substate.vehiclePlateNumber,
       paymentMethod: substate.paymentMethod,
       cartItems: products,

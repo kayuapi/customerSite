@@ -89,23 +89,87 @@ export function Review({
   // filter out empty string quantity
 
   const onSubmit = () => {
-    console.log('fullOrderToSubmit', fullOrderToSubmit);
-    // const testData = {
-    //   shopId: 'demo',
-    //   fulfillmentMethod: 'DINE_IN',
-    //   orderId: '12341211',
-    //   status: 'UNFULFILLED',
-    //   postscript: 'abcd',
-    // };
-    // API.graphql({
-    //   query: mutations.createOrder,
-    //   variables: { input: testData },
-    //   authMode: 'AWS_IAM',
-    // }).then(res => console.log(res));
+    const testData = {
+      shopId: `${process.env.BUSINESS_NAME}`,
+      fulfillmentMethod: fullOrderToSubmit.fulfillmentMethod,
+      orderId: fullOrderToSubmit.orderNumber,
+      status: 'UNFULFILLED',
+      paymentMethod: `${
+        typeof fullOrderToSubmit.paymentMethod === 'undefined'
+          ? 'CASH'
+          : fullOrderToSubmit.paymentMethod
+      }`,
+      postscript: `${
+        typeof fullOrderToSubmit.postScript === 'undefined'
+          ? null
+          : fullOrderToSubmit.postScript
+      }`,
+      tableNumber: `${
+        typeof fullOrderToSubmit.tableNumber === 'undefined'
+          ? null
+          : fullOrderToSubmit.tableNumber
+      }`,
+      firstName: `${
+        typeof fullOrderToSubmit.firstName === 'undefined'
+          ? null
+          : fullOrderToSubmit.firstName
+      }`,
+      lastName: `${
+        typeof fullOrderToSubmit.lastName === 'undefined'
+          ? null
+          : fullOrderToSubmit.lastName
+      }`,
+      phoneNumber: `${
+        typeof fullOrderToSubmit.phoneNumber === 'undefined'
+          ? '+60108001190'
+          : fullOrderToSubmit.phoneNumber
+      }`,
+      // pickupDate: `${
+      //   typeof fullOrderToSubmit.pickupDate === 'undefined'
+      //     ? new Date().toISOString()
+      //     : fullOrderToSubmit.pickupDate
+      // }`,
+      // pickupTime: `${
+      //   typeof fullOrderToSubmit.pickupTime === 'undefined'
+      //     ? new Date().toISOString()
+      //     : fullOrderToSubmit.pickupTime
+      // }`,
+      vehiclePlateNumber: `${
+        typeof fullOrderToSubmit.vehiclePlateNumber === 'undefined'
+          ? null
+          : fullOrderToSubmit.vehiclePlateNumber
+      }`,
+      // deliveryDate: `${
+      //   typeof fullOrderToSubmit.deliveryDate === 'undefined'
+      //     ? new Date().toISOString()
+      //     : fullOrderToSubmit.deliveryDate
+      // }`,
+      // deliveryTime: `${
+      //   typeof fullOrderToSubmit.deliveryTime === 'undefined'
+      //     ? new Date().toISOString()
+      //     : fullOrderToSubmit.deliveryTime
+      // }`,
+      deliveryAddress: `${
+        typeof fullOrderToSubmit.deliveryAddress === 'undefined'
+          ? null
+          : fullOrderToSubmit.deliveryAddress
+      }`,
+      orderedItems: fullOrderToSubmit.cartItems.map(cartItem => ({
+        name: cartItem.name,
+        variant: cartItem.variant,
+        quantity: cartItem.quantity,
+      })),
+    };
+    API.graphql({
+      query: mutations.createOrder,
+      variables: { input: testData },
+      authMode: 'AWS_IAM',
+    }).then(res => {
+      handleNext();
+    });
 
     // submitOrders(fullOrderToSubmit);
     // clearForm();
-    handleNext();
   };
   const [rows, setRows] = useState([{ orders: [], uncommittedOrders: [] }]);
   const [invoice, setInvoice] = useState({ subtotal: 0, taxes: 0, total: 0 });
@@ -198,6 +262,10 @@ export function Review({
               <br />
               <FormattedMessage {...messages.deliveryDate} />:{' '}
               {fullOrderToSubmit.deliveryDate}
+              <br />
+              <FormattedMessage {...messages.deliveryTime} />:{' '}
+              {fullOrderToSubmit.deliveryTime}
+              <br />
             </Typography>
           )}
           {fullOrderToSubmit.fulfillmentMethod ===
@@ -226,7 +294,12 @@ export function Review({
 
         <Grid item container direction="column" xs={12} sm={6}>
           <Typography variant="h6" gutterBottom className={classes.title}>
-            <FormattedMessage {...messages.paymentDetails} />
+            {(fullOrderToSubmit.fulfillmentMethod ===
+              FULFILLMENT_METHODS.DELIVERY ||
+              fullOrderToSubmit.fulfillmentMethod ===
+              FULFILLMENT_METHODS.SELF_PICKUP) && (
+              <FormattedMessage {...messages.paymentDetails} />
+            )}
           </Typography>
           <Grid container>
             <Grid item xs={12}>

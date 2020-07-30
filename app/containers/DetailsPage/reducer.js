@@ -15,12 +15,12 @@ import {
 
 export const initialState = {
   businessName: '',
-  orderNumber: `# ${String(
+  orderNumber: `${String(
     new Date().getTime() +
       Math.random()
         .toString(36)
         .substring(2, 4),
-  ).replace(/(\w{6})(\w{5})(\w{4})/, '$1-$2-$3')}`,
+  )}`,
   fulfillmentMethod: '',
   paymentMethod: '',
   postScript: '',
