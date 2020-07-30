@@ -21,6 +21,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 import FacebookIcon from '@material-ui/icons/Facebook';
+import OperatingHourIcon from '@material-ui/icons/AccessTime';
 import InstagramIcon from '@material-ui/icons/Instagram';
 import makeSelectShopInfo from './selectors';
 import reducer from './reducer';
@@ -95,12 +96,18 @@ export function ShopInfo() {
               <LocationIcon />
               &nbsp; 地址: {process.env.SHOP_INFO_BUSINESS_ADDRESS}
               <br />
+              <br />
+              <OperatingHourIcon />
+              &nbsp; 营业时间: {process.env.SHOP_INFO_OPERATING_HOURS}
+              <br />
+              <br />
               <PhoneIcon />
               &nbsp; 联络电话：{process.env.SHOP_INFO_BUSINESS_PHONE_NUMBER}
               &nbsp;
               <a href={whatsappLink}>
                 <WhatsAppIcon />
               </a>
+              <br />
               <br />
               <FacebookIcon />
               &nbsp; Facebook：
@@ -110,6 +117,7 @@ export function ShopInfo() {
               >
                 {process.env.SHOP_INFO_BUSINESS_FACEBOOK}
               </a>
+              <br />
               <br />
               <InstagramIcon />
               &nbsp; Instagram：
