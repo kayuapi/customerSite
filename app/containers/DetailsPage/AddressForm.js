@@ -184,21 +184,6 @@ export function AddressForm({
                 />
               </Grid>
 
-              <Grid item xs={12}>
-                <TextField
-                  error={typeof errors.postScript !== 'undefined'}
-                  helperText={
-                    <FormattedMessage {...messages.postScriptumError} />
-                  }
-                  inputRef={register({ maxLength: 50 })}
-                  name="postScript"
-                  label={<FormattedMessage {...messages.postScriptum} />}
-                  fullWidth
-                  type="text"
-                  defaultValue={postScript}
-                />
-              </Grid>
-
               <Grid item xs={12} sm={6}>
                 <TextField
                   error={typeof errors.vehiclePlateNumber !== 'undefined'}
@@ -295,6 +280,21 @@ export function AddressForm({
                 </Grid> */}
               </MuiPickersUtilsProvider>
               <Grid item xs={12}>
+                <TextField
+                  error={typeof errors.postScript !== 'undefined'}
+                  helperText={
+                    <FormattedMessage {...messages.postScriptumError} />
+                  }
+                  inputRef={register({ maxLength: 50 })}
+                  name="postScript"
+                  label={<FormattedMessage {...messages.postScriptum} />}
+                  fullWidth
+                  type="text"
+                  defaultValue={postScript}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
                 <Typography variant="h6" gutterBottom>
                   <FormattedMessage {...messages.paymentMethods} />
                 </Typography>
@@ -343,6 +343,20 @@ export function AddressForm({
                   fullWidth
                   type="text"
                   defaultValue={fulfillmentDerivatives.tableNumber}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  error={typeof errors.postScript !== 'undefined'}
+                  helperText={
+                    <FormattedMessage {...messages.postScriptumError} />
+                  }
+                  inputRef={register({ maxLength: 50 })}
+                  name="postScript"
+                  label={<FormattedMessage {...messages.postScriptum} />}
+                  fullWidth
+                  type="text"
+                  defaultValue={postScript}
                 />
               </Grid>
             </>
@@ -395,19 +409,18 @@ export function AddressForm({
                   type="text"
                 />
               </Grid>
-
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={12}>
                 <TextField
-                  error={typeof errors.postScript !== 'undefined'}
+                  error={typeof errors.addressLine2 !== 'undefined'}
                   helperText={
-                    <FormattedMessage {...messages.postScriptumError} />
+                    <FormattedMessage {...messages.addressLine2Error} />
                   }
                   inputRef={register({ maxLength: 50 })}
-                  name="postScript"
-                  label={<FormattedMessage {...messages.postScriptum} />}
+                  name="addressLine2"
+                  label={<FormattedMessage {...messages.addressLine2} />}
                   fullWidth
+                  defaultValue={fulfillmentDerivatives.addressLine2}
                   type="text"
-                  defaultValue={postScript}
                 />
               </Grid>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -491,6 +504,20 @@ export function AddressForm({
                   />
                 </Grid> */}
               </MuiPickersUtilsProvider>
+              <Grid item xs={12}>
+                <TextField
+                  error={typeof errors.postScript !== 'undefined'}
+                  helperText={
+                    <FormattedMessage {...messages.postScriptumError} />
+                  }
+                  inputRef={register({ maxLength: 50 })}
+                  name="postScript"
+                  label={<FormattedMessage {...messages.postScriptum} />}
+                  fullWidth
+                  type="text"
+                  defaultValue={postScript}
+                />
+              </Grid>
               <Grid item xs={12}>
                 <Typography variant="h6" gutterBottom>
                   <FormattedMessage {...messages.paymentMethods} />
