@@ -47,7 +47,26 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(3),
     marginLeft: theme.spacing(1),
   },
+  price: {
+    minWidth: '12ch',
+    textAlign: 'right',
+  }
 }));
+
+const cleanNullAndUndefined = obj => {
+  const propNames = Object.getOwnPropertyNames(obj);
+  for (let i = 0; i < propNames.length; i++) {
+    const propName = propNames[i];
+    if (
+      obj[propName] === null ||
+      obj[propName] === undefined ||
+      obj[propName] === []
+    ) {
+      delete obj[propName];
+    }
+  }
+  return obj;
+};
 
 export function Review({
   clearForm,
@@ -57,7 +76,6 @@ export function Review({
   handleBack,
   numberOfPage,
 }) {
-  console.log('fullOrder', fullOrderToSubmit);
   const classes = useStyles();
   const { handleSubmit } = useForm();
 
@@ -78,7 +96,6 @@ export function Review({
 
   function extractItemsFromCartItems(cartItems) {
     const items = cartItems.reduce((acc, obj) => {
-      console.log('obj', obj);
       const key = `${obj.name}(${obj.variant})`;
       acc[key] = obj.quantity;
       return acc;
@@ -88,81 +105,75 @@ export function Review({
 
   // filter out empty string quantity
 
+
   const onSubmit = () => {
-    const testData = {
+    if (fullOrderToSubmit.cartItems.length === 0) {
+      throw new Error('Cannot submit empty order');
+    }
+    let toSubmitData = {
       shopId: `${process.env.BUSINESS_NAME}`,
       fulfillmentMethod: fullOrderToSubmit.fulfillmentMethod,
       orderId: fullOrderToSubmit.orderNumber,
       status: 'UNFULFILLED',
-      paymentMethod: `${
+      paymentMethod:
         typeof fullOrderToSubmit.paymentMethod === 'undefined'
           ? 'CASH'
-          : fullOrderToSubmit.paymentMethod
-      }`,
-      postscript: `${
+          : fullOrderToSubmit.paymentMethod,
+      postscript:
         typeof fullOrderToSubmit.postScript === 'undefined'
           ? null
-          : fullOrderToSubmit.postScript
-      }`,
-      tableNumber: `${
+          : fullOrderToSubmit.postScript,
+      tableNumber:
         typeof fullOrderToSubmit.tableNumber === 'undefined'
           ? null
-          : fullOrderToSubmit.tableNumber
-      }`,
-      firstName: `${
+          : fullOrderToSubmit.tableNumber,
+      firstName:
         typeof fullOrderToSubmit.firstName === 'undefined'
           ? null
-          : fullOrderToSubmit.firstName
-      }`,
-      lastName: `${
+          : fullOrderToSubmit.firstName,
+      lastName:
         typeof fullOrderToSubmit.lastName === 'undefined'
           ? null
-          : fullOrderToSubmit.lastName
-      }`,
-      phoneNumber: `${
+          : fullOrderToSubmit.lastName,
+      phoneNumber:
         typeof fullOrderToSubmit.phoneNumber === 'undefined'
-          ? '+60108001190'
-          : fullOrderToSubmit.phoneNumber
-      }`,
-      // pickupDate: `${
-      //   typeof fullOrderToSubmit.pickupDate === 'undefined'
-      //     ? new Date().toISOString()
-      //     : fullOrderToSubmit.pickupDate
-      // }`,
-      // pickupTime: `${
-      //   typeof fullOrderToSubmit.pickupTime === 'undefined'
-      //     ? new Date().toISOString()
-      //     : fullOrderToSubmit.pickupTime
-      // }`,
-      vehiclePlateNumber: `${
+          ? null
+          : `+6${fullOrderToSubmit.phoneNumber}`,
+      pickupDate:
+        typeof fullOrderToSubmit.pickUpDate === 'undefined'
+          ? null
+          : fullOrderToSubmit.pickUpDate,
+      pickupTime:
+        typeof fullOrderToSubmit.pickUpTime === 'undefined'
+          ? null
+          : fullOrderToSubmit.pickUpTime,
+      vehiclePlateNumber:
         typeof fullOrderToSubmit.vehiclePlateNumber === 'undefined'
           ? null
-          : fullOrderToSubmit.vehiclePlateNumber
-      }`,
-      // deliveryDate: `${
-      //   typeof fullOrderToSubmit.deliveryDate === 'undefined'
-      //     ? new Date().toISOString()
-      //     : fullOrderToSubmit.deliveryDate
-      // }`,
-      // deliveryTime: `${
-      //   typeof fullOrderToSubmit.deliveryTime === 'undefined'
-      //     ? new Date().toISOString()
-      //     : fullOrderToSubmit.deliveryTime
-      // }`,
-      deliveryAddress: `${
-        typeof fullOrderToSubmit.deliveryAddress === 'undefined'
+          : fullOrderToSubmit.vehiclePlateNumber,
+      deliveryDate:
+        typeof fullOrderToSubmit.deliveryDate === 'undefined'
           ? null
-          : fullOrderToSubmit.deliveryAddress
-      }`,
+          : fullOrderToSubmit.deliveryDate,
+      deliveryTime:
+        typeof fullOrderToSubmit.deliveryTime === 'undefined'
+          ? null
+          : fullOrderToSubmit.deliveryTime,
+      deliveryAddress:
+        typeof fullOrderToSubmit.deliveryAddress === 'undefined' ||
+        fullOrderToSubmit.deliveryAddress === ''
+          ? null
+          : fullOrderToSubmit.deliveryAddress,
       orderedItems: fullOrderToSubmit.cartItems.map(cartItem => ({
         name: cartItem.name,
         variant: cartItem.variant,
         quantity: cartItem.quantity,
       })),
     };
+    toSubmitData = cleanNullAndUndefined(toSubmitData);
     API.graphql({
       query: mutations.createOrder,
-      variables: { input: testData },
+      variables: { input: toSubmitData },
       authMode: 'AWS_IAM',
     }).then(res => {
       handleNext();
@@ -203,7 +214,9 @@ export function Review({
                   />
                 }
               />
-              <Typography variant="body2">RM {ccyFormat(row.price)}</Typography>
+              <Typography variant="body2" className={classes.price}>
+                RM {ccyFormat(row.price)}
+              </Typography>
             </ListItem>
           ))}
         <ListItem className={classes.listItem}>
@@ -261,18 +274,27 @@ export function Review({
               {fullOrderToSubmit.deliveryAddress}
               <br />
               <FormattedMessage {...messages.deliveryDate} />:{' '}
-              {fullOrderToSubmit.deliveryDate}
+              {new Date(fullOrderToSubmit.deliveryDate).toLocaleDateString()}
               <br />
               <FormattedMessage {...messages.deliveryTime} />:{' '}
-              {fullOrderToSubmit.deliveryTime}
+              {new Date(fullOrderToSubmit.deliveryTime).toLocaleTimeString(
+                'en-UK',
+              )}
               <br />
             </Typography>
           )}
           {fullOrderToSubmit.fulfillmentMethod ===
             FULFILLMENT_METHODS.SELF_PICKUP && (
             <Typography gutterBottom>
-              {fullOrderToSubmit.pickUpDate} <br />
-              {fullOrderToSubmit.pickUpTime} <br />
+              <FormattedMessage {...messages.pickUpDate} />:{' '}
+              {new Date(fullOrderToSubmit.pickUpDate).toLocaleDateString()}
+              <br />
+              <FormattedMessage {...messages.reviewPickUpTime} />:{' '}
+              {new Date(fullOrderToSubmit.pickUpTime).toLocaleTimeString(
+                'en-UK',
+              )}
+              <br />
+              <FormattedMessage {...messages.vehiclePlateNumber} />:{' '}
               {fullOrderToSubmit.vehiclePlateNumber}
               {/* {pickUpDate}, {pickUpTime} */}
             </Typography>

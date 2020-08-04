@@ -59,14 +59,18 @@ export function configureFulfillmentDerivatives({
     lastName,
     phoneNumber,
     // eslint-disable-next-line prettier/prettier
-    pickUpDate: pickUpDate ? `${pickUpDate.getFullYear()}-${`0${pickUpDate.getMonth()+1}`.slice(-2)}-${`0${pickUpDate.getDate()}`.slice(-2)}` : pickUpDate,
+    // pickUpDate: pickUpDate ? `${pickUpDate.getFullYear()}-${`0${pickUpDate.getMonth()+1}`.slice(-2)}-${`0${pickUpDate.getDate()}`.slice(-2)}` : pickUpDate,
+    pickUpDate,
     // eslint-disable-next-line prettier/prettier
-    pickUpTime: pickUpTime ? `${`0${pickUpTime.getHours()}`.slice(-2)}:${`0${pickUpTime.getMinutes()}`.slice(-2)}:${`0${pickUpTime.getSeconds()}`.slice(-2)}` : pickUpTime,
+    // pickUpTime: pickUpTime ? `${`0${pickUpTime.getHours()}`.slice(-2)}:${`0${pickUpTime.getMinutes()}`.slice(-2)}:${`0${pickUpTime.getSeconds()}`.slice(-2)}` : pickUpTime,
+    pickUpTime,
     vehiclePlateNumber,
     // eslint-disable-next-line prettier/prettier
-    deliveryDate: deliveryDate ? `${deliveryDate.getFullYear()}-${`0${deliveryDate.getMonth()+1}`.slice(-2)}-${`0${deliveryDate.getDate()}`.slice(-2)}` : deliveryDate,
+    // deliveryDate: deliveryDate ? `${deliveryDate.getFullYear()}-${`0${deliveryDate.getMonth()+1}`.slice(-2)}-${`0${deliveryDate.getDate()}`.slice(-2)}` : deliveryDate,
+    deliveryDate,
     // eslint-disable-next-line prettier/prettier
-    deliveryTime: deliveryTime ? `${`0${deliveryTime.getHours()}`.slice(-2)}:${`0${deliveryTime.getMinutes()}`.slice(-2)}:${`0${deliveryTime.getSeconds()}`.slice(-2)}` : deliveryTime,
+    // deliveryTime: deliveryTime ? `${`0${deliveryTime.getHours()}`.slice(-2)}:${`0${deliveryTime.getMinutes()}`.slice(-2)}:${`0${deliveryTime.getSeconds()}`.slice(-2)}` : deliveryTime,
+    deliveryTime,
     addressLine1,
     addressLine2,
     city,
