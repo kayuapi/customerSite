@@ -56,6 +56,17 @@ const useStyles = makeStyles(theme => ({
       padding: theme.spacing(3),
     },
   },
+  // paper: {
+  //   minHeight: 'fit-content',
+  //   marginTop: theme.spacing(3),
+  //   marginBottom: theme.spacing(3),
+  //   padding: theme.spacing(2),
+  //   [theme.breakpoints.up(300 + theme.spacing(3) * 2)]: {
+  //     marginTop: theme.spacing(6),
+  //     marginBottom: theme.spacing(50),
+  //     padding: theme.spacing(3),
+  //   },
+  // },
   stepper: {
     padding: theme.spacing(3, 0, 5),
   },
@@ -83,73 +94,71 @@ export function ShopInfo() {
       </Helmet>
       <div className={classes.toolbar} />
       <main className={classes.layout}>
-        <Container maxWidth="md" style={{ height: '500px' }}>
-          <Paper className={classes.paper}>
-            {/* <img src={businessLogo} alt="business logo" /> */}
-            <Typography component="h1" variant="h4" align="center">
-              {process.env.SHOP_INFO_BUSINESS_NAME}
-            </Typography>
-            <Typography variant="subtitle1" gutterBottom>
-              <br />
-              <br />
-              <br />
-              <LocationIcon />
-              &nbsp; 地址: {process.env.SHOP_INFO_BUSINESS_ADDRESS}
-              <br />
-              <br />
-              <OperatingHourIcon />
-              &nbsp; 营业时间: {process.env.SHOP_INFO_OPERATING_HOURS}
-              <br />
-              <br />
-              <PhoneIcon />
-              &nbsp; 联络电话：{process.env.SHOP_INFO_BUSINESS_PHONE_NUMBER}
-              &nbsp;
-              <a href={whatsappLink}>
-                <WhatsAppIcon />
-              </a>
-              <br />
-              <br />
-              <FacebookIcon />
-              &nbsp; Facebook：
-              <a
-                href={process.env.SHOP_INFO_BUSINESS_FACEBOOK_LINK}
-                style={{ textDecoration: 'none', color: 'black' }}
-              >
-                {process.env.SHOP_INFO_BUSINESS_FACEBOOK}
-              </a>
-              <br />
-              <br />
-              <InstagramIcon />
-              &nbsp; Instagram：
-              <a
-                href={process.env.SHOP_INFO_BUSINESS_INSTAGRAM_LINK}
-                style={{ textDecoration: 'none', color: 'black' }}
-              >
-                {process.env.SHOP_INFO_BUSINESS_INSTAGRAM}
-              </a>
-              <br />
-            </Typography>
+        <Paper className={classes.paper}>
+          {/* <img src={businessLogo} alt="business logo" /> */}
+          <Typography component="h1" variant="h4" align="center">
+            {process.env.SHOP_INFO_BUSINESS_NAME}
+          </Typography>
+          <Typography variant="subtitle1" gutterBottom>
             <br />
             <br />
-            <iframe
-              title="map"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2370.849011725798!2d102.5985398247281!3d2.0451488801042244!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31d1b9bcd9c0df01%3A0x913d532452fe9c88!2zZ3VvYmHplIXniLgg5Y-w5rm-54Gr6ZSF77yI6bq75Z2h5bqX77yJ!5e0!3m2!1sen!2smy!4v1594723819342!5m2!1sen!2smy"
-              width="400"
-              height="300"
-              frameBorder="0"
-              style={{ border: 0 }}
-              allowFullScreen=""
-              aria-hidden="false"
-            />
-            {/* <MyMapComponent
-              center={[
-                Number(process.env.SHOP_INFO_LATITUDE),
-                Number(process.env.SHOP_INFO_LONGITUDE),
-              ]}
-              zoom={18}
-            /> */}
-          </Paper>
-        </Container>
+            <br />
+            <LocationIcon />
+            &nbsp; 地址: {process.env.SHOP_INFO_BUSINESS_ADDRESS}
+            <br />
+            <br />
+            <OperatingHourIcon />
+            &nbsp; 营业时间: {process.env.SHOP_INFO_OPERATING_HOURS}
+            <br />
+            <br />
+            <PhoneIcon />
+            &nbsp; 联络电话：{process.env.SHOP_INFO_BUSINESS_PHONE_NUMBER}
+            &nbsp;
+            <a href={whatsappLink}>
+              <WhatsAppIcon />
+            </a>
+            <br />
+            <br />
+            <FacebookIcon />
+            &nbsp; Facebook：
+            <a
+              href={process.env.SHOP_INFO_BUSINESS_FACEBOOK_LINK}
+              style={{ textDecoration: 'underline', color: 'blue' }}
+            >
+              {process.env.SHOP_INFO_BUSINESS_FACEBOOK}
+            </a>
+            <br />
+            <br />
+            <InstagramIcon />
+            &nbsp; Instagram：
+            <a
+              href={process.env.SHOP_INFO_BUSINESS_INSTAGRAM_LINK}
+              style={{ textDecoration: 'underline', color: 'blue' }}
+            >
+              {process.env.SHOP_INFO_BUSINESS_INSTAGRAM}
+            </a>
+            <br />
+          </Typography>
+          <br />
+          <br />
+          <iframe
+            title="map"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2370.849011725798!2d102.5985398247281!3d2.0451488801042244!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31d1b9bcd9c0df01%3A0x913d532452fe9c88!2zZ3VvYmHplIXniLgg5Y-w5rm-54Gr6ZSF77yI6bq75Z2h5bqX77yJ!5e0!3m2!1sen!2smy!4v1594723819342!5m2!1sen!2smy"
+            width="100%"
+            height="300"
+            frameBorder="0"
+            style={{ border: 0 }}
+            allowFullScreen=""
+            aria-hidden="false"
+          />
+          {/* <MyMapComponent
+            center={[
+              Number(process.env.SHOP_INFO_LATITUDE),
+              Number(process.env.SHOP_INFO_LONGITUDE),
+            ]}
+            zoom={18}
+          /> */}
+        </Paper>
       </main>
     </div>
   );
