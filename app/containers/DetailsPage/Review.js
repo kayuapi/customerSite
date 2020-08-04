@@ -113,7 +113,12 @@ export function Review({
     let toSubmitData = {
       shopId: `${process.env.BUSINESS_NAME}`,
       fulfillmentMethod: fullOrderToSubmit.fulfillmentMethod,
-      orderId: fullOrderToSubmit.orderNumber,
+      orderId: String(
+        new Date().getTime() +
+          Math.random()
+            .toString(36)
+            .substring(2, 4),
+      ),
       status: 'UNFULFILLED',
       paymentMethod:
         typeof fullOrderToSubmit.paymentMethod === 'undefined'
@@ -142,11 +147,11 @@ export function Review({
       pickupDate:
         typeof fullOrderToSubmit.pickUpDate === 'undefined'
           ? null
-          : fullOrderToSubmit.pickUpDate,
+          : new Date(fullOrderToSubmit.pickUpDate).toISOString().replace(/T.*/, ''),
       pickupTime:
         typeof fullOrderToSubmit.pickUpTime === 'undefined'
           ? null
-          : fullOrderToSubmit.pickUpTime,
+          : new Date(fullOrderToSubmit.pickUpTime).toISOString().match(/\d\d:\d\d:\d\d.\d\d\dZ/)[0],
       vehiclePlateNumber:
         typeof fullOrderToSubmit.vehiclePlateNumber === 'undefined'
           ? null
@@ -154,11 +159,11 @@ export function Review({
       deliveryDate:
         typeof fullOrderToSubmit.deliveryDate === 'undefined'
           ? null
-          : fullOrderToSubmit.deliveryDate,
+          : new Date(fullOrderToSubmit.deliveryDate).toISOString().replace(/T.*/, ''),
       deliveryTime:
         typeof fullOrderToSubmit.deliveryTime === 'undefined'
           ? null
-          : fullOrderToSubmit.deliveryTime,
+          : new Date(fullOrderToSubmit.deliveryTime).toISOString().match(/\d\d:\d\d:\d\d.\d\d\dZ/)[0],
       deliveryAddress:
         typeof fullOrderToSubmit.deliveryAddress === 'undefined' ||
         fullOrderToSubmit.deliveryAddress === ''
