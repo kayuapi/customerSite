@@ -105,6 +105,10 @@ export default defineMessages({
     id: `${scope}.pickUpTime`,
     defaultMessage: 'Pickup Time: 8am - 3.30pm',
   },
+  reviewPickUpTime: {
+    id: `${scope}.reviewPickUpTime`,
+    defaultMessage: 'Pickup Time',
+  },
   vehiclePlateNumber: {
     id: `${scope}.vehiclePlateNumber`,
     defaultMessage: 'Vehicle Plate Number',
@@ -137,6 +141,10 @@ export default defineMessages({
   addressLine1Error: {
     id: `${scope}.addressLine1Error`,
     defaultMessage: 'Required, maximum characters allowed: 50',
+  },
+  addressLine2Error: {
+    id: `${scope}.addressLine2Error`,
+    defaultMessage: 'Optional, maximum characters allowed: 50',
   },
   zipPostalCodeError: {
     id: `${scope}.zipPostalCodeError`,
