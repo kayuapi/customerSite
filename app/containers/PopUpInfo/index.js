@@ -39,12 +39,12 @@ export function PopUpInfo({ isOpen, setPopUpOpen }) {
 
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          <FormattedMessage {...messages.dialogContentLine1} /><br />
-          <FormattedMessage {...messages.dialogContentLine2} /><br />
-          <FormattedMessage {...messages.dialogContentLine3} /><br />
-          <FormattedMessage {...messages.dialogContentLine4} /><br />
-          <FormattedMessage {...messages.dialogContentLine5} /><br />
-          <FormattedMessage {...messages.dialogContentLine6} /><br />
+          <FormattedMessage {...messages.dialogContentLine1} /><br /><br />
+          <FormattedMessage {...messages.dialogContentLine2} />
+          <span role="img" aria-label="thanks">
+            🙏
+          </span>
+          <br />
         </DialogContentText>
       </DialogContent>
 
