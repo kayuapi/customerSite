@@ -45,6 +45,8 @@ export default defineMessages({
     id: `${scope}.dialogContentLine6`,
     defaultMessage: 'Sorry, only available in chinese content',
   },
-
-
+  updateMessageFromVendor: {
+    id: `${scope}.updateMessageFromVendor`,
+    defaultMessage: 'The website has been updated!',
+  },
 });

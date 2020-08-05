@@ -50,8 +50,25 @@ const theme = createMuiTheme({
   },
 });
 
-export default function App() {
+// eslint-disable-next-line react/prop-types
+export default function App({ runtime }) {
   const [popUpOpen, setPopUpOpen] = useState(true);
+  // use "" as falsy value
+  const [updateMessageFromVendor, setUpdateMessageFromVendor] = useState(false);
+  if (process.env.NODE_ENV === 'production') {
+    runtime.install({
+      onUpdateReady: () => {
+        // console.log('onUpdateReady, cool');
+        if (!popUpOpen) {
+          setPopUpOpen(true);
+        }
+        setUpdateMessageFromVendor(true);
+      },
+      onUpdated: () => {
+        window.location.reload();
+      },
+    });
+  }
   return (
     <div>
       <ThemeProvider theme={theme}>
@@ -63,7 +80,12 @@ export default function App() {
           <Route exact path="/menu" component={MenuPage} />
           <Route exact path="/shopInfo" component={ShopInfoPage} />
         </Switch>
-        <PopUpInfo isOpen={popUpOpen} setPopUpOpen={setPopUpOpen} />
+        <PopUpInfo
+          isOpen={popUpOpen}
+          setPopUpOpen={setPopUpOpen}
+          updateMessageFromVendor={updateMessageFromVendor}
+          runtime={runtime}
+        />
         <BottomNavigation />
         {/* <GlobalStyle /> */}
       </ThemeProvider>

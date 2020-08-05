@@ -103,6 +103,7 @@
   "app.containers.PopUpInfo.dialogContentLine6": "Sorry, only available in chinese content",
   "app.containers.PopUpInfo.dialogTitle": "Message",
   "app.containers.PopUpInfo.header": "This is the PopUpInfo container!",
+  "app.containers.PopUpInfo.updateMessageFromVendor": "",
   "app.containers.Product.choose": "",
   "app.containers.Product.orderQuantity": "qty",
   "app.containers.ProductWithVariants.orderQuantity": "qty",

@@ -31,7 +31,6 @@ import '!file-loader?name=[name].[ext]!./images/favicon.ico';
 import 'file-loader?name=.htaccess!./.htaccess';
 /* eslint-enable import/no-unresolved, import/extensions */
 
-import * as OfflinePluginRuntime from 'offline-plugin/runtime';
 import configureStore from './configureStore';
 
 // Import i18n messages
@@ -40,6 +39,8 @@ import { translationMessages } from './i18n';
 const initialState = {};
 const store = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
+
+const runtime = require('offline-plugin/runtime'); // eslint-disable-line global-require
 
 Auth.configure({
   identityPoolId: process.env.IDENTITIY_POOL_ID,
@@ -64,7 +65,7 @@ const render = messages => {
     <Provider store={store}>
       <LanguageProvider messages={messages}>
         <ConnectedRouter history={history}>
-          <App />
+          <App runtime={runtime} />
         </ConnectedRouter>
       </LanguageProvider>
     </Provider>,
@@ -99,16 +100,16 @@ if (!window.Intl) {
 // Install ServiceWorker and AppCache in the end since
 // it's not most important operation and if main code fails,
 // we do not want it installed
-if (process.env.NODE_ENV === 'production') {
-  OfflinePluginRuntime.install({
-    onUpdateReady: () => {
-      OfflinePluginRuntime.applyUpdate();
-    },
-    onUpdated: () => {
-      // feel free to ask the user first
-      // eslint-disable-next-line no-alert
-      alert('This website is updated to the newest version');
-      window.location.reload();
-    },
-  });
-}
+// if (process.env.NODE_ENV === 'production') {
+//   OfflinePluginRuntime.install({
+//     onUpdateReady: () => {
+//       OfflinePluginRuntime.applyUpdate();
+//     },
+//     onUpdated: () => {
+//       // feel free to ask the user first
+//       // eslint-disable-next-line no-alert
+//       alert('This website is updated to the newest version');
+//       window.location.reload();
+//     },
+//   });
+// }
