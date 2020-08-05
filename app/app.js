@@ -31,11 +31,11 @@ import '!file-loader?name=[name].[ext]!./images/favicon.ico';
 import 'file-loader?name=.htaccess!./.htaccess';
 /* eslint-enable import/no-unresolved, import/extensions */
 
+import * as OfflinePluginRuntime from 'offline-plugin/runtime';
 import configureStore from './configureStore';
 
 // Import i18n messages
 import { translationMessages } from './i18n';
-import * as OfflinePluginRuntime from 'offline-plugin/runtime';
 // Create redux store with history
 const initialState = {};
 const store = configureStore(initialState, history);
