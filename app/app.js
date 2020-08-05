@@ -107,7 +107,7 @@ if (process.env.NODE_ENV === 'production') {
     onUpdated: () => {
       // feel free to ask the user first
       // eslint-disable-next-line no-alert
-      alert('This website is updated to the newest version!');
+      alert('This website is updated to the newest version');
       window.location.reload();
     },
   });
