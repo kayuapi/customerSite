@@ -65,7 +65,9 @@ export function PopUpInfo({
         <>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              <FormattedMessage {...messages.dialogContentLine1} /><br /><br />
+              <FormattedMessage {...messages.dialogContentLine1} />
+              <br />
+              <br />
               <FormattedMessage {...messages.dialogContentLine2} />
               <span role="img" aria-label="thanks">
                 🙏
