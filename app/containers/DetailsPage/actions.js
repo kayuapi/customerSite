@@ -5,6 +5,7 @@
  */
 import {
   CONFIGURE_BUSINESS_NAME,
+  CONFIGURE_ORDER_NUMBER,
   CONFIGURE_FULFILLMENT_METHOD,
   CONFIGURE_FULFILLMENT_DERIVATIVES,
   CONFIGURE_POSTSCRIPT,
@@ -18,6 +19,13 @@ export function configureBusinessName({ businessName }) {
   return {
     type: CONFIGURE_BUSINESS_NAME,
     businessName,
+  };
+}
+
+export function configureOrderNumber({ orderNumber }) {
+  return {
+    type: CONFIGURE_ORDER_NUMBER,
+    orderNumber,
   };
 }
 

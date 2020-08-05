@@ -6,6 +6,7 @@
 import produce from 'immer';
 import {
   CONFIGURE_BUSINESS_NAME,
+  CONFIGURE_ORDER_NUMBER,
   CONFIGURE_FULFILLMENT_METHOD,
   CONFIGURE_FULFILLMENT_DERIVATIVES,
   CONFIGURE_POSTSCRIPT,
@@ -57,6 +58,10 @@ const detailsPageReducer = (state = initialState, action) =>
 
       case CONFIGURE_FULFILLMENT_METHOD:
         draft.fulfillmentMethod = action.fulfillmentMethod;
+        break;
+
+      case CONFIGURE_ORDER_NUMBER:
+        draft.orderNumber = action.orderNumber;
         break;
 
       case CONFIGURE_FULFILLMENT_DERIVATIVES:

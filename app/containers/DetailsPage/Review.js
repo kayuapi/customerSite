@@ -24,7 +24,7 @@ import {
   subtotal,
   createRowsForOrders,
 } from '../CartPage';
-import { resetForm } from './actions';
+import { resetForm, configureOrderNumber } from './actions';
 import messages from './messages';
 
 const TAX_RATE = 0.00;
@@ -70,6 +70,8 @@ const cleanNullAndUndefined = obj => {
 
 export function Review({
   clearForm,
+  // eslint-disable-next-line no-shadow
+  configureOrderNumber,
   fullOrderToSubmit,
   currentPage,
   handleNext,
@@ -110,15 +112,16 @@ export function Review({
     if (fullOrderToSubmit.cartItems.length === 0) {
       throw new Error('Cannot submit empty order');
     }
+    const orderId = String(
+      new Date().getTime() +
+        Math.random()
+          .toString(36)
+          .substring(2, 4),
+    );
     let toSubmitData = {
       shopId: `${process.env.BUSINESS_NAME}`,
       fulfillmentMethod: fullOrderToSubmit.fulfillmentMethod,
-      orderId: String(
-        new Date().getTime() +
-          Math.random()
-            .toString(36)
-            .substring(2, 4),
-      ),
+      orderId,
       status: 'UNFULFILLED',
       paymentMethod:
         typeof fullOrderToSubmit.paymentMethod === 'undefined'
@@ -181,6 +184,7 @@ export function Review({
       variables: { input: toSubmitData },
       authMode: 'AWS_IAM',
     }).then(res => {
+      configureOrderNumber({ orderNumber: orderId });
       handleNext();
     });
 
@@ -418,6 +422,7 @@ export function Review({
 
 Review.propTypes = {
   clearForm: PropTypes.func.isRequired,
+  configureOrderNumber: PropTypes.func.isRequired,
   fullOrderToSubmit: PropTypes.object.isRequired,
   currentPage: PropTypes.number.isRequired,
   handleNext: PropTypes.func.isRequired,
@@ -432,6 +437,8 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     clearForm: () => dispatch(resetForm()),
+    configureOrderNumber: orderNumber =>
+      dispatch(configureOrderNumber(orderNumber)),
   };
 }
 
