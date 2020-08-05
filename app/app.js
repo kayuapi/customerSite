@@ -35,7 +35,7 @@ import configureStore from './configureStore';
 
 // Import i18n messages
 import { translationMessages } from './i18n';
-
+import * as OfflinePluginRuntime from 'offline-plugin/runtime';
 // Create redux store with history
 const initialState = {};
 const store = configureStore(initialState, history);
@@ -100,5 +100,15 @@ if (!window.Intl) {
 // it's not most important operation and if main code fails,
 // we do not want it installed
 if (process.env.NODE_ENV === 'production') {
-  require('offline-plugin/runtime').install(); // eslint-disable-line global-require
+  OfflinePluginRuntime.install({
+    onUpdateReady: () => {
+      OfflinePluginRuntime.applyUpdate();
+    },
+    onUpdated: () => {
+      // feel free to ask the user first
+      // eslint-disable-next-line no-alert
+      alert('This website is updated to the newest version!');
+      window.location.reload();
+    },
+  });
 }
