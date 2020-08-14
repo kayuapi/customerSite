@@ -232,8 +232,10 @@ export function MenuPage({ openCart2, quantityOfInCartProducts }) {
                     isDraggable={false}
                     draggableCancel="input,textarea, button"
                     isResizable={false}
-                    rowHeight={150}
+                    rowHeight={1}
                     className="layout"
+                    margin={[0, 0]}
+                    verticalCompact={false}
                   >
                     {menuItems.map((menuItem, id) => (
                       <div key={menuItem.id} data-grid={menuItem.uiLocation}>

@@ -42,7 +42,8 @@ import 'jquery-ui/ui/effects/effect-slide';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    maxWidth: 345,
+    // maxWidth: 345,
+    marginRight: '1rem',
     height: '100%',
     display: 'flex',
     'flex-direction': 'column',
@@ -65,6 +66,8 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flex: '1 0 auto',
+    display: 'flex',
+    flexDirection: 'column',
   },
   controls: {
     display: 'flex',
