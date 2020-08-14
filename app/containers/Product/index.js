@@ -72,13 +72,14 @@ const useStyles = makeStyles(theme => ({
   content: {
     flex: '1 0 auto',
     display: 'flex',
+    paddingBottom: theme.spacing(3),
     flexDirection: 'column',
   },
   controls: {
     display: 'flex',
     alignItems: 'center',
     paddingLeft: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
+    paddingBottom: theme.spacing(5),
     justifyContent: 'center',
   },
   gridItem: {
