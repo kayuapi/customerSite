@@ -56,6 +56,11 @@ const useStyles = makeStyles(theme => ({
     // height: 'auto',
     'object-fit': 'contain',
   },
+  cardActionArea: {
+    height: '100%',
+    minHeight: '1px',
+    textAlign: 'center',
+  },
   textField: {
     width: '100%',
     // backgroundColor: theme.palette.background.paper,
@@ -239,13 +244,16 @@ export function Product({
       <Card className={classes.root}>
         {image ? (
           <>
-            <CardActionArea onClick={handleImageClickOpen}>
+            <CardActionArea
+              className={classes.cardActionArea}
+              onClick={handleImageClickOpen}
+            >
               <CardMedia
                 component="img"
                 alt={name}
                 id={id}
-                height="100"
-                width="100"
+                height="100%"
+                // width="100"
                 className={classes.cardMedia}
                 image={image}
                 title={name}
