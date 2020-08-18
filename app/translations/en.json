@@ -78,6 +78,7 @@
   "app.containers.DetailsPage.variableTranslate": "{translated}",
   "app.containers.DetailsPage.vehiclePlateNumber": "Vehicle Plate Number",
   "app.containers.DetailsPage.vehiclePlateNumberError": "",
+  "app.containers.DetailsPage.whatsappNotification": "***Click send to notify the shop about this order.***{linebreak}Order number: {orderNumber}.",
   "app.containers.DetailsPage.zipPostalCode": "Zip/Postal code",
   "app.containers.DetailsPage.zipPostalCodeError": "Required, maximum characters allowed: 6",
   "app.containers.MenuPage.dialogCancel": "Cancel",

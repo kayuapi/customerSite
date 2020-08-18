@@ -250,5 +250,9 @@ export default defineMessages({
     id: `${scope}.thankYouOnDelivery`,
     defaultMessage: 'Thank you message for on delivery',
   },
-
+  whatsappNotification: {
+    id: `${scope}.whatsappNotification`,
+    defaultMessage:
+      '***Click send to notify the shop about this order.***{linebreak}Order number: {orderNumber}.',
+  },
 });

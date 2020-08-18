@@ -8,12 +8,12 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import request from 'utils/request';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import { API, graphqlOperation } from '@aws-amplify/api';
+import { API } from '@aws-amplify/api';
 import { FULFILLMENT_METHODS, PAYMENT_METHODS } from './schema';
 import { makeSelectAddressFormSubmission } from './selectors';
 import * as mutations from '../../graphql/mutations';
@@ -77,6 +77,7 @@ export function Review({
   handleNext,
   handleBack,
   numberOfPage,
+  intl,
 }) {
   const classes = useStyles();
   const { handleSubmit } = useForm();
@@ -179,6 +180,20 @@ export function Review({
       })),
     };
     toSubmitData = cleanNullAndUndefined(toSubmitData);
+    const windowReference = window.open('', '_self');
+    // if (toSubmitData.phoneNumber) {
+    //   const textToSend = encodeURIComponent(
+    //     `===
+    //     Notification to shop
+    //     ===
+    //     My order number is ${toSubmitData.orderId}.
+    //     `,
+    //   );
+    //   window.open(
+    //     `https://wa.me/${toSubmitData.phoneNumber}?text=${textToSend}`,
+    //   );
+    // }
+
     API.graphql({
       query: mutations.createOrder,
       variables: { input: toSubmitData },
@@ -186,6 +201,28 @@ export function Review({
     }).then(res => {
       configureOrderNumber({ orderNumber: orderId });
       handleNext();
+      if (
+        toSubmitData.fulfillmentMethod === FULFILLMENT_METHODS.DELIVERY ||
+        toSubmitData.fulfillmentMethod === FULFILLMENT_METHODS.SELF_PICKUP
+      ) {
+        const textToSend = encodeURIComponent(
+          intl.formatMessage(messages.whatsappNotification, {
+            linebreak: '\r\n',
+            orderNumber: orderId,
+          }),
+        );
+        // const textToSend = encodeURIComponent(
+        //   '***Click send to notify the shop about this order.***\r\n' +
+        //     `Order number: ${toSubmitData.orderId}.`,
+        // );
+        windowReference.location = `https://wa.me/${
+          process.env.SHOP_INFO_BUSINESS_PHONE_NUMBER
+        }?text=${textToSend}`;
+        // windowReference.close();
+        // window.open(
+        //   `https://wa.me/${toSubmitData.phoneNumber}?text=${textToSend}`,
+        // );
+      }
     });
 
     // submitOrders(fullOrderToSubmit);
@@ -428,6 +465,7 @@ Review.propTypes = {
   handleNext: PropTypes.func.isRequired,
   handleBack: PropTypes.func.isRequired,
   numberOfPage: PropTypes.number.isRequired,
+  intl: intlShape.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -447,4 +485,7 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default compose(withConnect)(Review);
+export default compose(
+  withConnect,
+  injectIntl,
+)(Review);

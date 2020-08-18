@@ -84,8 +84,13 @@ export function ShopInfo() {
   useInjectReducer({ key: 'shopInfo', reducer });
   useInjectSaga({ key: 'shopInfo', saga });
   const classes = useStyles();
-  const phoneNumber = '0123531370';
-  const whatsappLink = `https://wa.me/6${phoneNumber}`;
+  const displayPhoneNumber = process.env.SHOP_INFO_BUSINESS_PHONE_NUMBER.replace(
+    /([+]\w{1})(\w{3})(\w+)(\w{4})/,
+    '$1 $2 $3 $4',
+  );
+  const whatsappLink = `https://wa.me/${
+    process.env.SHOP_INFO_BUSINESS_PHONE_NUMBER
+  }`;
   return (
     <div>
       <Helmet>
@@ -112,7 +117,7 @@ export function ShopInfo() {
             <br />
             <br />
             <PhoneIcon />
-            &nbsp; 联络电话：{process.env.SHOP_INFO_BUSINESS_PHONE_NUMBER}
+            &nbsp; 联络电话：{displayPhoneNumber}
             &nbsp;
             <a href={whatsappLink}>
               <WhatsAppIcon />

@@ -78,6 +78,7 @@
   "app.containers.DetailsPage.variableTranslate": "{translated}",
   "app.containers.DetailsPage.vehiclePlateNumber": "车牌号码",
   "app.containers.DetailsPage.vehiclePlateNumberError": "必填, 字数限制: 20",
+  "app.containers.DetailsPage.whatsappNotification": "***发送此信息通知店家***{linebreak}订单号码: {orderNumber}.",
   "app.containers.DetailsPage.zipPostalCode": "邮区编号",
   "app.containers.DetailsPage.zipPostalCodeError": "邮区编号错误",
   "app.containers.MenuPage.dialogCancel": "取消",
