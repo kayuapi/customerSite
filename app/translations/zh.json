@@ -58,6 +58,7 @@
   "app.containers.DetailsPage.pickUpDate": "取货日期",
   "app.containers.DetailsPage.pickUpTime": "取货时间",
   "app.containers.DetailsPage.placeOrder": "下单",
+  "app.containers.DetailsPage.placeOrderAndWhatsappNotify": "下单并whatsapp通知店主",
   "app.containers.DetailsPage.postScriptum": "备注",
   "app.containers.DetailsPage.postScriptumError": "字数限制：50",
   "app.containers.DetailsPage.quantity": "数量： {quantity}",

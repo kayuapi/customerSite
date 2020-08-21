@@ -186,6 +186,10 @@ export default defineMessages({
     id: `${scope}.placeOrder`,
     defaultMessage: 'Place order',
   },
+  placeOrderAndWhatsappNotify: {
+    id: `${scope}.placeOrderAndWhatsappNotify`,
+    defaultMessage: 'Place order and whatsapp notify',
+  },
   next: {
     id: `${scope}.next`,
     defaultMessage: 'Next',

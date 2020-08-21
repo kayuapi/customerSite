@@ -58,6 +58,7 @@
   "app.containers.DetailsPage.pickUpDate": "Pickup Date",
   "app.containers.DetailsPage.pickUpTime": "Pickup Time: 8am - 3.30pm",
   "app.containers.DetailsPage.placeOrder": "Place order",
+  "app.containers.DetailsPage.placeOrderAndWhatsappNotify": "Place order and whatsapp notify",
   "app.containers.DetailsPage.postScriptum": "P.S.",
   "app.containers.DetailsPage.postScriptumError": "Maximum characters allowed: 50",
   "app.containers.DetailsPage.quantity": "Quantity: {quantity}",

@@ -308,7 +308,8 @@ export function Review({
               />
             )}
           </Typography>
-          {fullOrderToSubmit.fulfillmentMethod === FULFILLMENT_METHODS.DINE_IN && (
+          {fullOrderToSubmit.fulfillmentMethod ===
+            FULFILLMENT_METHODS.DINE_IN && (
             <Typography gutterBottom>
               <FormattedMessage {...messages.tableNumber} /> :{' '}
               {fullOrderToSubmit.tableNumber}
@@ -365,7 +366,7 @@ export function Review({
             {(fullOrderToSubmit.fulfillmentMethod ===
               FULFILLMENT_METHODS.DELIVERY ||
               fullOrderToSubmit.fulfillmentMethod ===
-              FULFILLMENT_METHODS.SELF_PICKUP) && (
+                FULFILLMENT_METHODS.SELF_PICKUP) && (
               <FormattedMessage {...messages.paymentDetails} />
             )}
           </Typography>
@@ -443,11 +444,15 @@ export function Review({
                 className={classes.button}
                 type="submit"
               >
-                {currentPage === numberOfPage - 1 ? (
+                {currentPage === numberOfPage - 1 && fullOrderToSubmit.fulfillmentMethod === FULFILLMENT_METHODS.DELIVERY && (<FormattedMessage {...messages.placeOrderAndWhatsappNotify} />)}
+                {currentPage === numberOfPage - 1 && fullOrderToSubmit.fulfillmentMethod === FULFILLMENT_METHODS.SELF_PICKUP && (<FormattedMessage {...messages.placeOrderAndWhatsappNotify} />)}
+                {currentPage === numberOfPage - 1 && fullOrderToSubmit.fulfillmentMethod === FULFILLMENT_METHODS.DINE_IN && (<FormattedMessage {...messages.placeOrder} />)}
+                {currentPage !== numberOfPage - 1 && <FormattedMessage {...messages.next} />}
+                {/* {currentPage === numberOfPage - 1 ? (
                   <FormattedMessage {...messages.placeOrder} />
                 ) : (
                   <FormattedMessage {...messages.next} />
-                )}
+                )} */}
               </Button>
             </form>
           </div>
