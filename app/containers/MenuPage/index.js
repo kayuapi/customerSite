@@ -46,8 +46,14 @@ const useStyles = makeStyles(theme => ({
     width: 'max-content',
   },
   cardGrid: {
-    paddingTop: theme.spacing(8),
-    paddingBottom: theme.spacing(8),
+    // paddingTop: theme.spacing(8),
+    // paddingBottom: theme.spacing(8),
+    paddingLeft: theme.spacing(0.5),
+    paddingRight: theme.spacing(0.5),
+  },
+  tabPanel: {
+    paddingLeft: theme.spacing(0),
+    paddingRight: theme.spacing(0),
   },
   toolbar: {
     minHeight: theme.mixins.banner.height,
@@ -90,7 +96,11 @@ function TabPanel(props) {
       aria-labelledby={`scrollable-auto-tab-${index}`}
       {...other}
     >
-      {value === index && <Box p={3}>{children}</Box>}
+      {value === index && (
+        <Box p={0} mt={1}>
+          {children}
+        </Box>
+      )}
     </Typography>
   );
 }
@@ -207,6 +217,7 @@ export function MenuPage({ openCart2, quantityOfInCartProducts }) {
         </AppBar>
         {categories && (
           <TabPanel
+            className={classes.tabPanel}
             value={value}
             index={categories
               .map(e => e.name)
