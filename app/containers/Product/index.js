@@ -79,6 +79,12 @@ const useStyles = makeStyles(theme => ({
     paddingBottom: theme.spacing(0),
     marginBottom: theme.spacing(0),
   },
+  content2: {
+    flex: '1 0 auto',
+    display: 'block',
+    alignSelf: 'flex-end',
+    paddingBottom: '0 !important',
+  },
   controls: {
     display: 'block',
     alignItems: 'center',
@@ -95,9 +101,6 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     margin: '0 0 0 0',
-  },
-  icon: {
-    marginTop: '76px',
   },
 }));
 
@@ -189,7 +192,7 @@ export function Product({
     const cartleft = imgtodrag.getBoundingClientRect().left;
     const carttop = imgtodrag.getBoundingClientRect().top;
     const image2 = imgtodragImage.cloneNode(true);
-    image2.style = `z-index: 1111; width: 100px;opacity:0.8; position:fixed; top:${disTop}px;left:${disLeft}px;transition: left 1s, top 1s, width 1s, opacity 1s cubic-bezier(1, 1, 1, 1)`;
+    image2.style = `z-index: 1111; height: 40px; width: 50px;opacity:0.8; position:fixed; top:${disTop}px;left:${disLeft}px;transition: left 1s, top 1s, width 1s, opacity 1s cubic-bezier(1, 1, 1, 1)`;
     const rechange = document.body.appendChild(image2);
     setTimeout(() => {
       image2.style.left = `${cartleft}px`;
@@ -224,7 +227,7 @@ export function Product({
       const cartleft = viewcart.getBoundingClientRect().left;
       const carttop = viewcart.getBoundingClientRect().top;
       const image2 = imgtodragImage.cloneNode(true);
-      image2.style = `z-index: 1111; width: 100px;opacity:0.8; position:fixed; top:${disTop}px;left:${disLeft}px;transition: left 1s, top 1s, width 1s, opacity 1s cubic-bezier(1, 1, 1, 1)`;
+      image2.style = `z-index: 1111; height: 40px; width: 50px;opacity:0.8; position:fixed; top:${disTop}px;left:${disLeft}px;transition: left 1s, top 1s, width 1s, opacity 1s cubic-bezier(1, 1, 1, 1)`;
       const rechange = document.body.appendChild(image2);
       setTimeout(() => {
         image2.style.left = `${cartleft}px`;
@@ -274,10 +277,10 @@ export function Product({
               </Typography>
             </CardContent>
           </>
-        ): (
-          <>
-            <CardContent className={classes.content}>
-              <FastfoodIcon className={classes.icon} id={id} />
+        ) : (
+          <div style={{ display: 'flex', flex: '1 0 auto' }}>
+            <CardContent className={classes.content2}>
+              <FastfoodIcon id={id} />
               <Typography component="div" variant="body1">
                 {name}
               </Typography>
@@ -285,7 +288,7 @@ export function Product({
                 <b>RM {Number(price.replace(/[^0-9\.]+/g, '')).toFixed(2)}</b>
               </Typography>
             </CardContent>
-          </>
+          </div>
         )}
         <CardActions className={classes.controls}>
           <Grid container>
