@@ -8,13 +8,15 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import request from 'utils/request';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
+import { API } from '@aws-amplify/api';
 import { FULFILLMENT_METHODS, PAYMENT_METHODS } from './schema';
 import { makeSelectAddressFormSubmission } from './selectors';
+import * as mutations from '../../graphql/mutations';
 import {
   ccyFormat,
   priceRow,
@@ -22,7 +24,7 @@ import {
   subtotal,
   createRowsForOrders,
 } from '../CartPage';
-import { resetForm } from './actions';
+import { resetForm, configureOrderNumber } from './actions';
 import messages from './messages';
 
 const TAX_RATE = 0.00;
@@ -45,17 +47,38 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(3),
     marginLeft: theme.spacing(1),
   },
+  price: {
+    minWidth: '12ch',
+    textAlign: 'right',
+  }
 }));
+
+const cleanNullAndUndefined = obj => {
+  const propNames = Object.getOwnPropertyNames(obj);
+  for (let i = 0; i < propNames.length; i++) {
+    const propName = propNames[i];
+    if (
+      obj[propName] === null ||
+      obj[propName] === undefined ||
+      obj[propName] === []
+    ) {
+      delete obj[propName];
+    }
+  }
+  return obj;
+};
 
 export function Review({
   clearForm,
+  // eslint-disable-next-line no-shadow
+  configureOrderNumber,
   fullOrderToSubmit,
   currentPage,
   handleNext,
   handleBack,
   numberOfPage,
+  intl,
 }) {
-  console.log('fullOrder', fullOrderToSubmit);
   const classes = useStyles();
   const { handleSubmit } = useForm();
 
@@ -76,7 +99,6 @@ export function Review({
 
   function extractItemsFromCartItems(cartItems) {
     const items = cartItems.reduce((acc, obj) => {
-      console.log('obj', obj);
       const key = `${obj.name}(${obj.variant})`;
       acc[key] = obj.quantity;
       return acc;
@@ -86,15 +108,125 @@ export function Review({
 
   // filter out empty string quantity
 
+
   const onSubmit = () => {
-    console.log('fullOrderToSubmit', fullOrderToSubmit);
-    const { cartItems } = fullOrderToSubmit;
-    const items = extractItemsFromCartItems(cartItems);
-    console.log('checking', items);
-    console.log('fullOrderToSubmit', JSON.stringify(fullOrderToSubmit));
+    if (fullOrderToSubmit.cartItems.length === 0) {
+      throw new Error('Cannot submit empty order');
+    }
+    const orderId = String(
+      new Date().getTime() +
+        Math.random()
+          .toString(36)
+          .substring(2, 4),
+    );
+    let toSubmitData = {
+      shopId: `${process.env.BUSINESS_NAME}`,
+      fulfillmentMethod: fullOrderToSubmit.fulfillmentMethod,
+      orderId,
+      status: 'UNFULFILLED',
+      paymentMethod:
+        typeof fullOrderToSubmit.paymentMethod === 'undefined'
+          ? 'CASH'
+          : fullOrderToSubmit.paymentMethod,
+      postscript:
+        typeof fullOrderToSubmit.postScript === 'undefined'
+          ? null
+          : fullOrderToSubmit.postScript,
+      tableNumber:
+        typeof fullOrderToSubmit.tableNumber === 'undefined'
+          ? null
+          : fullOrderToSubmit.tableNumber,
+      firstName:
+        typeof fullOrderToSubmit.firstName === 'undefined'
+          ? null
+          : fullOrderToSubmit.firstName,
+      lastName:
+        typeof fullOrderToSubmit.lastName === 'undefined'
+          ? null
+          : fullOrderToSubmit.lastName,
+      phoneNumber:
+        typeof fullOrderToSubmit.phoneNumber === 'undefined'
+          ? null
+          : `+6${fullOrderToSubmit.phoneNumber}`,
+      pickupDate:
+        typeof fullOrderToSubmit.pickUpDate === 'undefined'
+          ? null
+          : new Date(fullOrderToSubmit.pickUpDate).toISOString().replace(/T.*/, ''),
+      pickupTime:
+        typeof fullOrderToSubmit.pickUpTime === 'undefined'
+          ? null
+          : new Date(fullOrderToSubmit.pickUpTime).toISOString().match(/\d\d:\d\d:\d\d.\d\d\dZ/)[0],
+      vehiclePlateNumber:
+        typeof fullOrderToSubmit.vehiclePlateNumber === 'undefined'
+          ? null
+          : fullOrderToSubmit.vehiclePlateNumber,
+      deliveryDate:
+        typeof fullOrderToSubmit.deliveryDate === 'undefined'
+          ? null
+          : new Date(fullOrderToSubmit.deliveryDate).toISOString().replace(/T.*/, ''),
+      deliveryTime:
+        typeof fullOrderToSubmit.deliveryTime === 'undefined'
+          ? null
+          : new Date(fullOrderToSubmit.deliveryTime).toISOString().match(/\d\d:\d\d:\d\d.\d\d\dZ/)[0],
+      deliveryAddress:
+        typeof fullOrderToSubmit.deliveryAddress === 'undefined' ||
+        fullOrderToSubmit.deliveryAddress === ''
+          ? null
+          : fullOrderToSubmit.deliveryAddress,
+      orderedItems: fullOrderToSubmit.cartItems.map(cartItem => ({
+        name: cartItem.name,
+        variant: cartItem.variant,
+        quantity: cartItem.quantity,
+      })),
+    };
+    toSubmitData = cleanNullAndUndefined(toSubmitData);
+    const windowReference = window.open('', '_self');
+    // if (toSubmitData.phoneNumber) {
+    //   const textToSend = encodeURIComponent(
+    //     `===
+    //     Notification to shop
+    //     ===
+    //     My order number is ${toSubmitData.orderId}.
+    //     `,
+    //   );
+    //   window.open(
+    //     `https://wa.me/${toSubmitData.phoneNumber}?text=${textToSend}`,
+    //   );
+    // }
+
+    API.graphql({
+      query: mutations.createOrder,
+      variables: { input: toSubmitData },
+      authMode: 'AWS_IAM',
+    }).then(res => {
+      configureOrderNumber({ orderNumber: orderId });
+      handleNext();
+      if (
+        toSubmitData.fulfillmentMethod === FULFILLMENT_METHODS.DELIVERY ||
+        toSubmitData.fulfillmentMethod === FULFILLMENT_METHODS.SELF_PICKUP
+      ) {
+        const textToSend = encodeURIComponent(
+          intl.formatMessage(messages.whatsappNotification, {
+            linebreak: '\r\n',
+            orderNumber: orderId,
+          }),
+        );
+        // const textToSend = encodeURIComponent(
+        //   '***Click send to notify the shop about this order.***\r\n' +
+        //     `Order number: ${toSubmitData.orderId}.`,
+        // );
+        windowReference.location = `https://wa.me/${
+          process.env.SHOP_INFO_BUSINESS_PHONE_NUMBER
+        }?text=${textToSend}`;
+        // windowReference.close();
+        // window.open(
+        //   `https://wa.me/${toSubmitData.phoneNumber}?text=${textToSend}`,
+        // );
+      }
+    });
+
     // submitOrders(fullOrderToSubmit);
-    clearForm();
-    handleNext();
+    // clearForm();
   };
   const [rows, setRows] = useState([{ orders: [], uncommittedOrders: [] }]);
   const [invoice, setInvoice] = useState({ subtotal: 0, taxes: 0, total: 0 });
@@ -128,7 +260,9 @@ export function Review({
                   />
                 }
               />
-              <Typography variant="body2">RM {ccyFormat(row.price)}</Typography>
+              <Typography variant="body2" className={classes.price}>
+                RM {ccyFormat(row.price)}
+              </Typography>
             </ListItem>
           ))}
         <ListItem className={classes.listItem}>
@@ -174,7 +308,8 @@ export function Review({
               />
             )}
           </Typography>
-          {fullOrderToSubmit.fulfillmentMethod === FULFILLMENT_METHODS.DINE_IN && (
+          {fullOrderToSubmit.fulfillmentMethod ===
+            FULFILLMENT_METHODS.DINE_IN && (
             <Typography gutterBottom>
               <FormattedMessage {...messages.tableNumber} /> :{' '}
               {fullOrderToSubmit.tableNumber}
@@ -186,14 +321,27 @@ export function Review({
               {fullOrderToSubmit.deliveryAddress}
               <br />
               <FormattedMessage {...messages.deliveryDate} />:{' '}
-              {fullOrderToSubmit.deliveryDate}
+              {new Date(fullOrderToSubmit.deliveryDate).toLocaleDateString()}
+              <br />
+              <FormattedMessage {...messages.deliveryTime} />:{' '}
+              {new Date(fullOrderToSubmit.deliveryTime).toLocaleTimeString(
+                'en-UK',
+              )}
+              <br />
             </Typography>
           )}
           {fullOrderToSubmit.fulfillmentMethod ===
             FULFILLMENT_METHODS.SELF_PICKUP && (
             <Typography gutterBottom>
-              {fullOrderToSubmit.pickUpDate} <br />
-              {fullOrderToSubmit.pickUpTime} <br />
+              <FormattedMessage {...messages.pickUpDate} />:{' '}
+              {new Date(fullOrderToSubmit.pickUpDate).toLocaleDateString()}
+              <br />
+              <FormattedMessage {...messages.reviewPickUpTime} />:{' '}
+              {new Date(fullOrderToSubmit.pickUpTime).toLocaleTimeString(
+                'en-UK',
+              )}
+              <br />
+              <FormattedMessage {...messages.vehiclePlateNumber} />:{' '}
               {fullOrderToSubmit.vehiclePlateNumber}
               {/* {pickUpDate}, {pickUpTime} */}
             </Typography>
@@ -207,7 +355,7 @@ export function Review({
           <Grid container>
             <Grid item xs={12}>
               <Typography gutterBottom>
-                {fullOrderToSubmit.postScriptum}
+                {fullOrderToSubmit.postScript}
               </Typography>
             </Grid>
           </Grid>
@@ -215,7 +363,12 @@ export function Review({
 
         <Grid item container direction="column" xs={12} sm={6}>
           <Typography variant="h6" gutterBottom className={classes.title}>
-            <FormattedMessage {...messages.paymentDetails} />
+            {(fullOrderToSubmit.fulfillmentMethod ===
+              FULFILLMENT_METHODS.DELIVERY ||
+              fullOrderToSubmit.fulfillmentMethod ===
+                FULFILLMENT_METHODS.SELF_PICKUP) && (
+              <FormattedMessage {...messages.paymentDetails} />
+            )}
           </Typography>
           <Grid container>
             <Grid item xs={12}>
@@ -291,11 +444,15 @@ export function Review({
                 className={classes.button}
                 type="submit"
               >
-                {currentPage === numberOfPage - 1 ? (
+                {currentPage === numberOfPage - 1 && fullOrderToSubmit.fulfillmentMethod === FULFILLMENT_METHODS.DELIVERY && (<FormattedMessage {...messages.placeOrderAndWhatsappNotify} />)}
+                {currentPage === numberOfPage - 1 && fullOrderToSubmit.fulfillmentMethod === FULFILLMENT_METHODS.SELF_PICKUP && (<FormattedMessage {...messages.placeOrderAndWhatsappNotify} />)}
+                {currentPage === numberOfPage - 1 && fullOrderToSubmit.fulfillmentMethod === FULFILLMENT_METHODS.DINE_IN && (<FormattedMessage {...messages.placeOrder} />)}
+                {currentPage !== numberOfPage - 1 && <FormattedMessage {...messages.next} />}
+                {/* {currentPage === numberOfPage - 1 ? (
                   <FormattedMessage {...messages.placeOrder} />
                 ) : (
                   <FormattedMessage {...messages.next} />
-                )}
+                )} */}
               </Button>
             </form>
           </div>
@@ -307,11 +464,13 @@ export function Review({
 
 Review.propTypes = {
   clearForm: PropTypes.func.isRequired,
+  configureOrderNumber: PropTypes.func.isRequired,
   fullOrderToSubmit: PropTypes.object.isRequired,
   currentPage: PropTypes.number.isRequired,
   handleNext: PropTypes.func.isRequired,
   handleBack: PropTypes.func.isRequired,
   numberOfPage: PropTypes.number.isRequired,
+  intl: intlShape.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -321,6 +480,8 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     clearForm: () => dispatch(resetForm()),
+    configureOrderNumber: orderNumber =>
+      dispatch(configureOrderNumber(orderNumber)),
   };
 }
 
@@ -329,4 +490,7 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default compose(withConnect)(Review);
+export default compose(
+  withConnect,
+  injectIntl,
+)(Review);

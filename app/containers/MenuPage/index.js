@@ -37,6 +37,7 @@ import { makeSelectTotalProductsQuantity } from '../Product/selectors';
 import reducer from './reducer';
 import messages from './messages';
 import CartPage from '../CartPage/Loadable';
+import ComingSoonLogo from './comingSoon.svg';
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -45,11 +46,17 @@ const useStyles = makeStyles(theme => ({
     width: 'max-content',
   },
   cardGrid: {
-    paddingTop: theme.spacing(8),
-    paddingBottom: theme.spacing(8),
+    // paddingTop: theme.spacing(8),
+    // paddingBottom: theme.spacing(8),
+    paddingLeft: theme.spacing(0.5),
+    paddingRight: theme.spacing(0.5),
+  },
+  tabPanel: {
+    paddingLeft: theme.spacing(0),
+    paddingRight: theme.spacing(0),
   },
   toolbar: {
-    minHeight: '150px',
+    minHeight: theme.mixins.banner.height,
   },
   fab: {
     margin: 0,
@@ -89,7 +96,11 @@ function TabPanel(props) {
       aria-labelledby={`scrollable-auto-tab-${index}`}
       {...other}
     >
-      {value === index && <Box p={3}>{children}</Box>}
+      {value === index && (
+        <Box p={0} mt={1}>
+          {children}
+        </Box>
+      )}
     </Typography>
   );
 }
@@ -116,8 +127,7 @@ export function MenuPage({ openCart2, quantityOfInCartProducts }) {
   };
 
   useInjectReducer({ key: 'menuPage', reducer });
-
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState(false);
   const [category, setCategory] = useState('');
   const [menuItems, setMenuItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -132,7 +142,7 @@ export function MenuPage({ openCart2, quantityOfInCartProducts }) {
         headers: {},
         response: false,
       };
-      const path = `${basePath}/${hostName}/${item}`;
+      const path = `${basePath}/${hostName}/${encodeURIComponent(item)}`;
       const retrievedItem = await API.get(apiName, path, myInit);
       return retrievedItem;
     } catch (err) {
@@ -145,16 +155,18 @@ export function MenuPage({ openCart2, quantityOfInCartProducts }) {
     async function requestCategories() {
       const hostName = process.env.BUSINESS_NAME;
       const retrievedPages = await grabFromDb(hostName, 'PluginMenuPages');
-      const { categories } = retrievedPages;
-      setCategories(categories);
-      setCategory(categories[0].name);
-      const retrievedPage = await grabFromDb(
-        hostName,
-        `PluginMenu%23${categories[0].name}`,
-      );
-      const { menuItems } = retrievedPage;
-      if (menuItems) {
-        setMenuItems(() => [...menuItems]);
+      const { categories: categoriesResponse } = retrievedPages;
+      if (categoriesResponse) {
+        setCategories(categoriesResponse);
+        setCategory(categoriesResponse[0].name);
+        const retrievedPage = await grabFromDb(
+          hostName,
+          `PluginMenu%23${categoriesResponse[0].name}`,
+        );
+        const { menuItems: menuItemsResponse } = retrievedPage;
+        if (menuItemsResponse) {
+          setMenuItems(() => [...menuItemsResponse]);
+        }
       }
     }
     requestCategories();
@@ -197,45 +209,56 @@ export function MenuPage({ openCart2, quantityOfInCartProducts }) {
             scrollButtons="on"
             aria-label="scrollable auto tabs example"
           >
-            {categories.length &&
+            {categories &&
               categories.map((el, index) => (
                 <Tab key={el.id} label={el.name} {...a11yProps(index)} />
               ))}
           </Tabs>
         </AppBar>
-        <TabPanel
-          value={value}
-          index={categories
-            .map(e => e.name)
-            // .map(n => n.name)
-            .indexOf(category)}
-        >
-          <Container className={classes.cardGrid} maxWidth="sm">
-            {loading && <CircularProgress />}
-            {!loading && (
-              <div style={{ position: 'relative' }}>
-                <ResponsiveReactGridLayout
-                  // onLayoutChange={onLayoutChange}
-                  // layouts={{lg: layout, md: layout, sm: layout, xs: layout, xxs: layout}}
-                  // onBreakpointChange={this.onBreakpointChange}
-                  breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
-                  cols={{ lg: 2, md: 2, sm: 2, xs: 2, xxs: 2 }}
-                  isDraggable={false}
-                  draggableCancel="input,textarea, button"
-                  isResizable={false}
-                  rowHeight={150}
-                  className="layout"
-                >
-                  {menuItems.map((menuItem, id) => (
-                    <div key={menuItem.id} data-grid={menuItem.uiLocation}>
-                      <Product key={menuItem.name} id={id} item={menuItem} />
-                    </div>
-                  ))}
-                </ResponsiveReactGridLayout>
-              </div>
-            )}
-          </Container>
-        </TabPanel>
+        {categories && (
+          <TabPanel
+            className={classes.tabPanel}
+            value={value}
+            index={categories
+              .map(e => e.name)
+              // .map(n => n.name)
+              .indexOf(category)}
+          >
+            <Container className={classes.cardGrid} maxWidth="sm">
+              {loading && <CircularProgress />}
+              {!loading && (
+                <div style={{ position: 'relative' }}>
+                  <ResponsiveReactGridLayout
+                    // onLayoutChange={onLayoutChange}
+                    // layouts={{lg: layout, md: layout, sm: layout, xs: layout, xxs: layout}}
+                    // onBreakpointChange={this.onBreakpointChange}
+                    breakpoints={{
+                      lg: 1200,
+                      md: 996,
+                      sm: 768,
+                      xs: 480,
+                      xxs: 0,
+                    }}
+                    cols={{ lg: 2, md: 2, sm: 2, xs: 2, xxs: 2 }}
+                    isDraggable={false}
+                    draggableCancel="input,textarea, button"
+                    isResizable={false}
+                    rowHeight={1}
+                    className="layout"
+                    margin={[0, 0]}
+                    verticalCompact={false}
+                  >
+                    {menuItems.map((menuItem, id) => (
+                      <div key={menuItem.id} data-grid={menuItem.uiLocation}>
+                        <Product key={menuItem.name} id={id} item={menuItem} />
+                      </div>
+                    ))}
+                  </ResponsiveReactGridLayout>
+                </div>
+              )}
+            </Container>
+          </TabPanel>
+        )}
         <footer className={classes.footer}>
           <FormattedMessage {...messages.poweredBy} />
         </footer>

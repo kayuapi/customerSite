@@ -65,7 +65,8 @@ const productReducer = (state = initialState, action) =>
           action.productVariant,
           draft,
         );
-        if (ifExistedGivesIndex === -1) {
+        // also check variant is not empty
+        if (ifExistedGivesIndex === -1 && action.productQuantity !== 0) {
           const product = {
             name: action.productName,
             variant: action.variantName,
@@ -73,6 +74,8 @@ const productReducer = (state = initialState, action) =>
             price: action.productPrice,
           };
           draft.push(product);
+          // eslint-disable-next-line no-empty
+        } else if (ifExistedGivesIndex === -1 && action.productQuantity === 0) {
         } else {
           draft[ifExistedGivesIndex].quantity += 1;
         }
@@ -131,8 +134,8 @@ const productReducer = (state = initialState, action) =>
             variant.name,
             draft,
           );
-
-          if (ifExistedGivesIndex === -1) {
+          // also check variant is not empty
+          if (ifExistedGivesIndex === -1 && variant.quantity !== 0) {
             const product = {
               name: action.productName,
               variant: variant.name,
@@ -140,6 +143,8 @@ const productReducer = (state = initialState, action) =>
               price: variant.price,
             };
             draft.push(product);
+          // eslint-disable-next-line no-empty
+          } else if (ifExistedGivesIndex === -1 && variant.quantity === 0) {
           } else {
             draft[ifExistedGivesIndex].quantity = variant.quantity;
           }

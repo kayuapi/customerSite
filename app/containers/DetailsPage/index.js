@@ -35,7 +35,7 @@ import messages from './messages';
 
 const useStyles = makeStyles(theme => ({
   toolbar: {
-    minHeight: '150px',
+    minHeight: theme.mixins.banner.height,
   },
   layout: {
     width: 'auto',
@@ -73,7 +73,6 @@ const useStyles = makeStyles(theme => ({
 }));
 const steps = [
   <FormattedMessage {...messages.shippingAddress} />,
-  <FormattedMessage {...messages.paymentMethods} />,
   <FormattedMessage {...messages.orderReview} />,
 ];
 
@@ -104,25 +103,16 @@ export function DetailsPage({
             currentPage={activeStep}
             handleNext={handleNext}
             handleBack={handleBack}
-            numberOfPage={3}
+            numberOfPage={2}
           />
         );
       case 1:
-        return (
-          <PaymentForm
-            currentPage={activeStep}
-            handleNext={handleNext}
-            handleBack={handleBack}
-            numberOfPage={3}
-          />
-        );
-      case 2:
         return (
           <Review
             currentPage={activeStep}
             handleNext={handleNext}
             handleBack={handleBack}
-            numberOfPage={3}
+            numberOfPage={2}
           />
         );
       default:
@@ -159,39 +149,23 @@ export function DetailsPage({
                   <FormattedMessage {...messages.thankYou} />
                 </Typography>
                 <Typography variant="subtitle1">
+                  {(fulfillmentMethod === FULFILLMENT_METHODS.DELIVERY ||
+                    fulfillmentMethod === FULFILLMENT_METHODS.SELF_PICKUP) && (
+                    <FormattedMessage
+                      {...messages.receivedOrder}
+                      values={{ linebreak: <br />, orderNumber }}
+                    />
+                  )}
                   {fulfillmentMethod === FULFILLMENT_METHODS.DINE_IN && (
                     <FormattedMessage
                       {...messages.receivedOrderForOnPremise}
                       values={{ linebreak: <br />, orderNumber }}
                     />
                   )}
-                  {fulfillmentMethod === FULFILLMENT_METHODS.DELIVERY && (
-                    <FormattedMessage
-                      {...messages.receivedOrderForDelivery}
-                      values={{ linebreak: <br />, orderNumber }}
-                    />
-                  )}
                 </Typography>
               </React.Fragment>
             ) : (
-              <React.Fragment>
-                {getStepContent(activeStep)}
-                {/* <div className={classes.buttons}>
-                  {activeStep !== 0 && (
-                    <Button onClick={handleBack} className={classes.button}>
-                      Back
-                    </Button>
-                  )}
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleNext}
-                    className={classes.button}
-                  >
-                    {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
-                  </Button>
-                </div> */}
-              </React.Fragment>
+              <React.Fragment>{getStepContent(activeStep)}</React.Fragment>
             )}
           </React.Fragment>
         </Paper>
@@ -201,7 +175,7 @@ export function DetailsPage({
 }
 
 DetailsPage.propTypes = {
-  // orderNumber: PropTypes.string.isRequired,
+  orderNumber: PropTypes.string,
   fulfillmentMethod: PropTypes.string.isRequired,
   configureBusinessName: PropTypes.func.isRequired,
 };

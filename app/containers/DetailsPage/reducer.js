@@ -6,6 +6,7 @@
 import produce from 'immer';
 import {
   CONFIGURE_BUSINESS_NAME,
+  CONFIGURE_ORDER_NUMBER,
   CONFIGURE_FULFILLMENT_METHOD,
   CONFIGURE_FULFILLMENT_DERIVATIVES,
   CONFIGURE_POSTSCRIPT,
@@ -15,12 +16,12 @@ import {
 
 export const initialState = {
   businessName: '',
-  orderNumber: `# ${String(
+  orderNumber: `${String(
     new Date().getTime() +
       Math.random()
         .toString(36)
         .substring(2, 4),
-  ).replace(/(\w{6})(\w{5})(\w{4})/, '$1-$2-$3')}`,
+  )}`,
   fulfillmentMethod: '',
   paymentMethod: '',
   postScript: '',
@@ -57,6 +58,10 @@ const detailsPageReducer = (state = initialState, action) =>
 
       case CONFIGURE_FULFILLMENT_METHOD:
         draft.fulfillmentMethod = action.fulfillmentMethod;
+        break;
+
+      case CONFIGURE_ORDER_NUMBER:
+        draft.orderNumber = action.orderNumber;
         break;
 
       case CONFIGURE_FULFILLMENT_DERIVATIVES:

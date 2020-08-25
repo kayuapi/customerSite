@@ -83,7 +83,7 @@ const makeSelectAddressFormSubmission = () =>
       lastName: substate.lastName,
       phoneNumber: substate.phoneNumber,
       tableNumber: substate.tableNumber,
-      postScriptum: substate.postScriptum,
+      postScript: substate.postScript,
       fulfillmentMethod: substate.fulfillmentMethod,
       deliveryAddress: `${
         substate.addressLine1 ? `${substate.addressLine1}, ` : ''
@@ -92,6 +92,7 @@ const makeSelectAddressFormSubmission = () =>
       pickUpDate: substate.pickUpDate,
       pickUpTime: substate.pickUpTime,
       deliveryDate: substate.deliveryDate,
+      deliveryTime: substate.deliveryTime,
       vehiclePlateNumber: substate.vehiclePlateNumber,
       paymentMethod: substate.paymentMethod,
       cartItems: products,
