@@ -43,7 +43,7 @@ const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 const useStyles = makeStyles(theme => ({
   badge: {
-    width: 'max-content',
+    width: '4ch',
   },
   cardGrid: {
     // paddingTop: theme.spacing(8),
