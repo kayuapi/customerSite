@@ -1,0 +1,42 @@
+#bubbleInStraw{
+  animation: bubble 0.5s ease-in-out infinite alternate;
+}
+
+#bubbleInDrinks{
+  animation: bubble 0.5s ease-in-out infinite alternate;
+}
+
+#nose{
+  animation: nose 0.5s ease-in-out infinite alternate;
+  transform-origin: bottom;
+}
+
+#hand{
+  animation: bodyPart 1s ease-in-out infinite alternate;
+  transform-origin: bottom;
+}
+
+@keyframes bubble {
+  from {
+    transform: rotateX(0deg);
+  }
+  to {
+    transform: rotateX(20deg);
+  }
+}
+@keyframes nose {
+  from {
+    transform: rotateX(0deg);
+  }
+  to {
+    transform: rotateX(15deg);
+  }
+}
+@keyframes bodyPart {
+  from {
+    transform: rotateX(0deg);
+  }
+  to {
+    transform: rotateX(-20deg);
+  }
+}

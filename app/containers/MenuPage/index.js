@@ -37,7 +37,7 @@ import { makeSelectTotalProductsQuantity } from '../Product/selectors';
 import reducer from './reducer';
 import messages from './messages';
 import CartPage from '../CartPage/Loadable';
-import ComingSoonLogo from './comingSoon.svg';
+import ComingSoonIllustration from './ComingSoon';
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -215,6 +215,7 @@ export function MenuPage({ openCart2, quantityOfInCartProducts }) {
               ))}
           </Tabs>
         </AppBar>
+        {!categories && <ComingSoonIllustration />}
         {categories && (
           <TabPanel
             className={classes.tabPanel}
