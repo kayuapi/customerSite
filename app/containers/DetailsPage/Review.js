@@ -17,6 +17,8 @@ import { API } from '@aws-amplify/api';
 import { FULFILLMENT_METHODS, PAYMENT_METHODS } from './schema';
 import { makeSelectAddressFormSubmission } from './selectors';
 import * as mutations from '../../graphql/mutations';
+import ErrorPopUp from '../../components/ErrorPopUp';
+
 import {
   ccyFormat,
   priceRow,
@@ -110,125 +112,139 @@ export function Review({
 
 
   const onSubmit = () => {
-    if (fullOrderToSubmit.cartItems.length === 0) {
-      throw new Error('Cannot submit empty order');
-    }
-    const orderId = String(
-      new Date().getTime() +
-        Math.random()
-          .toString(36)
-          .substring(2, 4),
-    );
-    let toSubmitData = {
-      shopId: `${process.env.BUSINESS_NAME}`,
-      fulfillmentMethod: fullOrderToSubmit.fulfillmentMethod,
-      orderId,
-      status: 'UNFULFILLED',
-      paymentMethod:
-        typeof fullOrderToSubmit.paymentMethod === 'undefined'
-          ? 'CASH'
-          : fullOrderToSubmit.paymentMethod,
-      postscript:
-        typeof fullOrderToSubmit.postScript === 'undefined'
-          ? null
-          : fullOrderToSubmit.postScript,
-      tableNumber:
-        typeof fullOrderToSubmit.tableNumber === 'undefined'
-          ? null
-          : fullOrderToSubmit.tableNumber,
-      firstName:
-        typeof fullOrderToSubmit.firstName === 'undefined'
-          ? null
-          : fullOrderToSubmit.firstName,
-      lastName:
-        typeof fullOrderToSubmit.lastName === 'undefined'
-          ? null
-          : fullOrderToSubmit.lastName,
-      phoneNumber:
-        typeof fullOrderToSubmit.phoneNumber === 'undefined'
-          ? null
-          : `+6${fullOrderToSubmit.phoneNumber}`,
-      pickupDate:
-        typeof fullOrderToSubmit.pickUpDate === 'undefined'
-          ? null
-          : new Date(fullOrderToSubmit.pickUpDate).toISOString().replace(/T.*/, ''),
-      pickupTime:
-        typeof fullOrderToSubmit.pickUpTime === 'undefined'
-          ? null
-          : new Date(fullOrderToSubmit.pickUpTime).toISOString().match(/\d\d:\d\d:\d\d.\d\d\dZ/)[0],
-      vehiclePlateNumber:
-        typeof fullOrderToSubmit.vehiclePlateNumber === 'undefined'
-          ? null
-          : fullOrderToSubmit.vehiclePlateNumber,
-      deliveryDate:
-        typeof fullOrderToSubmit.deliveryDate === 'undefined'
-          ? null
-          : new Date(fullOrderToSubmit.deliveryDate).toISOString().replace(/T.*/, ''),
-      deliveryTime:
-        typeof fullOrderToSubmit.deliveryTime === 'undefined'
-          ? null
-          : new Date(fullOrderToSubmit.deliveryTime).toISOString().match(/\d\d:\d\d:\d\d.\d\d\dZ/)[0],
-      deliveryAddress:
-        typeof fullOrderToSubmit.deliveryAddress === 'undefined' ||
-        fullOrderToSubmit.deliveryAddress === ''
-          ? null
-          : fullOrderToSubmit.deliveryAddress,
-      orderedItems: fullOrderToSubmit.cartItems.map(cartItem => ({
-        name: cartItem.name,
-        variant: cartItem.variant,
-        quantity: cartItem.quantity,
-      })),
-    };
-    toSubmitData = cleanNullAndUndefined(toSubmitData);
-    const windowReference = window.open('', '_self');
-    // if (toSubmitData.phoneNumber) {
-    //   const textToSend = encodeURIComponent(
-    //     `===
-    //     Notification to shop
-    //     ===
-    //     My order number is ${toSubmitData.orderId}.
-    //     `,
-    //   );
-    //   window.open(
-    //     `https://wa.me/${toSubmitData.phoneNumber}?text=${textToSend}`,
-    //   );
-    // }
-
-    API.graphql({
-      query: mutations.createOrder,
-      variables: { input: toSubmitData },
-      authMode: 'AWS_IAM',
-    }).then(res => {
-      configureOrderNumber({ orderNumber: orderId });
-      handleNext();
-      if (
-        toSubmitData.fulfillmentMethod === FULFILLMENT_METHODS.DELIVERY ||
-        toSubmitData.fulfillmentMethod === FULFILLMENT_METHODS.SELF_PICKUP
-      ) {
-        const textToSend = encodeURIComponent(
-          intl.formatMessage(messages.whatsappNotification, {
-            linebreak: '\r\n',
-            orderNumber: orderId,
-          }),
-        );
-        // const textToSend = encodeURIComponent(
-        //   '***Click send to notify the shop about this order.***\r\n' +
-        //     `Order number: ${toSubmitData.orderId}.`,
-        // );
-        windowReference.location = `https://wa.me/${
-          process.env.SHOP_INFO_BUSINESS_PHONE_NUMBER
-        }?text=${textToSend}`;
-        // windowReference.close();
-        // window.open(
-        //   `https://wa.me/${toSubmitData.phoneNumber}?text=${textToSend}`,
-        // );
+    try {
+      if (fullOrderToSubmit.cartItems.length === 0) {
+        throw new Error('EmptyOrderError');
       }
-    });
-
+      const orderId = String(
+        new Date().getTime() +
+          Math.random()
+            .toString(36)
+            .substring(2, 4),
+      );
+      let toSubmitData = {
+        shopId: `${process.env.BUSINESS_NAME}`,
+        fulfillmentMethod: fullOrderToSubmit.fulfillmentMethod,
+        orderId,
+        status: 'UNFULFILLED',
+        paymentMethod:
+          typeof fullOrderToSubmit.paymentMethod === 'undefined'
+            ? 'CASH'
+            : fullOrderToSubmit.paymentMethod,
+        postscript:
+          typeof fullOrderToSubmit.postScript === 'undefined'
+            ? null
+            : fullOrderToSubmit.postScript,
+        tableNumber:
+          typeof fullOrderToSubmit.tableNumber === 'undefined'
+            ? null
+            : fullOrderToSubmit.tableNumber,
+        firstName:
+          typeof fullOrderToSubmit.firstName === 'undefined'
+            ? null
+            : fullOrderToSubmit.firstName,
+        lastName:
+          typeof fullOrderToSubmit.lastName === 'undefined'
+            ? null
+            : fullOrderToSubmit.lastName,
+        phoneNumber:
+          typeof fullOrderToSubmit.phoneNumber === 'undefined'
+            ? null
+            : `+6${fullOrderToSubmit.phoneNumber}`,
+        pickupDate:
+          typeof fullOrderToSubmit.pickUpDate === 'undefined'
+            ? null
+            : new Date(fullOrderToSubmit.pickUpDate).toISOString().replace(/T.*/, ''),
+        pickupTime:
+          typeof fullOrderToSubmit.pickUpTime === 'undefined'
+            ? null
+            : new Date(fullOrderToSubmit.pickUpTime).toISOString().match(/\d\d:\d\d:\d\d.\d\d\dZ/)[0],
+        vehiclePlateNumber:
+          typeof fullOrderToSubmit.vehiclePlateNumber === 'undefined'
+            ? null
+            : fullOrderToSubmit.vehiclePlateNumber,
+        deliveryDate:
+          typeof fullOrderToSubmit.deliveryDate === 'undefined'
+            ? null
+            : new Date(fullOrderToSubmit.deliveryDate).toISOString().replace(/T.*/, ''),
+        deliveryTime:
+          typeof fullOrderToSubmit.deliveryTime === 'undefined'
+            ? null
+            : new Date(fullOrderToSubmit.deliveryTime).toISOString().match(/\d\d:\d\d:\d\d.\d\d\dZ/)[0],
+        deliveryAddress:
+          typeof fullOrderToSubmit.deliveryAddress === 'undefined' ||
+          fullOrderToSubmit.deliveryAddress === ''
+            ? null
+            : fullOrderToSubmit.deliveryAddress,
+        orderedItems: fullOrderToSubmit.cartItems.map(cartItem => ({
+          name: cartItem.name,
+          variant: cartItem.variant,
+          quantity: cartItem.quantity,
+        })),
+      };
+      toSubmitData = cleanNullAndUndefined(toSubmitData);
+      const windowReference = window.open('', '_self');
+      // if (toSubmitData.phoneNumber) {
+      //   const textToSend = encodeURIComponent(
+      //     `===
+      //     Notification to shop
+      //     ===
+      //     My order number is ${toSubmitData.orderId}.
+      //     `,
+      //   );
+      //   window.open(
+      //     `https://wa.me/${toSubmitData.phoneNumber}?text=${textToSend}`,
+      //   );
+      // }
+      API.graphql({
+        query: mutations.createOrder,
+        variables: { input: toSubmitData },
+        authMode: 'AWS_IAM',
+      })
+        .then(res => {
+          console.log('res', res);
+          configureOrderNumber({ orderNumber: orderId });
+          handleNext();
+          if (
+            toSubmitData.fulfillmentMethod === FULFILLMENT_METHODS.DELIVERY ||
+            toSubmitData.fulfillmentMethod === FULFILLMENT_METHODS.SELF_PICKUP
+          ) {
+            const textToSend = encodeURIComponent(
+              intl.formatMessage(messages.whatsappNotification, {
+                linebreak: '\r\n',
+                orderNumber: orderId,
+              }),
+            );
+            // const textToSend = encodeURIComponent(
+            //   '***Click send to notify the shop about this order.***\r\n' +
+            //     `Order number: ${toSubmitData.orderId}.`,
+            // );
+            windowReference.location = `https://wa.me/${
+              process.env.SHOP_INFO_BUSINESS_PHONE_NUMBER
+            }?text=${textToSend}`;
+            // windowReference.close();
+            // window.open(
+            //   `https://wa.me/${toSubmitData.phoneNumber}?text=${textToSend}`,
+            // );
+          }
+          clearForm();
+        })
+        .catch(err => {
+          setIsErrorPopUpOpen(true);
+          setErrorMessage(err.errors[0].message);
+        });
+    } catch (err) {
+      if (err.message === 'EmptyOrderError') {
+        setIsErrorPopUpOpen(true);
+        setErrorMessage(err.message);
+      }
+    }
     // submitOrders(fullOrderToSubmit);
-    // clearForm();
+
   };
   const [rows, setRows] = useState([{ orders: [], uncommittedOrders: [] }]);
+  const [isErrorPopUpOpen, setIsErrorPopUpOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const [invoice, setInvoice] = useState({ subtotal: 0, taxes: 0, total: 0 });
   useEffect(() => {
     const rows3 = createRowsForOrders(fullOrderToSubmit.cartItems);
@@ -457,6 +473,11 @@ export function Review({
             </form>
           </div>
         </Grid>
+        <ErrorPopUp
+          open={isErrorPopUpOpen}
+          setOpen={setIsErrorPopUpOpen}
+          message={errorMessage}
+        />
       </Grid>
     </React.Fragment>
   );

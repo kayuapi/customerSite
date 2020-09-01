@@ -95,7 +95,6 @@ const detailsPageReducer = (state = initialState, action) =>
         break;
 
       case RESET_ALL_FORM_EXCEPT_BUSINESS_NAME:
-        draft.orderNumber = initialState.orderNumber;
         draft.fulfillmentMethod = initialState.fulfillmentMethod;
         draft.paymentMethod = initialState.paymentMethod;
         draft.postScript = initialState.postScript;

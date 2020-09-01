@@ -1,4 +1,8 @@
 {
+  "app.components.ErrorPopUp.emptyOrderError": "Empty Order Error!",
+  "app.components.ErrorPopUp.emptyOrderErrorActionToTake": "Empty order error occurs, please order something.",
+  "app.components.ErrorPopUp.networkError": "Network Error!",
+  "app.components.ErrorPopUp.networkErrorActionToTake": "Network error occurs, please try again later.",
   "app.components.MyAppBar.chmboxOrdering": "CHMBOX Ordering",
   "app.components.MyAppBar.header": "This is the MyAppBar component!",
   "app.components.MyBottomNavigation.details": "Details",
