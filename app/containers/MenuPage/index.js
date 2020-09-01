@@ -37,7 +37,7 @@ import { makeSelectTotalProductsQuantity } from '../Product/selectors';
 import reducer from './reducer';
 import messages from './messages';
 import CartPage from '../CartPage/Loadable';
-import ComingSoonIllustration from './ComingSoon';
+import UnderMaintenanceIllustration from './UnderMaintenance';
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -130,6 +130,7 @@ export function MenuPage({ openCart2, quantityOfInCartProducts }) {
   const [categories, setCategories] = useState(false);
   const [category, setCategory] = useState('');
   const [menuItems, setMenuItems] = useState([]);
+  const [maintenceMode, setMaintenanceMode] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -167,6 +168,8 @@ export function MenuPage({ openCart2, quantityOfInCartProducts }) {
         if (menuItemsResponse) {
           setMenuItems(() => [...menuItemsResponse]);
         }
+      } else {
+        setMaintenanceMode(true);
       }
     }
     requestCategories();
@@ -215,7 +218,7 @@ export function MenuPage({ openCart2, quantityOfInCartProducts }) {
               ))}
           </Tabs>
         </AppBar>
-        {!categories && <ComingSoonIllustration />}
+        {maintenceMode && <UnderMaintenanceIllustration />}
         {categories && (
           <TabPanel
             className={classes.tabPanel}
