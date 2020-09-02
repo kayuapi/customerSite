@@ -202,7 +202,6 @@ export function Review({
         authMode: 'AWS_IAM',
       })
         .then(res => {
-          console.log('res', res);
           configureOrderNumber({ orderNumber: orderId });
           handleNext();
           if (
