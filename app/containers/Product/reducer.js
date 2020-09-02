@@ -11,6 +11,7 @@ import {
   PRODUCT_WITH_VARIANT_REMOVED_FROM_CART,
   SET_PRODUCT_IN_CART,
   SET_VARIANTS_IN_PRODUCT_CART,
+  CLEAR_PRODUCT_FROM_CART,
 } from './constants';
 
 export const initialState = [];
@@ -150,6 +151,10 @@ const productReducer = (state = initialState, action) =>
           }
         });
         break;
+      }
+
+      case CLEAR_PRODUCT_FROM_CART: {
+        draft.splice(0, draft.length);
       }
     }
   });

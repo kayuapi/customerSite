@@ -11,6 +11,7 @@ import {
   PRODUCT_WITH_VARIANT_REMOVED_FROM_CART,
   SET_PRODUCT_IN_CART,
   SET_VARIANTS_IN_PRODUCT_CART,
+  CLEAR_PRODUCT_FROM_CART,
 } from './constants';
 
 export function addProductToCart({
@@ -71,7 +72,6 @@ export function removeProductWithVariantFromCart({
   };
 }
 
-
 export function setProductInCart({
   productName,
   productQuantity,
@@ -90,5 +90,11 @@ export function setVariantsInProductCart(productName, variantList) {
     type: SET_VARIANTS_IN_PRODUCT_CART,
     productName,
     variantList,
+  };
+}
+
+export function clearProductFromCart() {
+  return {
+    type: CLEAR_PRODUCT_FROM_CART,
   };
 }

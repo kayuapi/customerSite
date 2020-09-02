@@ -27,6 +27,7 @@ import {
   createRowsForOrders,
 } from '../CartPage';
 import { resetForm, configureOrderNumber } from './actions';
+import { clearProductFromCart } from '../Product/actions';
 import messages from './messages';
 
 const TAX_RATE = 0.00;
@@ -72,6 +73,7 @@ const cleanNullAndUndefined = obj => {
 
 export function Review({
   clearForm,
+  clearCart,
   // eslint-disable-next-line no-shadow
   configureOrderNumber,
   fullOrderToSubmit,
@@ -227,6 +229,7 @@ export function Review({
             // );
           }
           clearForm();
+          clearCart();
         })
         .catch(err => {
           setIsErrorPopUpOpen(true);
@@ -484,6 +487,7 @@ export function Review({
 
 Review.propTypes = {
   clearForm: PropTypes.func.isRequired,
+  clearCart: PropTypes.func.isRequired,
   configureOrderNumber: PropTypes.func.isRequired,
   fullOrderToSubmit: PropTypes.object.isRequired,
   currentPage: PropTypes.number.isRequired,
@@ -500,6 +504,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     clearForm: () => dispatch(resetForm()),
+    clearCart: () => dispatch(clearProductFromCart()),
     configureOrderNumber: orderNumber =>
       dispatch(configureOrderNumber(orderNumber)),
   };
