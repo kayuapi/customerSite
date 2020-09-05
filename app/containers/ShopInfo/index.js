@@ -26,6 +26,7 @@ import InstagramIcon from '@material-ui/icons/Instagram';
 import makeSelectShopInfo from './selectors';
 import reducer from './reducer';
 import saga from './saga';
+import messages from './messages';
 // import businessLogo from '../../images/icon-512x512.png';
 // import messages from './messages';
 import { MyMapComponent } from '../../components/MyMapComponent';
@@ -109,15 +110,18 @@ export function ShopInfo() {
             <br />
             <br />
             <LocationIcon />
-            &nbsp; 地址: {process.env.SHOP_INFO_BUSINESS_ADDRESS}
+            &nbsp; <FormattedMessage {...messages.address} />{' '}
+            {process.env.SHOP_INFO_BUSINESS_ADDRESS}
             <br />
             <br />
             <OperatingHourIcon />
-            &nbsp; 营业时间: {process.env.SHOP_INFO_OPERATING_HOURS}
+            &nbsp; <FormattedMessage {...messages.operatingHours} />{' '}
+            {process.env.SHOP_INFO_OPERATING_HOURS}
             <br />
             <br />
             <PhoneIcon />
-            &nbsp; 联络电话：{displayPhoneNumber}
+            &nbsp; <FormattedMessage {...messages.contactNumber} />{' '}
+            {displayPhoneNumber}
             &nbsp;
             <a href={whatsappLink}>
               <WhatsAppIcon />
@@ -125,7 +129,7 @@ export function ShopInfo() {
             <br />
             <br />
             <FacebookIcon />
-            &nbsp; Facebook：
+            &nbsp; <FormattedMessage {...messages.facebook} />{' '}
             <a
               href={process.env.SHOP_INFO_BUSINESS_FACEBOOK_LINK}
               style={{ textDecoration: 'underline', color: 'blue' }}
@@ -137,7 +141,7 @@ export function ShopInfo() {
             {process.env.SHOP_INFO_BUSINESS_INSTAGRAM && (
               <>
                 <InstagramIcon />
-                &nbsp; Instagram：
+                &nbsp; <FormattedMessage {...messages.instagram} />{' '}
                 <a
                   href={process.env.SHOP_INFO_BUSINESS_INSTAGRAM_LINK}
                   style={{ textDecoration: 'underline', color: 'blue' }}

@@ -9,8 +9,24 @@ import { defineMessages } from 'react-intl';
 export const scope = 'app.containers.ShopInfo';
 
 export default defineMessages({
-  header: {
-    id: `${scope}.header`,
-    defaultMessage: 'This is the ShopInfo container!',
+  address: {
+    id: `${scope}.address`,
+    defaultMessage: 'Address:',
+  },
+  contactNumber: {
+    id: `${scope}.contactNumber`,
+    defaultMessage: 'Contact number:',
+  },
+  facebook: {
+    id: `${scope}.facebook`,
+    defaultMessage: 'Facebook:',
+  },
+  instagram: {
+    id: `${scope}.instagram`,
+    defaultMessage: 'Instagram:',
+  },
+  operatingHours: {
+    id: `${scope}.operatingHours`,
+    defaultMessage: 'Operating hours:',
   },
 });
