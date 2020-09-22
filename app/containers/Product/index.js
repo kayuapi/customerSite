@@ -84,6 +84,7 @@ const useStyles = makeStyles(theme => ({
     display: 'block',
     alignSelf: 'flex-end',
     paddingBottom: '0 !important',
+    width: '100%',
   },
   controls: {
     display: 'block',
