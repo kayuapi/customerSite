@@ -203,6 +203,7 @@ export function AddressForm({
                   <Controller
                     as={
                       <DatePicker
+                        style={{ width: '100%' }}
                         margin="normal"
                         label={<FormattedMessage {...messages.pickUpDate} />}
                         format="dd/MM/yyyy"
@@ -251,6 +252,7 @@ export function AddressForm({
                   <Controller
                     as={
                       <TimePicker
+                        style={{ width: '100%' }}
                         margin="normal"
                         label={<FormattedMessage {...messages.pickUpTime} />}
                         // KeyboardButtonProps={{
@@ -428,6 +430,7 @@ export function AddressForm({
                   <Controller
                     as={
                       <DatePicker
+                        style={{ width: '100%' }}
                         margin="normal"
                         label={<FormattedMessage {...messages.deliveryDate} />}
                         format="dd/MM/yyyy"
@@ -477,6 +480,7 @@ export function AddressForm({
                     as={
                       <TimePicker
                         margin="normal"
+                        style={{ width: '100%' }}
                         label={<FormattedMessage {...messages.deliveryTime} />}
                         // KeyboardButtonProps={{
                         //   'aria-label': 'change time',
