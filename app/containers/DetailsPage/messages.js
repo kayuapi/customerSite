@@ -163,7 +163,7 @@ export default defineMessages({
   receivedOrder: {
     id: `${scope}.receivedOrder`,
     defaultMessage:
-      'Your order number is {orderNumber}. {linebreak}We have received your order and will phone you for confirmation shortly.',
+      'Your order number is {orderNumber}. {linebreak}We have received your order.',
   },
   receivedOrderForOnPremise: {
     id: `${scope}.receivedOrderForOnPremise`,
@@ -172,7 +172,7 @@ export default defineMessages({
   receivedOrderForDelivery: {
     id: `${scope}.receivedOrderForDelivery`,
     defaultMessage:
-      'Your order number is {orderNumber}. {linebreak}We have received your order and will phone you for confirmation shortly.',
+      'Your order number is {orderNumber}. {linebreak}We have received your order.',
   },
   orderSummary: {
     id: `${scope}.orderSummary`,
@@ -228,7 +228,7 @@ export default defineMessages({
   },
   eWalletTouchNGo: {
     id: `${scope}.eWalletTouchNGo`,
-    defaultMessage: 'E-wallet: Tounch n Go',
+    defaultMessage: 'E-wallet: Touch n Go',
   },
   eWalletBoost: {
     id: `${scope}.eWalletBoost`,
