@@ -78,7 +78,7 @@ const useStyles = makeStyles(theme => ({
     bottom: 0,
     zIndex: '-1',
     height: '80px',
-    backgroundColor: 'white',
+    backgroundColor: theme.palette.background.default,
     color: 'black',
     padding: '5px 0',
     textAlign: 'center',
