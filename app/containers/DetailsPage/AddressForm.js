@@ -540,6 +540,12 @@ export function AddressForm({
                       <MenuItem value={PAYMENT_METHODS.E_WALLET}>
                         <FormattedMessage {...messages.eWallet} />
                       </MenuItem>
+                      <MenuItem value={PAYMENT_METHODS.GRABPAY}>
+                        <FormattedMessage {...messages.grabpay} />
+                      </MenuItem>
+                      <MenuItem value={PAYMENT_METHODS.FAVEPAY}>
+                        <FormattedMessage {...messages.favepay} />
+                      </MenuItem>
                     </Select>
                   }
                   control={control}

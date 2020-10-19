@@ -83,6 +83,13 @@ const useStyles = makeStyles(theme => ({
     padding: '5px 0',
     textAlign: 'center',
   },
+  bottompad: {
+    height: '80px',
+    backgroundColor: theme.palette.background.default,
+    color: 'black',
+    padding: '5px 0',
+    textAlign: 'center',
+  },
 }));
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -263,6 +270,7 @@ export function MenuPage({ openCart2, quantityOfInCartProducts }) {
             </Container>
           </TabPanel>
         )}
+        <div className={classes.bottompad} />
         <footer className={classes.footer}>
           <FormattedMessage {...messages.poweredBy} />
         </footer>

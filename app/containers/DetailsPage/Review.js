@@ -443,6 +443,24 @@ export function Review({
                     {...messages.variableTranslate}
                   />
                 )}
+                {fullOrderToSubmit.paymentMethod ===
+                  PAYMENT_METHODS.GRABPAY && (
+                  <FormattedMessage
+                    values={{
+                      translated: <FormattedMessage {...messages.grabpay} />,
+                    }}
+                    {...messages.variableTranslate}
+                  />
+                )}
+                {fullOrderToSubmit.paymentMethod ===
+                  PAYMENT_METHODS.FAVEPAY && (
+                  <FormattedMessage
+                    values={{
+                      translated: <FormattedMessage {...messages.favepay} />,
+                    }}
+                    {...messages.variableTranslate}
+                  />
+                )}
               </Typography>
             </Grid>
           </Grid>

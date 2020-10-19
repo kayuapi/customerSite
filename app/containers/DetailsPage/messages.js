@@ -234,6 +234,14 @@ export default defineMessages({
     id: `${scope}.eWalletBoost`,
     defaultMessage: 'E-wallet: Boost',
   },
+  grabpay: {
+    id: `${scope}.grabpay`,
+    defaultMessage: 'Grab Pay',
+  },
+  favepay: {
+    id: `${scope}.favepay`,
+    defaultMessage: 'Fave Pay',
+  },
   dateError: {
     id: `${scope}.dateError`,
     defaultMessage: "only accept next day's order for now",

@@ -38,7 +38,7 @@ import VariantDialogProductRow from '../VariantDialogProductRow';
 
 const useStyles = makeStyles(theme => ({
   table: {
-    minWidth: 300,
+    minWidth: 280,
   },
 }));
 
