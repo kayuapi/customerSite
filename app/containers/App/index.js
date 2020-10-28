@@ -47,6 +47,10 @@ const theme = createMuiTheme({
     productDisplay: {
       main: grey[200],
     },
+    bottomNav: {
+      background: '#fff',
+      unselected: '#757575',
+    },
   },
 });
 

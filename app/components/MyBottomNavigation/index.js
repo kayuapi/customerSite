@@ -12,7 +12,7 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import StorefrontIcon from '@material-ui/icons/Storefront';
@@ -22,13 +22,23 @@ import { compose } from 'redux';
 import DetailsIcon from '@material-ui/icons/Face';
 import messages from './messages';
 
-const useStyles = makeStyles({
-  stickToBottom: {
-    width: '100%',
-    position: 'fixed',
-    bottom: 0,
-  },
-});
+const useStyles = makeStyles(theme =>
+  createStyles({
+    stickToBottom: {
+      width: '100%',
+      position: 'fixed',
+      bottom: 0,
+      backgroundColor: theme.mixins.bottomNav.background,
+    },
+    actionClasses: {
+      color: theme.mixins.bottomNav.unselected,
+      '&$selected': {
+        color: theme.palette.primary.main,
+      },
+    },
+    selected: {},
+  }),
+);
 const paths = ['/menu', '/details', '/shopInfos'];
 
 function MyBottomNavigation({ pathname }) {
@@ -53,18 +63,21 @@ function MyBottomNavigation({ pathname }) {
           label={<FormattedMessage {...messages.menu} />}
           icon={<MenuIcon />}
           component={Link}
+          classes={{ root: classes.actionClasses }}
           to="/menu"
         />
         <BottomNavigationAction
           label={<FormattedMessage {...messages.details} />}
           icon={<DetailsIcon />}
           component={Link}
+          classes={{ root: classes.actionClasses }}
           to="/details"
         />
         <BottomNavigationAction
           label={<FormattedMessage {...messages.shopInfo} />}
           icon={<StorefrontIcon />}
           component={Link}
+          classes={{ root: classes.actionClasses }}
           to="/shopInfo"
         />
       </BottomNavigation>
