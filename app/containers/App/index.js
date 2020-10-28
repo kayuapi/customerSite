@@ -51,6 +51,9 @@ const theme = createMuiTheme({
       background: '#fff',
       unselected: '#757575',
     },
+    tabs: {
+      background: '#f5f5f5',
+    },
   },
 });
 

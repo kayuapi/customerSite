@@ -51,6 +51,9 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: theme.spacing(0.5),
     paddingRight: theme.spacing(0.5),
   },
+  tabs: {
+    background: theme.mixins.tabs.background,
+  },
   tabPanel: {
     paddingLeft: theme.spacing(0),
     paddingRight: theme.spacing(0),
@@ -215,6 +218,7 @@ export function MenuPage({ openCart2, quantityOfInCartProducts }) {
             onChange={handleChange}
             indicatorColor="primary"
             textColor="primary"
+            className={classes.tabs}
             variant="scrollable"
             scrollButtons="on"
             aria-label="scrollable auto tabs example"
