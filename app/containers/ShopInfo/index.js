@@ -27,6 +27,7 @@ import makeSelectShopInfo from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
+import ShopInfoImage from '../../images/shopInfo.jpg';
 // import businessLogo from '../../images/icon-512x512.png';
 // import messages from './messages';
 import { MyMapComponent } from '../../components/MyMapComponent';
@@ -105,9 +106,10 @@ export function ShopInfo() {
           <Typography component="h1" variant="h4" align="center">
             {process.env.SHOP_INFO_BUSINESS_NAME}
           </Typography>
+          <br />
+          <br />
+          <img src={ShopInfoImage} alt="shop" width="100%" />
           <Typography variant="subtitle1" gutterBottom>
-            <br />
-            <br />
             <br />
             <LocationIcon />
             &nbsp; <FormattedMessage {...messages.address} />{' '}
