@@ -50,6 +50,7 @@ const useStyles = makeStyles(theme => ({
     'flex-direction': 'column',
     'justify-content': 'space-between',
     backgroundColor: theme.mixins.productDisplay.main,
+    // color: 'white',
   },
   cardMedia: {
     // paddingTop: '56.25%', // 16:9
@@ -93,6 +94,7 @@ const useStyles = makeStyles(theme => ({
     paddingBottom: theme.spacing(1),
     justifyContent: 'center',
     marginBottom: theme.spacing(0),
+    // color: 'white',
   },
   gridItem: {
     display: 'inline-grid',
@@ -102,7 +104,25 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     margin: '0 0 0 0',
+    // color: 'white',
   },
+  // inputLabelRoot: {
+  //   '&$inputLabelOutlined': {
+  //     color: 'white',
+  //   },
+  //   '&$inputLabelShrink': {
+  //     color: 'white',
+  //   },
+  // },
+  // inputLabelOutlined: {},
+  // inputLabelShrink: {},
+  // inputRoot: {
+  //   '&$disabled $notchedOutline': {
+  //     borderColor: 'white',
+  //   },
+  // },
+  // disabled: {},
+  // notchedOutline: {},
 }));
 
 function SimpleDialog(props) {
@@ -274,6 +294,7 @@ export function Product({
                 {name}
               </Typography>
               <Typography variant="body2" color="textSecondary">
+              {/* <Typography variant="body2"> */}
                 <b>RM {Number(price.replace(/[^0-9\.]+/g, '')).toFixed(2)}</b>
               </Typography>
             </CardContent>
@@ -286,6 +307,7 @@ export function Product({
                 {name}
               </Typography>
               <Typography variant="body2" color="textSecondary">
+              {/* <Typography variant="body2"> */}
                 <b>RM {Number(price.replace(/[^0-9\.]+/g, '')).toFixed(2)}</b>
               </Typography>
             </CardContent>
@@ -310,6 +332,21 @@ export function Product({
                   inputMode: 'numeric',
                 }}
                 InputProps={{classes: { input: classes.resize }}}
+                // InputLabelProps={{
+                //   classes: {
+                //     root: classes.inputLabelRoot,
+                //     outlined: classes.inputLabelOutlined,
+                //     shrink: classes.inputLabelShrink,
+                //   },
+                // }}
+                // InputProps={{
+                //   classes: {
+                //     root: classes.inputRoot,
+                //     disabled: classes.disabled,
+                //     notchedOutline: classes.notchedOutline,
+                //     input: classes.resize,
+                //   },
+                // }}
                 className={classes.textField}
               />
             </Grid>
