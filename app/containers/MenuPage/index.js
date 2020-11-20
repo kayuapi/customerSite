@@ -33,11 +33,11 @@ import CircularProgress from '../../components/LoadingIndicator';
 import { openCart } from '../CartPage/actions';
 import Product from '../Product';
 import makeSelectMenuPage from './selectors';
-import { makeSelectTotalProductsQuantity } from '../Product/selectors';
 import reducer from './reducer';
 import messages from './messages';
 import CartPage from '../CartPage/Loadable';
 import UnderMaintenanceIllustration from './UnderMaintenance';
+import { useCart } from '../../context/Cart';
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -129,11 +129,12 @@ TabPanel.propTypes = {
   key: PropTypes.any,
 };
 
-export function MenuPage({ openCart2, quantityOfInCartProducts }) {
+// eslint-disable-next-line no-shadow
+export function MenuPage({ openCart }) {
   const classes = useStyles();
 
   const handleClickOpen = () => {
-    openCart2();
+    openCart();
   };
 
   useInjectReducer({ key: 'menuPage', reducer });
@@ -142,7 +143,6 @@ export function MenuPage({ openCart2, quantityOfInCartProducts }) {
   const [menuItems, setMenuItems] = useState([]);
   const [maintenceMode, setMaintenanceMode] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
 
   async function grabFromDb(hostName, item) {
     // await Auth.currentCredentials;
@@ -160,7 +160,10 @@ export function MenuPage({ openCart2, quantityOfInCartProducts }) {
       return { error: 'error' };
     }
   }
-
+  const { cartItems } = useCart();
+  const quantityInCart = cartItems
+    .map(({ quantity }) => quantity)
+    .reduce((a, b) => a + b, 0);
   // load categories
   useEffect(() => {
     async function requestCategories() {
@@ -261,11 +264,11 @@ export function MenuPage({ openCart2, quantityOfInCartProducts }) {
                     rowHeight={1}
                     className="layout"
                     margin={[0, 0]}
-                    verticalCompact={false}
+                    compactType={null}
                   >
-                    {menuItems.map((menuItem, id) => (
+                    {menuItems.map(menuItem => (
                       <div key={menuItem.id} data-grid={menuItem.uiLocation}>
-                        <Product key={menuItem.name} id={id} item={menuItem} />
+                        <Product item={menuItem} />
                       </div>
                     ))}
                   </ResponsiveReactGridLayout>
@@ -289,7 +292,7 @@ export function MenuPage({ openCart2, quantityOfInCartProducts }) {
       >
         <Badge
           classes={{ badge: classes.badge }}
-          badgeContent={quantityOfInCartProducts}
+          badgeContent={quantityInCart}
           color="secondary"
         >
           <ShoppingCartIcon />
@@ -302,17 +305,16 @@ export function MenuPage({ openCart2, quantityOfInCartProducts }) {
 }
 
 MenuPage.propTypes = {
-  uncommittedOrders: PropTypes.object,
+  openCart: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   menuPage: makeSelectMenuPage(),
-  quantityOfInCartProducts: makeSelectTotalProductsQuantity(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    openCart2: () => dispatch(openCart()),
+    openCart: () => dispatch(openCart()),
   };
 }
 

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
@@ -7,7 +8,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import request from 'utils/request';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
@@ -18,19 +18,13 @@ import { FULFILLMENT_METHODS, PAYMENT_METHODS } from './schema';
 import { makeSelectAddressFormSubmission } from './selectors';
 import * as mutations from '../../graphql/mutations';
 import ErrorPopUp from '../../components/ErrorPopUp';
-
-import {
-  ccyFormat,
-  priceRow,
-  createRow,
-  subtotal,
-  createRowsForOrders,
-} from '../CartPage';
+import { useCart } from '../../context/Cart';
+import { ccyFormat, subtotalFunc } from '../CartPage';
 import { resetForm, configureOrderNumber } from './actions';
 import { clearProductFromCart } from '../Product/actions';
 import messages from './messages';
 
-const TAX_RATE = 0.00;
+const TAX_RATE = 0.0;
 
 const useStyles = makeStyles(theme => ({
   listItem: {
@@ -53,23 +47,36 @@ const useStyles = makeStyles(theme => ({
   price: {
     minWidth: '12ch',
     textAlign: 'right',
-  }
+  },
 }));
 
 const cleanNullAndUndefined = obj => {
   const propNames = Object.getOwnPropertyNames(obj);
-  for (let i = 0; i < propNames.length; i++) {
+  for (let i = 0; i < propNames.length; i += 1) {
     const propName = propNames[i];
     if (
       obj[propName] === null ||
       obj[propName] === undefined ||
       obj[propName] === []
     ) {
+      // eslint-disable-next-line no-param-reassign
       delete obj[propName];
     }
   }
   return obj;
 };
+
+function getLocalISODateString(date) {
+  const offset = date.getTimezoneOffset();
+  const offsetAbs = Math.abs(offset);
+  const isoString = new Date(date.getTime() - offset * 60 * 1000).toISOString();
+  return `${isoString.slice(0, -1)}${offset > 0 ? '-' : '+'}${String(
+    Math.floor(offsetAbs / 60),
+  ).padStart(2, '0')}:${String(offsetAbs % 60).padStart(2, '0')}`.replace(
+    /T.*/,
+    '',
+  );
+}
 
 export function Review({
   clearForm,
@@ -81,41 +88,13 @@ export function Review({
   handleNext,
   handleBack,
   numberOfPage,
-  intl,
 }) {
   const classes = useStyles();
   const { handleSubmit } = useForm();
-
-  const submitOrdersURL = process.env.ORDER_API;
-
-  async function submitOrders(orders) {
-    try {
-      const response = await request(submitOrdersURL, {
-        method: 'POST',
-        mode: 'cors',
-        cache: 'no-cache',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(orders),
-      });
-    } catch (e) {
-    }
-  }
-
-  function extractItemsFromCartItems(cartItems) {
-    const items = cartItems.reduce((acc, obj) => {
-      const key = `${obj.name}(${obj.variant})`;
-      acc[key] = obj.quantity;
-      return acc;
-    }, {});
-    return items;
-  }
-
-  // filter out empty string quantity
-
-
+  const { cartItems } = useCart();
   const onSubmit = () => {
     try {
-      if (fullOrderToSubmit.cartItems.length === 0) {
+      if (cartItems.length === 0) {
         throw new Error('EmptyOrderError');
       }
       const orderId = String(
@@ -156,11 +135,13 @@ export function Review({
         pickupDate:
           typeof fullOrderToSubmit.pickUpDate === 'undefined'
             ? null
-            : new Date(fullOrderToSubmit.pickUpDate).toISOString().replace(/T.*/, ''),
+            : getLocalISODateString(new Date(fullOrderToSubmit.pickUpDate)),
         pickupTime:
           typeof fullOrderToSubmit.pickUpTime === 'undefined'
             ? null
-            : new Date(fullOrderToSubmit.pickUpTime).toISOString().match(/\d\d:\d\d:\d\d.\d\d\dZ/)[0],
+            : new Date(fullOrderToSubmit.pickUpTime)
+              .toISOString()
+              .match(/\d\d:\d\d:\d\d.\d\d\dZ/)[0],
         vehiclePlateNumber:
           typeof fullOrderToSubmit.vehiclePlateNumber === 'undefined'
             ? null
@@ -168,24 +149,29 @@ export function Review({
         deliveryDate:
           typeof fullOrderToSubmit.deliveryDate === 'undefined'
             ? null
-            : new Date(fullOrderToSubmit.deliveryDate).toISOString().replace(/T.*/, ''),
+            : getLocalISODateString(new Date(fullOrderToSubmit.deliveryDate)),
         deliveryTime:
           typeof fullOrderToSubmit.deliveryTime === 'undefined'
             ? null
-            : new Date(fullOrderToSubmit.deliveryTime).toISOString().match(/\d\d:\d\d:\d\d.\d\d\dZ/)[0],
+            : new Date(fullOrderToSubmit.deliveryTime)
+              .toISOString()
+              .match(/\d\d:\d\d:\d\d.\d\d\dZ/)[0],
         deliveryAddress:
           typeof fullOrderToSubmit.deliveryAddress === 'undefined' ||
           fullOrderToSubmit.deliveryAddress === ''
             ? null
             : fullOrderToSubmit.deliveryAddress,
-        orderedItems: fullOrderToSubmit.cartItems.map(cartItem => ({
+        orderedItems: cartItems.map(cartItem => ({
           name: cartItem.name,
-          variant: cartItem.variant,
+          variant:
+            cartItem.variant && typeof cartItem.variant === 'object'
+              ? JSON.stringify(cartItem.variant).replace(/["']/g, '')
+              : cartItem.variant,
           quantity: cartItem.quantity,
         })),
       };
       toSubmitData = cleanNullAndUndefined(toSubmitData);
-      const windowReference = window.open('', '_self');
+      // const windowReference = window.open('', '_self');
       // if (toSubmitData.phoneNumber) {
       //   const textToSend = encodeURIComponent(
       //     `===
@@ -204,30 +190,34 @@ export function Review({
         authMode: 'AWS_IAM',
       })
         .then(res => {
+          // eslint-disable-next-line no-empty
+          if (res) {
+
+          }
           configureOrderNumber({ orderNumber: orderId });
           handleNext();
-          if (
-            toSubmitData.fulfillmentMethod === FULFILLMENT_METHODS.DELIVERY ||
-            toSubmitData.fulfillmentMethod === FULFILLMENT_METHODS.SELF_PICKUP
-          ) {
-            const textToSend = encodeURIComponent(
-              intl.formatMessage(messages.whatsappNotification, {
-                linebreak: '\r\n',
-                orderNumber: orderId,
-              }),
-            );
-            // const textToSend = encodeURIComponent(
-            //   '***Click send to notify the shop about this order.***\r\n' +
-            //     `Order number: ${toSubmitData.orderId}.`,
-            // );
-            windowReference.location = `https://wa.me/${
-              process.env.SHOP_INFO_BUSINESS_PHONE_NUMBER
-            }?text=${textToSend}`;
-            // windowReference.close();
-            // window.open(
-            //   `https://wa.me/${toSubmitData.phoneNumber}?text=${textToSend}`,
-            // );
-          }
+          // if (
+          //   toSubmitData.fulfillmentMethod === FULFILLMENT_METHODS.DELIVERY ||
+          //   toSubmitData.fulfillmentMethod === FULFILLMENT_METHODS.SELF_PICKUP
+          // ) {
+          //   const textToSend = encodeURIComponent(
+          //     intl.formatMessage(messages.whatsappNotification, {
+          //       linebreak: '\r\n',
+          //       orderNumber: orderId,
+          //     }),
+          //   );
+          //   // const textToSend = encodeURIComponent(
+          //   //   '***Click send to notify the shop about this order.***\r\n' +
+          //   //     `Order number: ${toSubmitData.orderId}.`,
+          //   // );
+          //   windowReference.location = `https://wa.me/${
+          //     process.env.SHOP_INFO_BUSINESS_PHONE_NUMBER
+          //   }?text=${textToSend}`;
+          //   // windowReference.close();
+          //   // window.open(
+          //   //   `https://wa.me/${toSubmitData.phoneNumber}?text=${textToSend}`,
+          //   // );
+          // }
           clearForm();
           clearCart();
         })
@@ -241,48 +231,52 @@ export function Review({
         setErrorMessage(err.message);
       }
     }
-    // submitOrders(fullOrderToSubmit);
-
   };
-  const [rows, setRows] = useState([{ orders: [], uncommittedOrders: [] }]);
   const [isErrorPopUpOpen, setIsErrorPopUpOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [invoice, setInvoice] = useState({ subtotal: 0, taxes: 0, total: 0 });
-  useEffect(() => {
-    const rows3 = createRowsForOrders(fullOrderToSubmit.cartItems);
-    setRows(prevRows => ({ ...prevRows, orders: rows3 }));
-  }, [fullOrderToSubmit.cartItems]);
 
   useEffect(() => {
+    // console.log('cartItems CHANGE', cartItems);
     setInvoice({
-      subtotal: subtotal(rows.orders),
-      taxes: TAX_RATE * subtotal(rows.orders),
-      total: subtotal(rows.orders) + TAX_RATE * subtotal(rows.orders),
+      subtotal: subtotalFunc(cartItems),
+      taxes: TAX_RATE * subtotalFunc(cartItems),
+      total: subtotalFunc(cartItems) + TAX_RATE * subtotalFunc(cartItems),
     });
-  }, [rows]);
+  }, [cartItems]);
+
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
         <FormattedMessage {...messages.orderSummary} />
       </Typography>
       <List disablePadding>
-        {rows.orders &&
-          rows.orders.map(row => (
-            <ListItem className={classes.listItem} key={row.desc}>
-              <ListItemText
-                primary={row.desc}
-                secondary={
-                  <FormattedMessage
-                    values={{ quantity: row.qty }}
-                    {...messages.quantity}
-                  />
-                }
-              />
-              <Typography variant="body2" className={classes.price}>
-                RM {ccyFormat(row.price)}
-              </Typography>
-            </ListItem>
-          ))}
+        {cartItems &&
+          cartItems.map(item => {
+            let newName = item.name;
+            if (item.variant) {
+              newName += `(${JSON.stringify(item.variant).replace(
+                /["']/g,
+                '',
+              )})`;
+            }
+            return (
+              <ListItem className={classes.listItem} key={item.id}>
+                <ListItemText
+                  primary={newName}
+                  secondary={
+                    <FormattedMessage
+                      values={{ quantity: item.quantity }}
+                      {...messages.quantity}
+                    />
+                  }
+                />
+                <Typography variant="body2" className={classes.price}>
+                  RM {ccyFormat(item.subtotal)}
+                </Typography>
+              </ListItem>
+            );
+          })}
         <ListItem className={classes.listItem}>
           <ListItemText primary={<FormattedMessage {...messages.total} />} />
           <Typography variant="subtitle1" className={classes.total}>
@@ -480,10 +474,28 @@ export function Review({
                 className={classes.button}
                 type="submit"
               >
-                {currentPage === numberOfPage - 1 && fullOrderToSubmit.fulfillmentMethod === FULFILLMENT_METHODS.DELIVERY && (<FormattedMessage {...messages.placeOrderAndWhatsappNotify} />)}
-                {currentPage === numberOfPage - 1 && fullOrderToSubmit.fulfillmentMethod === FULFILLMENT_METHODS.SELF_PICKUP && (<FormattedMessage {...messages.placeOrderAndWhatsappNotify} />)}
-                {currentPage === numberOfPage - 1 && fullOrderToSubmit.fulfillmentMethod === FULFILLMENT_METHODS.DINE_IN && (<FormattedMessage {...messages.placeOrder} />)}
-                {currentPage !== numberOfPage - 1 && <FormattedMessage {...messages.next} />}
+                {currentPage === numberOfPage - 1 &&
+                  fullOrderToSubmit.fulfillmentMethod ===
+                    FULFILLMENT_METHODS.DELIVERY && (
+                  <FormattedMessage
+                    {...messages.placeOrderAndWhatsappNotify}
+                  />
+                )}
+                {currentPage === numberOfPage - 1 &&
+                  fullOrderToSubmit.fulfillmentMethod ===
+                    FULFILLMENT_METHODS.SELF_PICKUP && (
+                  <FormattedMessage
+                    {...messages.placeOrderAndWhatsappNotify}
+                  />
+                )}
+                {currentPage === numberOfPage - 1 &&
+                  fullOrderToSubmit.fulfillmentMethod ===
+                    FULFILLMENT_METHODS.DINE_IN && (
+                  <FormattedMessage {...messages.placeOrder} />
+                )}
+                {currentPage !== numberOfPage - 1 && (
+                  <FormattedMessage {...messages.next} />
+                )}
                 {/* {currentPage === numberOfPage - 1 ? (
                   <FormattedMessage {...messages.placeOrder} />
                 ) : (

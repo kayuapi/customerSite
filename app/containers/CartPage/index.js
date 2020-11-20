@@ -30,18 +30,16 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 
-import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import CartPageProductRow from '../CartPageProductRow';
 import { makeSelectIsOpen } from './selectors';
-import { makeSelectProduct } from '../Product/selectors';
-import { openCart, closeCart } from './actions';
+import { closeCart } from './actions';
+import { useCart } from '../../context/Cart';
 
 import reducer from './reducer';
-import saga from './saga';
 import messages from './messages';
 
-const TAX_RATE = 0.00;
+const TAX_RATE = 0.0;
 
 const useStyles = makeStyles({
   dialogActions: {
@@ -60,82 +58,43 @@ function ccyFormat(num) {
   return `${num.toFixed(2)}`;
 }
 
-function priceRow(qty, unit) {
-  return qty * unit;
-}
-
-function createRow(desc, productName, variantName, qty, unit) {
-  const price = priceRow(qty, unit);
-  return { desc, productName, variantName, qty, unit, price };
-}
-
-function subtotal(items) {
+function subtotalFunc(items) {
+  // console.log('**items', items);
   if (!Array.isArray(items) || !items.length) {
     return 0;
   }
-  return items.map(({ price }) => price).reduce((sum, i) => sum + i, 0);
+  const pr = items
+    .map(({ subtotal }) => subtotal)
+    .reduce((sum, i) => sum + i, 0);
+  return pr;
 }
 
-// createRowsForOrders accept array
-function createRowsForOrders(data) {
-  const rows = data.reduce((a, e, i) => {
-    if (Number(e.quantity) !== 0) {
-      if (e.variant) {
-        a.push(
-          createRow(
-            `${e.name}(${e.variant})`,
-            e.name,
-            e.variant,
-            e.quantity,
-            Number(e.price),
-          ),
-        );
-      } else {
-        a.push(
-          createRow(
-            `${e.name}`,
-            e.name,
-            e.variant,
-            e.quantity,
-            Number(e.price),
-          ),
-        );
-      }
-    }
-    return a;
-  }, []);
-  return rows;
-}
-
-export function CartPage({ isOpen, openCart, closeCart, cartItems }) {
-  let history = useHistory();
+// eslint-disable-next-line no-shadow
+export function CartPage({ isOpen, closeCart }) {
+  const history = useHistory();
   const classes = useStyles();
+  const { cartItems, updateCartItem } = useCart();
   useInjectReducer({ key: 'cartPage', reducer });
-  useInjectSaga({ key: 'cartPage', saga });
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const handleSubmitCart = () => {
-    history.push("/details");
+    history.push('/details');
     closeCart();
   };
   const handleClose = () => {
     closeCart();
   };
-  const [rows, setRows] = useState([{ orders: [], uncommittedOrders: [] }]);
+
   const [invoice, setInvoice] = useState({ subtotal: 0, taxes: 0, total: 0 });
 
   useEffect(() => {
-    const rows3 = createRowsForOrders(cartItems);
-    setRows(prevRows => ({ ...prevRows, orders: rows3 }));
-  }, [cartItems]);
-
-  useEffect(() => {
+    // console.log('cartItems CHANGE');
     setInvoice({
-      subtotal: subtotal(rows.orders),
-      taxes: TAX_RATE * subtotal(rows.orders),
-      total: subtotal(rows.orders) + TAX_RATE * subtotal(rows.orders),
+      subtotal: subtotalFunc(cartItems),
+      taxes: TAX_RATE * subtotalFunc(cartItems),
+      total: subtotalFunc(cartItems) + TAX_RATE * subtotalFunc(cartItems),
     });
-  }, [rows]);
+  }, [cartItems]);
 
   return (
     <div>
@@ -188,17 +147,29 @@ export function CartPage({ isOpen, openCart, closeCart, cartItems }) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.orders &&
-                  rows.orders.map(row => (
-                    <CartPageProductRow
-                      key={row.desc}
-                      title={row.productName}
-                      variantName={row.variantName}
-                      qty={row.qty}
-                      price={row.price}
-                      ccyFormat={ccyFormat}
-                    />
-                  ))}
+                {cartItems &&
+                  cartItems.map(item => {
+                    let variantName = '';
+                    // console.log('item', item);
+                    if (item.variant) {
+                      variantName = JSON.stringify(item.variant)
+                        .replace(/["']/g, '')
+                        .replace(/[,]/g, '\n');
+                    }
+                    return (
+                      <CartPageProductRow
+                        key={item.id}
+                        title={item.name}
+                        variantName={variantName}
+                        qty={item.quantity}
+                        price={item.subtotal}
+                        ccyFormat={ccyFormat}
+                        updateCartItem={attributeValue =>
+                          updateCartItem(item.id, 'quantity', attributeValue)
+                        }
+                      />
+                    );
+                  })}
                 <TableRow>
                   <TableCell rowSpan={3} />
                 </TableRow>
@@ -255,19 +226,15 @@ export function CartPage({ isOpen, openCart, closeCart, cartItems }) {
 
 CartPage.propTypes = {
   isOpen: PropTypes.bool.isRequired,
-  openCart: PropTypes.func.isRequired,
   closeCart: PropTypes.func.isRequired,
-  cartItems: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
   isOpen: makeSelectIsOpen(),
-  cartItems: makeSelectProduct(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    openCart: () => dispatch(openCart()),
     closeCart: () => dispatch(closeCart()),
   };
 }
@@ -278,4 +245,4 @@ const withConnect = connect(
 );
 
 export default compose(withConnect)(CartPage);
-export { ccyFormat, priceRow, createRow, subtotal, createRowsForOrders };
+export { ccyFormat, subtotalFunc };
