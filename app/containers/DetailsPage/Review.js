@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -253,22 +253,39 @@ export function Review({
       <List disablePadding>
         {cartItems &&
           cartItems.map(item => {
-            let newName = item.name;
+            let variantName = '';
             if (item.variant) {
-              newName += `(${JSON.stringify(item.variant).replace(
-                /["']/g,
-                '',
-              )})`;
+              variantName = JSON.stringify(item.variant)
+                .replace(/["']/g, '')
+                .replace(/[,]/g, '\n');
             }
             return (
               <ListItem className={classes.listItem} key={item.id}>
                 <ListItemText
-                  primary={newName}
+                  disableTypography
+                  primary={
+                    <>
+                      <Typography>{item.name}</Typography>
+                      <Typography style={{ fontSize: '0.7rem' }}>
+                        <span>
+                          {variantName.split('\n').map((el, key) => (
+                            // eslint-disable-next-line react/no-array-index-key
+                            <Fragment key={key}>
+                              {el}
+                              <br />
+                            </Fragment>
+                          ))}
+                        </span>
+                      </Typography>
+                    </>
+                  }
                   secondary={
-                    <FormattedMessage
-                      values={{ quantity: item.quantity }}
-                      {...messages.quantity}
-                    />
+                    <Typography variant="subtitle2" color="textSecondary">
+                      <FormattedMessage
+                        values={{ quantity: item.quantity }}
+                        {...messages.quantity}
+                      />
+                    </Typography>
                   }
                 />
                 <Typography variant="body2" className={classes.price}>
@@ -335,7 +352,7 @@ export function Review({
               <FormattedMessage {...messages.deliveryDate} />:{' '}
               {new Date(fullOrderToSubmit.deliveryDate).toLocaleDateString()}
               <br />
-              <FormattedMessage {...messages.deliveryTime} />:{' '}
+              <FormattedMessage {...messages.reviewDeliveryTime} />:{' '}
               {new Date(fullOrderToSubmit.deliveryTime).toLocaleTimeString(
                 'en-UK',
               )}
