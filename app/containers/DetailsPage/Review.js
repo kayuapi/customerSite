@@ -91,7 +91,7 @@ export function Review({
 }) {
   const classes = useStyles();
   const { handleSubmit } = useForm();
-  const { cartItems } = useCart();
+  const { cartItems, clearCartItems } = useCart();
   const onSubmit = () => {
     try {
       if (cartItems.length === 0) {
@@ -219,6 +219,7 @@ export function Review({
           //   // );
           // }
           clearForm();
+          clearCartItems();
           clearCart();
         })
         .catch(err => {
