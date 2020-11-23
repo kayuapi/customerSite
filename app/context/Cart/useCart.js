@@ -24,11 +24,15 @@ export const useCart = () => {
   const deleteCartItem = id => {
     dispatch({ type: 'deleteCartItem', id });
   };
+  const clearCartItems = () => {
+    dispatch({ type: 'clearCartItems' });
+  };
 
   return {
     cartItems: state.cartItems,
     updateCartItem,
     createCartItem,
     deleteCartItem,
+    clearCartItems,
   };
 };

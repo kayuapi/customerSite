@@ -151,6 +151,13 @@ export const cartReducer = (state, action) => {
       };
     }
 
+    case 'clearCartItems': {
+      return {
+        ...state,
+        cartItems: [],
+      };
+    }
+
     default:
       return state;
   }
