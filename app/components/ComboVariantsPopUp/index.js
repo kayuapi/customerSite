@@ -52,9 +52,11 @@ export function ComboVariantPopUp({
     new Array(sections.length).fill(false),
   );
   const observeAbidingRules = (status, ind) => {
-    const abidingRulesCloned = [...abidingRules];
-    abidingRulesCloned[ind] = status;
-    setAbidingRules(abidingRulesCloned);
+    setAbidingRules(prev => {
+      const abidingRulesCloned = [...prev];
+      abidingRulesCloned[ind] = status;
+      return abidingRulesCloned;
+    });
   };
   return (
     <Dialog
