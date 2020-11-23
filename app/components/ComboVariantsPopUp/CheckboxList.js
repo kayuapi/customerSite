@@ -40,7 +40,9 @@ export default function CheckboxList({
         checked.length >= 1 &&
         checked.length >= minSelectionNumber &&
         checked.length <= maxSelectionNumber) ||
-      (!required && checked.length <= maxSelectionNumber)
+      (!required &&
+        checked.length <= maxSelectionNumber &&
+        checked.length >= minSelectionNumber)
     ) {
       modifyAbidingRules(true);
     } else {
