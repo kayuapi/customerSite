@@ -4,11 +4,10 @@
  *
  */
 
-import React, { memo } from 'react';
+import React, { memo, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 // import { FormattedMessage } from 'react-intl';
-import { createStructuredSelector } from 'reselect';
+
 import { compose } from 'redux';
 import { makeStyles } from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
@@ -18,16 +17,11 @@ import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import { useInjectReducer } from 'utils/injectReducer';
-import {
-  addProductToCart,
-  removeProductFromCart,
-  addProductWithVariantToCart,
-  removeProductWithVariantFromCart,
-} from '../Product/actions';
-import makeSelectCartPageProductRow from './selectors';
+
 import reducer from './reducer';
 // import messages from './messages';
 
+// eslint-disable-next-line no-unused-vars
 const useStyles = makeStyles(theme => ({
   tableCell: {
     minWidth: '2rem',
@@ -35,59 +29,47 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export function CartPageProductRow({
-  key,
   title,
   variantName,
   qty,
   price,
-  addProduct,
-  removeProduct,
-  addProductWithVariant,
-  removeProductWithVariant,
+  updateCartItem,
+  // addProduct,
+  // removeProduct,
+  // addProductWithVariant,
+  // removeProductWithVariant,
   ccyFormat,
 }) {
   useInjectReducer({ key: 'cartPageProductRow', reducer });
   const classes = useStyles();
-  const handlePlusChange = () => {
-    const product = {
-      productName: title,
-      productVariant: variantName,
-      productQuantity: qty + 1,
-      productPrice: price,
-    };
-    if (variantName === '' || typeof variantName === 'undefined') {
-      addProduct(product);
-    } else {
-      addProductWithVariant(product);
-    }
-  };
-  const handleMinusChange = () => {
-    const product = {
-      productName: title,
-      productVariant: variantName,
-      productQuantity: qty - 1,
-      productPrice: price,
-    };
-    if (variantName === '' || typeof variantName === 'undefined') {
-      removeProduct(product);
-    } else {
-      removeProductWithVariant(product);
-    }
-  };
 
   return (
-    <TableRow key={key}>
+    <TableRow>
       <TableCell>
-        <Typography color="primary">
-          {title}{variantName && <span>({variantName})</span>}
-        </Typography>
+        <>
+          <Typography color="primary">{title}</Typography>
+          <Typography color="primary" style={{ fontSize: '0.7rem' }}>
+            {variantName && (
+              <span>
+                <br />
+                {variantName.split('\n').map((item, key) => (
+                  // eslint-disable-next-line react/no-array-index-key
+                  <Fragment key={key}>
+                    {item}
+                    <br />
+                  </Fragment>
+                ))}
+              </span>
+            )}
+          </Typography>
+        </>
       </TableCell>
       <TableCell align="center">
         <IconButton
           size="medium"
           // className={classes.gridItem2}
           // aria-label="toggle passwosrd visibility"
-          onClick={handlePlusChange}
+          onClick={() => updateCartItem(1)}
           // onMouseDown={handleMouseDownPassword}
           // edge="start"
         >
@@ -100,7 +82,7 @@ export function CartPageProductRow({
       <TableCell align="center">
         <IconButton
           size="medium"
-          onClick={handleMinusChange}
+          onClick={() => updateCartItem(-1)}
           // onClick={handleMinusChange(
           //   row.desc,
           //   row.qty,
@@ -128,32 +110,37 @@ export function CartPageProductRow({
 
 CartPageProductRow.propTypes = {
   title: PropTypes.string.isRequired,
+  variantName: PropTypes.string,
+  qty: PropTypes.number,
+  price: PropTypes.number,
+  updateCartItem: PropTypes.func,
   // qty,
   // price,
   // addProduct,
   // removeProduct,
-  // ccyFormat,
+  ccyFormat: PropTypes.func,
 };
 
-const mapStateToProps = createStructuredSelector({
-  cartPageProductRow: makeSelectCartPageProductRow(),
-});
+// const mapStateToProps = createStructuredSelector({
+//   cartPageProductRow: makeSelectCartPageProductRow(),
+// });
 
-function mapDispatchToProps(dispatch) {
-  return {
-    addProduct: item => dispatch(addProductToCart(item)),
-    removeProduct: item => dispatch(removeProductFromCart(item)),
-    addProductWithVariant: item => dispatch(addProductWithVariantToCart(item)),
-    removeProductWithVariant: item => dispatch(removeProductWithVariantFromCart(item)),
-  };
-}
+// function mapDispatchToProps(dispatch) {
+//   return {
+//     addProduct: item => dispatch(addProductToCart(item)),
+//     removeProduct: item => dispatch(removeProductFromCart(item)),
+//     addProductWithVariant: item => dispatch(addProductWithVariantToCart(item)),
+//     removeProductWithVariant: item =>
+//       dispatch(removeProductWithVariantFromCart(item)),
+//   };
+// }
 
-const withConnect = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-);
+// const withConnect = connect(
+//   mapStateToProps,
+//   mapDispatchToProps,
+// );
 
 export default compose(
-  withConnect,
+  // withConnect,
   memo,
 )(CartPageProductRow);

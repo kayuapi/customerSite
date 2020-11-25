@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 /**
  *
  * Product
@@ -32,9 +33,8 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 
 import { useInjectReducer } from 'utils/injectReducer';
-
+import { useCart } from '../../context/Cart';
 import reducer from './reducer';
-import { addProductToCart, removeProductFromCart } from './actions';
 import messages from './messages';
 import VariantDialog from '../VariantDialog/Loadable';
 import { initVariantOfProduct } from '../VariantDialog/actions';
@@ -158,38 +158,55 @@ SimpleDialog.propTypes = {
 
 export function Product({
   initVariant,
-  addProduct,
-  removeProduct,
-  id,
-  item: { name, price, image, variants },
+  item: { id, name, price, image, type, variants, comboVariants },
 }) {
-  const getInCartProductQty = inCartProducts => {
-    if (!Array.isArray(inCartProducts) || !inCartProducts.length) {
-      return 0;
-    }
-    // const k = inCartProducts.map(({ name }) => name).indexOf(name);
-    // if (k !== -1) {
-    //   return inCartProducts[k].quantity;
-    // }
-    // return 0;
-
-    const totalAmount = inCartProducts.reduce((acc, v, i) => {
-      if (v.name === name) {
-        // eslint-disable-next-line no-param-reassign
-        acc += v.quantity;
-      }
-      return acc;
-    }, 0);
-    return totalAmount;
-  };
-
   useInjectReducer({ key: 'product', reducer });
   const classes = useStyles();
   const inCartProducts = useSelector(state => state.product);
-  const inCartProductQty = getInCartProductQty(inCartProducts);
 
-  const [value, setValue] = useState(inCartProductQty);
+  let inCartProductQty = 0;
+
+  const { cartItems } = useCart();
+  // console.log('**CartItems', cartItems);
+
+  if (type === 'A_LA_CARTE') {
+    if (variants && variants.length !== 0) {
+      // eslint-disable-next-line no-shadow
+      const variantsIdList = variants.map(({ id }) => id);
+      const totalProductQty = variantsIdList.reduce((acc, curr) => {
+        const selected = cartItems.filter(el => el.id === curr);
+        let qty = 0;
+        if (selected.length !== 0 && selected[0].quantity) {
+          qty = selected[0].quantity;
+        }
+        return acc + qty;
+      }, 0);
+      inCartProductQty = totalProductQty;
+    } else {
+      const selected = cartItems.filter(el => el.id === id);
+      let qty = 0;
+      if (selected.length !== 0 && selected[0].quantity) {
+        qty = selected[0].quantity;
+      }
+      inCartProductQty = qty;
+    }
+  } else if (type === 'COMBO') {
+    // for combo, use name to identify the item
+    const allSelectedComboItems = cartItems.filter(
+      cartItem => cartItem.name === name,
+    );
+    // console.log('allSelectedComboItems', allSelectedComboItems);
+    const totalSelectedComboItemsQty = allSelectedComboItems
+      .map(({ quantity }) => quantity)
+      .reduce((a, b) => a + b, 0);
+    inCartProductQty = totalSelectedComboItemsQty;
+    // eslint-disable-next-line no-empty
+  } else {
+  }
+
   const [isVariantDialogOpen, setIsVariantDialogOpen] = useState(false);
+
+  const [quantity, setQuantity] = useState(inCartProductQty);
 
   const [isImageOpen, setIsImageOpen] = React.useState(false);
   const handleImageClickOpen = () => {
@@ -199,8 +216,10 @@ export function Product({
     setIsImageOpen(false);
   };
   useEffect(() => {
-    setValue(inCartProductQty);
+    setQuantity(inCartProductQty);
   }, [inCartProductQty]);
+
+  const { createCartItem, updateCartItem } = useCart();
 
   const handleMinusChange = () => {
     // animation
@@ -224,17 +243,22 @@ export function Product({
     setTimeout(() => {
       rechange.parentNode.removeChild(rechange);
     }, 2000);
-    const product = {
-      productName: name,
-      productQuantity: inCartProductQty - 1,
-      productPrice: Number(price.replace(/[^0-9\.]+/g, '')).toFixed(2),
-    };
-    setValue(product.productQuantity);
-    removeProduct(product);
   };
 
   const handlePlusChange = () => {
-    if (variants) {
+    // const directTocart =
+    //   (type === 'A_LA_CARTE' &&
+    //     (typeof variants === 'undefined' || variants.length === 0)) ||
+    //   (type === 'COMBO' &&
+    //     (typeof comboVariants === 'undefined' || comboVariants.length === 0));
+
+    const hasVariants =
+      // the next line is for backwards compatibility
+      (typeof type === 'undefined' && typeof variants !== 'undefined') ||
+      (type === 'A_LA_CARTE' && variants.length > 0) ||
+      (type === 'COMBO' && comboVariants.length > 0);
+
+    if (hasVariants) {
       initVariant(name, variants, inCartProducts);
       setIsVariantDialogOpen(true);
     } else {
@@ -259,13 +283,6 @@ export function Product({
       setTimeout(() => {
         rechange.parentNode.removeChild(rechange);
       }, 1000);
-      const product = {
-        productName: name,
-        productQuantity: inCartProductQty + 1,
-        productPrice: Number(price.replace(/[^0-9\.]+/g, '')).toFixed(2),
-      };
-      setValue(product.productQuantity);
-      addProduct(product);
     }
   };
 
@@ -294,7 +311,7 @@ export function Product({
                 {name}
               </Typography>
               <Typography variant="body2" color="textSecondary">
-              {/* <Typography variant="body2"> */}
+                {/* <Typography variant="body2"> */}
                 <b>RM {Number(price.replace(/[^0-9\.]+/g, '')).toFixed(2)}</b>
               </Typography>
             </CardContent>
@@ -307,7 +324,7 @@ export function Product({
                 {name}
               </Typography>
               <Typography variant="body2" color="textSecondary">
-              {/* <Typography variant="body2"> */}
+                {/* <Typography variant="body2"> */}
                 <b>RM {Number(price.replace(/[^0-9\.]+/g, '')).toFixed(2)}</b>
               </Typography>
             </CardContent>
@@ -324,14 +341,15 @@ export function Product({
                 autoComplete="off"
                 fullWidth
                 type="number"
-                value={value}
+                value={quantity}
                 // defaultValue={Number(quantity)}
                 inputProps={{
                   'data-label': name,
                   pattern: '[0-9]*',
                   inputMode: 'numeric',
                 }}
-                InputProps={{classes: { input: classes.resize }}}
+                // eslint-disable-next-line react/jsx-no-duplicate-props
+                InputProps={{ classes: { input: classes.resize } }}
                 // InputLabelProps={{
                 //   classes: {
                 //     root: classes.inputLabelRoot,
@@ -350,13 +368,29 @@ export function Product({
                 className={classes.textField}
               />
             </Grid>
-            {!variants && (
+            {((typeof type === 'undefined' &&
+              typeof variants === 'undefined') ||
+              (type === 'A_LA_CARTE' &&
+                (typeof variants === 'undefined' || variants.length === 0)) ||
+              (type === 'COMBO' &&
+                (typeof comboVariants === 'undefined' ||
+                  comboVariants.length === 0))) && (
               <>
                 <Grid item xs={6} className={classes.gridItem}>
                   <IconButton
                     className={classes.gridItem2}
                     aria-label="toggle password visibility"
-                    onClick={handlePlusChange}
+                    onClick={() => {
+                      handlePlusChange();
+                      createCartItem({
+                        id,
+                        name,
+                        price: Number(price.replace(/[^0-9\.]+/g, '')),
+                        type: 'A_LA_CARTE',
+                        quantity: quantity + 1,
+                      });
+                      setQuantity(prev => prev + 1);
+                    }}
                     // onMouseDown={handleMouseDownPassword}
                     edge="start"
                   >
@@ -368,7 +402,11 @@ export function Product({
                     disabled={inCartProductQty === 0}
                     className={classes.gridItem2}
                     aria-label="toggle password visibility"
-                    onClick={handleMinusChange}
+                    onClick={() => {
+                      handleMinusChange();
+                      updateCartItem(id, 'quantity', -1);
+                      setQuantity(prev => prev - 1);
+                    }}
                     // onMouseDown={handleMouseDownPassword}
                     edge="end"
                   >
@@ -377,7 +415,11 @@ export function Product({
                 </Grid>
               </>
             )}
-            {variants && (
+
+            {((typeof type === 'undefined' &&
+              typeof variants !== 'undefined') ||
+              (type === 'A_LA_CARTE' && variants.length > 0) ||
+              (type === 'COMBO' && comboVariants.length > 0)) && (
               <>
                 <Grid item xs={12} className={classes.gridItem}>
                   <IconButton
@@ -402,14 +444,18 @@ export function Product({
         title={name}
         image={image}
       />
-      {variants &&
+      {((typeof type === 'undefined' && typeof variants !== 'undefined') ||
+        (type === 'A_LA_CARTE' && variants.length > 0) ||
+        (type === 'COMBO' && comboVariants.length > 0)) && (
         <VariantDialog
           name={name}
-          variants={variants}
+          type={type}
+          price={price}
+          variants={variants.length > 0 ? variants : comboVariants}
           isOpen={isVariantDialogOpen}
           handleClose={() => setIsVariantDialogOpen(false)}
         />
-      }
+      )}
     </>
   );
 }
@@ -417,17 +463,12 @@ export function Product({
 Product.propTypes = {
   item: PropTypes.object,
   initVariant: PropTypes.func,
-  addProduct: PropTypes.func,
-  removeProduct: PropTypes.func,
-  id: PropTypes.any,
 };
 
 function mapDispatchToProps(dispatch) {
   return {
     initVariant: (productName, variantList, inCartProducts) =>
       dispatch(initVariantOfProduct(productName, variantList, inCartProducts)),
-    addProduct: item => dispatch(addProductToCart(item)),
-    removeProduct: item => dispatch(removeProductFromCart(item)),
   };
 }
 

@@ -97,6 +97,10 @@ export default defineMessages({
     id: `${scope}.deliveryTime`,
     defaultMessage: 'Delivery Time',
   },
+  reviewDeliveryTime: {
+    id: `${scope}.reviewDeliveryTime`,
+    defaultMessage: 'Delivery Time',
+  },
   pickUpDate: {
     id: `${scope}.pickUpDate`,
     defaultMessage: 'Pickup Date',
@@ -158,8 +162,6 @@ export default defineMessages({
     id: `${scope}.tableNumberError`,
     defaultMessage: 'Required, maximum characters allowed: 12',
   },
-
-
   receivedOrder: {
     id: `${scope}.receivedOrder`,
     defaultMessage:

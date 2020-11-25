@@ -20,8 +20,8 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import { grey } from '@material-ui/core/colors';
-
 import BottomNavigation from 'components/MyBottomNavigation/Loadable';
+import { CartProvider } from '../../context/Cart/CartProvider';
 import PopUpInfo from '../PopUpInfo';
 // import GlobalStyle from '../../global-styles';
 
@@ -55,6 +55,16 @@ const theme = createMuiTheme({
       background: '#f5f5f5',
     },
   },
+  aLaCarteVariantPopUp: {
+    table: {
+      minWidth: 280,
+    },
+  },
+  comboVariantPopUp: {
+    dialog: {
+      minWidth: 350,
+    },
+  },
 });
 
 // eslint-disable-next-line react/prop-types
@@ -81,12 +91,14 @@ export default function App({ runtime }) {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <AppBar />
-        <Switch>
-          <Route exact path="/" component={MenuPage} />
-          <Route exact path="/details" component={DetailsPage} />
-          <Route exact path="/menu" component={MenuPage} />
-          <Route exact path="/shopInfo" component={ShopInfoPage} />
-        </Switch>
+        <CartProvider>
+          <Switch>
+            <Route exact path="/" component={MenuPage} />
+            <Route exact path="/details" component={DetailsPage} />
+            <Route exact path="/menu" component={MenuPage} />
+            <Route exact path="/shopInfo" component={ShopInfoPage} />
+          </Switch>
+        </CartProvider>
         <PopUpInfo
           isOpen={popUpOpen}
           setPopUpOpen={setPopUpOpen}
