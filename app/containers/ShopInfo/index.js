@@ -16,7 +16,6 @@ import LocationIcon from '@material-ui/icons/Room';
 import PhoneIcon from '@material-ui/icons/Phone';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
@@ -30,8 +29,7 @@ import messages from './messages';
 import ShopInfoImage from '../../images/shopInfo.jpg';
 // import businessLogo from '../../images/icon-512x512.png';
 // import messages from './messages';
-import { MyMapComponent } from '../../components/MyMapComponent';
-import 'leaflet/dist/leaflet.css';
+
 const useStyles = makeStyles(theme => ({
   toolbar: {
     minHeight: '150px',
@@ -130,16 +128,20 @@ export function ShopInfo() {
             </a>
             <br />
             <br />
-            <FacebookIcon />
-            &nbsp; <FormattedMessage {...messages.facebook} />{' '}
-            <a
-              href={process.env.SHOP_INFO_BUSINESS_FACEBOOK_LINK}
-              style={{ textDecoration: 'underline', color: 'blue' }}
-            >
-              {process.env.SHOP_INFO_BUSINESS_FACEBOOK}
-            </a>
-            <br />
-            <br />
+            {process.env.SHOP_INFO_BUSINESS_FACEBOOK && (
+              <>
+                <FacebookIcon />
+                &nbsp; <FormattedMessage {...messages.facebook} />{' '}
+                <a
+                  href={process.env.SHOP_INFO_BUSINESS_FACEBOOK_LINK}
+                  style={{ textDecoration: 'underline', color: 'blue' }}
+                >
+                  {process.env.SHOP_INFO_BUSINESS_FACEBOOK}
+                </a>
+                <br />
+                <br />
+              </>
+            )}
             {process.env.SHOP_INFO_BUSINESS_INSTAGRAM && (
               <>
                 <InstagramIcon />
