@@ -173,7 +173,7 @@ export function Product({
   const { cartItems } = useCart();
   // console.log('**CartItems', cartItems);
 
-  if (type === 'A_LA_CARTE') {
+  if (typeof type === 'undefined' || type === 'A_LA_CARTE') {
     if (variants && variants.length !== 0) {
       // eslint-disable-next-line no-shadow
       const variantsIdList = variants.map(({ id }) => id);
@@ -258,9 +258,9 @@ export function Product({
 
     const hasVariants =
       // the next line is for backwards compatibility
-      (typeof type === 'undefined' && typeof variants !== 'undefined') ||
-      (type === 'A_LA_CARTE' && variants.length > 0) ||
-      (type === 'COMBO' && comboVariants.length > 0);
+      (typeof type === 'undefined' && variants && variants.length > 0) ||
+      (type === 'A_LA_CARTE' && variants && variants.length > 0) ||
+      (type === 'COMBO' && comboVariants && comboVariants.length > 0);
 
     if (hasVariants) {
       initVariant(name, variants, inCartProducts);
@@ -373,7 +373,7 @@ export function Product({
               />
             </Grid>
             {((typeof type === 'undefined' &&
-              typeof variants === 'undefined') ||
+              (typeof variants === 'undefined' || variants.length === 0)) ||
               (type === 'A_LA_CARTE' &&
                 (typeof variants === 'undefined' || variants.length === 0)) ||
               (type === 'COMBO' &&
@@ -421,9 +421,12 @@ export function Product({
             )}
 
             {((typeof type === 'undefined' &&
-              typeof variants !== 'undefined') ||
-              (type === 'A_LA_CARTE' && variants.length > 0) ||
-              (type === 'COMBO' && comboVariants.length > 0)) && (
+              variants &&
+              variants.length > 0) ||
+              (type === 'A_LA_CARTE' && variants && variants.length > 0) ||
+              (type === 'COMBO' &&
+                comboVariants &&
+                comboVariants.length > 0)) && (
               <>
                 <Grid item xs={12} className={classes.gridItem}>
                   <IconButton
@@ -448,9 +451,9 @@ export function Product({
         title={name}
         image={image}
       />
-      {((typeof type === 'undefined' && typeof variants !== 'undefined') ||
-        (type === 'A_LA_CARTE' && variants.length > 0) ||
-        (type === 'COMBO' && comboVariants.length > 0)) && (
+      {((typeof type === 'undefined' && variants && variants.length > 0) ||
+        (type === 'A_LA_CARTE' && variants && variants.length > 0) ||
+        (type === 'COMBO' && comboVariants && comboVariants.length > 0)) && (
         <VariantDialog
           name={name}
           type={type}
