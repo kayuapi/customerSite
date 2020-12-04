@@ -54,9 +54,9 @@ export function VariantDialog({
 
 VariantDialog.propTypes = {
   name: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
+  type: PropTypes.string,
   price: PropTypes.string,
-  variants: PropTypes.array.isRequired,
+  variants: PropTypes.array,
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
 };
