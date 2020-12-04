@@ -78,6 +78,16 @@ function getLocalISODateString(date) {
   );
 }
 
+function getRandomTime(start) {
+  const date = new Date(+start);
+  const hour = Math.random() * 23;
+  const min = Math.random() * 59;
+  const sec = Math.random() * 59;
+  const milliSec = Math.random() * 999;
+  date.setHours(hour, min, sec, milliSec);
+  return date;
+}
+
 export function Review({
   clearForm,
   clearCart,
@@ -97,12 +107,33 @@ export function Review({
       if (cartItems.length === 0) {
         throw new Error('EmptyOrderError');
       }
-      const orderId = String(
-        new Date().getTime() +
-          Math.random()
-            .toString(36)
-            .substring(2, 4),
-      );
+      let orderId = '';
+      if (fullOrderToSubmit.fulfillmentMethod === 'DELIVERY') {
+        orderId = String(
+          getRandomTime(
+            new Date(fullOrderToSubmit.deliveryDate).getTime(),
+          ).getTime() +
+            Math.random()
+              .toString(36)
+              .substring(2, 4),
+        );
+      } else if (fullOrderToSubmit.fulfillmentMethod === 'SELF_PICKUP') {
+        orderId = String(
+          getRandomTime(
+            new Date(fullOrderToSubmit.pickUpDate).getTime(),
+          ).getTime() +
+            Math.random()
+              .toString(36)
+              .substring(2, 4),
+        );
+      } else {
+        orderId = String(
+          new Date().getTime() +
+            Math.random()
+              .toString(36)
+              .substring(2, 4),
+        );
+      }
       let toSubmitData = {
         shopId: `${process.env.BUSINESS_NAME}`,
         fulfillmentMethod: fullOrderToSubmit.fulfillmentMethod,
