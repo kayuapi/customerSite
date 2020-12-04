@@ -53,6 +53,7 @@ const useStyles = makeStyles(theme => ({
   },
   tabs: {
     background: theme.mixins.tabs.background,
+    color: theme.palette.primary.main,
   },
   tabPanel: {
     paddingLeft: theme.spacing(0),
@@ -220,7 +221,7 @@ export function MenuPage({ openCart }) {
             value={value}
             onChange={handleChange}
             indicatorColor="primary"
-            textColor="primary"
+            textColor="inherit"
             className={classes.tabs}
             variant="scrollable"
             scrollButtons="on"
