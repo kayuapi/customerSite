@@ -244,6 +244,10 @@ export default defineMessages({
     id: `${scope}.favepay`,
     defaultMessage: 'Fave Pay',
   },
+  qrpay: {
+    id: `${scope}.qrpay`,
+    defaultMessage: 'Maybank QR Pay',
+  },
   dateError: {
     id: `${scope}.dateError`,
     defaultMessage: "only accept next day's order for now",

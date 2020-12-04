@@ -14,4 +14,5 @@ export const PAYMENT_METHODS = {
   CASH: 'CASH',
   GRABPAY: 'GRABPAY',
   FAVEPAY: 'FAVEPAY',
+  QRPAY: 'QRPAY',
 };
