@@ -1,3 +1,5 @@
+/* eslint-disable indent */
+/* eslint-disable no-nested-ternary */
 /* eslint-disable no-useless-escape */
 /**
  *
@@ -70,6 +72,7 @@ const useStyles = makeStyles(theme => ({
   resize: {
     fontSize: 16,
     textAlign: 'center',
+    // color: 'white',
   },
   content: {
     flex: '1 0 auto',
@@ -94,6 +97,7 @@ const useStyles = makeStyles(theme => ({
     paddingBottom: theme.spacing(1),
     justifyContent: 'center',
     marginBottom: theme.spacing(0),
+    height: '120px',
     // color: 'white',
   },
   gridItem: {
@@ -451,7 +455,15 @@ export function Product({
           name={name}
           type={type}
           price={price}
-          variants={variants.length > 0 ? variants : comboVariants}
+          variants={
+            type === 'A_LA_CARTE'
+              ? variants
+              : type === 'COMBO'
+              ? comboVariants
+              : typeof type === 'undefined'
+              ? variants
+              : null
+          }
           isOpen={isVariantDialogOpen}
           handleClose={() => setIsVariantDialogOpen(false)}
         />
