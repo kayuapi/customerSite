@@ -49,7 +49,6 @@ export default function CheckboxList({
       modifyAbidingRules(false);
     }
   }, [checked]);
-
   const handleToggle = (id, name, price) => () => {
     const currentIndex = checked.indexOf(id);
     const newChecked = [...checked];
@@ -78,6 +77,43 @@ export default function CheckboxList({
         ...prev,
         comboVariants: newComboVariants,
       }));
+    } else if (!required && Number(maxSelectionNumber) <= 1) {
+      if (checked.length === 1) {
+        newChecked.splice(0, newChecked.length);
+        // eslint-disable-next-line no-shadow
+        const namesInList = items.map(({ name }) => name);
+        newComboVariants = newComboVariants.filter(
+          el => namesInList.indexOf(el.name) < 0,
+        );
+        // has been checked, now need to switch it
+        if (checked[0] !== id) {
+          newChecked.push(id);
+          newComboVariants.push({
+            id,
+            name,
+            // eslint-disable-next-line no-useless-escape
+            price: Number(price.replace(/[^0-9\.]+/g, '')),
+          });
+        }
+      } else {
+        newChecked.push(id);
+        newComboVariants.push({
+          id,
+          name,
+          // eslint-disable-next-line no-useless-escape
+          price: Number(price.replace(/[^0-9\.]+/g, '')),
+        });
+      }
+      setChecked(newChecked);
+      setProductToAddToCart(prev => ({
+        ...prev,
+        comboVariants: newComboVariants,
+      }));
+    } else if (
+      newChecked.indexOf(id) < 0 &&
+      newChecked.length + 1 > Number(maxSelectionNumber)
+      // eslint-disable-next-line no-empty
+    ) {
     } else {
       if (currentIndex === -1) {
         newChecked.push(id);
