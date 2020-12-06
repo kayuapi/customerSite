@@ -32,9 +32,16 @@ export function PopUpInfo({
     setPopUpOpen(false);
   };
   const updateWebsite = () => {
-    runtime.applyUpdate();
     setPopUpOpen(false);
   };
+  React.useEffect(() => {
+    if (updateMessageFromVendor) {
+      setTimeout(() => {
+        runtime.applyUpdate();
+      }, 500);
+    }
+  }, [updateMessageFromVendor]);
+
   return (
     <Dialog
       open={isOpen}
