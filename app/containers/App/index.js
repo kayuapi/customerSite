@@ -86,6 +86,11 @@ export default function App({ runtime }) {
       },
     });
   }
+  React.useEffect(() => {
+    if (updateMessageFromVendor) {
+      runtime.applyUpdate();
+    }
+  }, [updateMessageFromVendor]);
   return (
     <div>
       <ThemeProvider theme={theme}>
