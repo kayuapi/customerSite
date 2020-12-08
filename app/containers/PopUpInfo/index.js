@@ -22,25 +22,13 @@ import Button from '@material-ui/core/Button';
 
 import messages from './messages';
 
-export function PopUpInfo({
-  isOpen,
-  setPopUpOpen,
-  updateMessageFromVendor,
-  runtime,
-}) {
+export function PopUpInfo({ isOpen, setPopUpOpen, updateMessageFromVendor }) {
   const closePopUp = () => {
     setPopUpOpen(false);
   };
   const updateWebsite = () => {
     setPopUpOpen(false);
   };
-  React.useEffect(() => {
-    if (updateMessageFromVendor) {
-      setTimeout(() => {
-        runtime.applyUpdate();
-      }, 500);
-    }
-  }, [updateMessageFromVendor]);
 
   return (
     <Dialog
@@ -99,7 +87,6 @@ PopUpInfo.propTypes = {
   setPopUpOpen: PropTypes.func.isRequired,
   dispatch: PropTypes.func.isRequired,
   updateMessageFromVendor: PropTypes.bool,
-  runtime: PropTypes.object,
 };
 
 function mapDispatchToProps(dispatch) {

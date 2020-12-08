@@ -113,7 +113,9 @@ const App = ({ runtime, fixTableNumber, fixPrefix, tableNumber, prefix }) => {
   }
   React.useEffect(() => {
     if (updateMessageFromVendor) {
-      runtime.applyUpdate();
+      setTimeout(() => {
+        runtime.applyUpdate();
+      }, 500);
     }
   }, [updateMessageFromVendor]);
   React.useEffect(() => {
@@ -149,7 +151,6 @@ const App = ({ runtime, fixTableNumber, fixPrefix, tableNumber, prefix }) => {
           isOpen={popUpOpen}
           setPopUpOpen={setPopUpOpen}
           updateMessageFromVendor={updateMessageFromVendor}
-          runtime={runtime}
         />
         <BottomNavigation />
         {/* <GlobalStyle /> */}
