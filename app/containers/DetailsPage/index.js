@@ -23,7 +23,6 @@ import { configureBusinessName } from './actions';
 import { FULFILLMENT_METHODS } from './schema';
 
 import AddressForm from './AddressForm';
-import PaymentForm from './PaymentForm';
 import Review from './Review';
 import {
   makeSelectOrderNumber,
@@ -90,7 +89,6 @@ export function DetailsPage({
   const handleNext = () => {
     setActiveStep(activeStep + 1);
   };
-
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };

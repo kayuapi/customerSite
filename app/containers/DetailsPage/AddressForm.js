@@ -19,6 +19,8 @@ import {
   TimePicker,
 } from '@material-ui/pickers';
 import {
+  makeSelectTableNumber,
+  makeSelectPrefix,
   makeSelectFulfillmentMethod,
   makeSelectFulfillmentDerivatives,
   makeSelectPostScript,
@@ -76,6 +78,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export function AddressForm({
+  prefix,
+  tableNumber,
   fulfillmentMethod,
   fulfillmentDerivatives,
   postScript,
@@ -118,7 +122,6 @@ export function AddressForm({
     configurePaymentMethod(submittedPaymentMethod);
     handleNext();
   };
-
   return (
     <React.Fragment>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -128,29 +131,56 @@ export function AddressForm({
               <FormattedMessage {...messages.fulfillmentMethods} />
             </Typography>
           </Grid>
-          <Grid item xs={12}>
-            <Controller
-              as={
-                <Select fullWidth>
-                  <MenuItem value={FULFILLMENT_METHODS.DINE_IN}>
-                    <FormattedMessage {...messages.onPremise} />
-                  </MenuItem>
-                  <MenuItem value={FULFILLMENT_METHODS.SELF_PICKUP}>
-                    <FormattedMessage {...messages.selfPickUp} />
-                  </MenuItem>
-                  <MenuItem value={FULFILLMENT_METHODS.DELIVERY}>
-                    <FormattedMessage {...messages.delivery} />
-                  </MenuItem>
-                </Select>
-              }
-              control={control}
-              rules={{ required: true }}
-              name="fulfillmentMethod"
-              defaultValue={fulfillmentMethod}
-            />
-          </Grid>
+          {!prefix && (
+            <Grid item xs={12}>
+              <Controller
+                as={
+                  <Select fullWidth>
+                    <MenuItem value={FULFILLMENT_METHODS.DINE_IN}>
+                      <FormattedMessage {...messages.onPremise} />
+                    </MenuItem>
+                    <MenuItem value={FULFILLMENT_METHODS.SELF_PICKUP}>
+                      <FormattedMessage {...messages.selfPickUp} />
+                    </MenuItem>
+                    <MenuItem value={FULFILLMENT_METHODS.DELIVERY}>
+                      <FormattedMessage {...messages.delivery} />
+                    </MenuItem>
+                  </Select>
+                }
+                control={control}
+                rules={{ required: true }}
+                name="fulfillmentMethod"
+                defaultValue={fulfillmentMethod}
+              />
+            </Grid>
+          )}
+          {prefix && (
+            <Grid item xs={12}>
+              <Controller
+                as={
+                  <Select fullWidth>
+                    <MenuItem value={FULFILLMENT_METHODS.DINE_IN}>
+                      <FormattedMessage {...messages.onPremise} />
+                    </MenuItem>
+                    <MenuItem value={FULFILLMENT_METHODS.SELF_PICKUP}>
+                      <FormattedMessage {...messages.selfPickUp} />
+                    </MenuItem>
+                    <MenuItem value={FULFILLMENT_METHODS.DELIVERY}>
+                      <FormattedMessage {...messages.delivery} />
+                    </MenuItem>
+                  </Select>
+                }
+                control={control}
+                rules={{ required: true }}
+                disabled
+                name="fulfillmentMethod"
+                defaultValue={prefix}
+              />
+            </Grid>
+          )}
 
-          {watchDeliveryOption === FULFILLMENT_METHODS.SELF_PICKUP && (
+          {(prefix === FULFILLMENT_METHODS.SELF_PICKUP ||
+            watchDeliveryOption === FULFILLMENT_METHODS.SELF_PICKUP) && (
             <>
               <Grid item xs={12}>
                 <Typography variant="h6" gutterBottom>
@@ -227,7 +257,7 @@ export function AddressForm({
                     // onChange={date => console.log(typeof(date[1]))}
                     name="pickUpDate"
                     // onChange={([date]) => date}
-                    //onChange={date => setValue('datePick', date[1])}
+                    // onChange={date => setValue('datePick', date[1])}
                     // defaultValue={defaultAddressForm.pickUpDate}
                     defaultValue={
                       new Date()
@@ -325,7 +355,8 @@ export function AddressForm({
             </>
           )}
 
-          {watchDeliveryOption === FULFILLMENT_METHODS.DINE_IN && (
+          {(prefix === FULFILLMENT_METHODS.DINE_IN ||
+            watchDeliveryOption === FULFILLMENT_METHODS.DINE_IN) && (
             <>
               <Grid item xs={12}>
                 <Typography variant="h6" gutterBottom>
@@ -338,13 +369,14 @@ export function AddressForm({
                   helperText={
                     <FormattedMessage {...messages.tableNumberError} />
                   }
+                  disabled={Boolean(prefix)}
                   inputRef={register({ required: true, maxLength: 12 })}
                   name="tableNumber"
                   autoComplete="off"
                   label={<FormattedMessage {...messages.tableNumber} />}
                   fullWidth
                   type="text"
-                  defaultValue={fulfillmentDerivatives.tableNumber}
+                  defaultValue={tableNumber}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -364,7 +396,8 @@ export function AddressForm({
             </>
           )}
 
-          {watchDeliveryOption === FULFILLMENT_METHODS.DELIVERY && (
+          {(prefix === FULFILLMENT_METHODS.DELIVERY ||
+            watchDeliveryOption === FULFILLMENT_METHODS.DELIVERY) && (
             <>
               <Grid item xs={12}>
                 <Typography variant="h6" gutterBottom>
@@ -454,7 +487,7 @@ export function AddressForm({
                     // onChange={date => console.log(typeof(date[1]))}
                     name="deliveryDate"
                     // onChange={([date]) => date}
-                    //onChange={date => setValue('datePick', date[1])}
+                    // onChange={date => setValue('datePick', date[1])}
                     // defaultValue={defaultAddressForm.pickUpDate}
                     defaultValue={
                       new Date()
@@ -557,11 +590,6 @@ export function AddressForm({
             </>
           )}
 
-
-
-
-
-
           <Grid item xs={12}>
             <div className={classes.buttons}>
               {currentPage !== 0 && (
@@ -597,6 +625,8 @@ export function AddressForm({
 }
 
 AddressForm.propTypes = {
+  prefix: PropTypes.string,
+  tableNumber: PropTypes.string,
   fulfillmentMethod: PropTypes.string.isRequired,
   fulfillmentDerivatives: PropTypes.object.isRequired,
   postScript: PropTypes.string,
@@ -618,6 +648,8 @@ const mapStateToProps = createStructuredSelector({
   fulfillmentDerivatives: makeSelectFulfillmentDerivatives(),
   postScript: makeSelectPostScript(),
   paymentMethod: makeSelectPaymentMethod(),
+  prefix: makeSelectPrefix(),
+  tableNumber: makeSelectTableNumber(),
 });
 
 function mapDispatchToProps(dispatch) {

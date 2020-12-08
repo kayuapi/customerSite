@@ -13,6 +13,18 @@ const makeSelectOrderNumber = () =>
     substate => substate.orderNumber,
   );
 
+const makeSelectPrefix = () =>
+  createSelector(
+    selectDetailsPageDomain,
+    substate => substate.prefix,
+  );
+
+const makeSelectTableNumber = () =>
+  createSelector(
+    selectDetailsPageDomain,
+    substate => substate.tableNumber,
+  );
+
 const makeSelectPaymentMethod = () =>
   createSelector(
     selectDetailsPageDomain,
@@ -102,6 +114,8 @@ const makeSelectAddressFormSubmission = () =>
 export {
   selectDetailsPageDomain,
   makeSelectPaymentMethod,
+  makeSelectTableNumber,
+  makeSelectPrefix,
   makeSelectFulfillmentDerivatives,
   makeSelectFullName,
   makeSelectAddress,

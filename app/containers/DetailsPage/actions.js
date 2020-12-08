@@ -5,6 +5,8 @@
  */
 import {
   CONFIGURE_BUSINESS_NAME,
+  CONFIGURE_TABLE_NUMBER,
+  CONFIGURE_PREFIX,
   CONFIGURE_ORDER_NUMBER,
   CONFIGURE_FULFILLMENT_METHOD,
   CONFIGURE_FULFILLMENT_DERIVATIVES,
@@ -13,12 +15,24 @@ import {
   RESET_ALL_FORM_EXCEPT_BUSINESS_NAME,
 } from './constants';
 
-const uniqid = require('uniqid');
-
 export function configureBusinessName({ businessName }) {
   return {
     type: CONFIGURE_BUSINESS_NAME,
     businessName,
+  };
+}
+
+export function configureTableNumber({ tableNumber }) {
+  return {
+    type: CONFIGURE_TABLE_NUMBER,
+    tableNumber,
+  };
+}
+
+export function configurePrefix({ prefix }) {
+  return {
+    type: CONFIGURE_PREFIX,
+    prefix,
   };
 }
 

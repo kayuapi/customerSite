@@ -6,6 +6,8 @@
 import produce from 'immer';
 import {
   CONFIGURE_BUSINESS_NAME,
+  CONFIGURE_TABLE_NUMBER,
+  CONFIGURE_PREFIX,
   CONFIGURE_ORDER_NUMBER,
   CONFIGURE_FULFILLMENT_METHOD,
   CONFIGURE_FULFILLMENT_DERIVATIVES,
@@ -15,6 +17,7 @@ import {
 } from './constants';
 
 export const initialState = {
+  prefix: '',
   businessName: '',
   orderNumber: `${String(
     new Date().getTime() +
@@ -54,6 +57,14 @@ const detailsPageReducer = (state = initialState, action) =>
     switch (action.type) {
       case CONFIGURE_BUSINESS_NAME:
         draft.businessName = action.businessName;
+        break;
+
+      case CONFIGURE_TABLE_NUMBER:
+        draft.tableNumber = action.tableNumber;
+        break;
+
+      case CONFIGURE_PREFIX:
+        draft.prefix = action.prefix;
         break;
 
       case CONFIGURE_FULFILLMENT_METHOD:
