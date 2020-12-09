@@ -67,6 +67,9 @@ const theme = createMuiTheme({
     tabs: {
       background: '#f5f5f5',
     },
+    expandedMenu: {
+      selected: grey[300],
+    },
   },
   aLaCarteVariantPopUp: {
     table: {

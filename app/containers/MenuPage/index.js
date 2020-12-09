@@ -15,14 +15,21 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
 import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
+
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import Fab from '@material-ui/core/Fab';
 import Box from '@material-ui/core/Box';
+import Popover from '@material-ui/core/Popover';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
 
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import AppBar from '@material-ui/core/AppBar';
 import Badge from '@material-ui/core/Badge';
@@ -51,6 +58,25 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: theme.spacing(0.5),
     paddingRight: theme.spacing(0.5),
   },
+  categoryContainer: {
+    background: theme.mixins.tabs.background,
+    color: theme.palette.primary.main,
+  },
+  expandButton: {
+    color: theme.palette.primary.main,
+  },
+  popOverPaper: {
+    background: theme.mixins.tabs.background,
+    color: theme.palette.primary.main,
+    maxHeight: '300px',
+    overflow: 'scroll',
+  },
+  expandedMenu: {
+    '&$selected': {
+      backgroundColor: theme.mixins.expandedMenu.selected,
+    },
+  },
+  selected: {},
   tabs: {
     background: theme.mixins.tabs.background,
     color: theme.palette.primary.main,
@@ -145,6 +171,19 @@ export function MenuPage({ openCart }) {
   const [maintenceMode, setMaintenanceMode] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  const [open, setOpen] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const handleSetAnchorEl = event => {
+    setAnchorEl(event.currentTarget);
+    setOpen(prev => !prev);
+  };
+
+  // eslint-disable-next-line no-unused-vars
+  const handleClose = event => {
+    setAnchorEl(null);
+    setOpen(false);
+  };
+
   async function grabFromDb(hostName, item) {
     // await Auth.currentCredentials;
     const apiName = 'amplifyChmboxOrderingApi';
@@ -206,6 +245,7 @@ export function MenuPage({ openCart }) {
     requestMenuItems().then(items => {
       setMenuItems(items);
     });
+    window.scrollTo({ top: 150, behavior: `smooth` });
   };
 
   return (
@@ -217,21 +257,39 @@ export function MenuPage({ openCart }) {
       <div className={classes.toolbar} />
       <div className={classes.root}>
         <AppBar position="sticky" color="default">
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            indicatorColor="primary"
-            textColor="inherit"
-            className={classes.tabs}
-            variant="scrollable"
-            scrollButtons="on"
-            aria-label="scrollable auto tabs example"
+          <Grid
+            className={classes.categoryContainer}
+            container
+            alignItems="center"
+            justify="center"
           >
-            {categories &&
-              categories.map((el, index) => (
-                <Tab key={el.id} label={el.name} {...a11yProps(index)} />
-              ))}
-          </Tabs>
+            <Grid item xl={1} lg={1} md={1} sm={1} xs={1}>
+              <IconButton
+                className={classes.expandButton}
+                onClick={e => handleSetAnchorEl(e)}
+                // aria-label="add page"
+              >
+                <ExpandMoreIcon />
+              </IconButton>
+            </Grid>
+            <Grid item xl={11} lg={11} md={11} sm={11} xs={11}>
+              <Tabs
+                value={value}
+                onChange={handleChange}
+                indicatorColor="primary"
+                textColor="inherit"
+                className={classes.tabs}
+                variant="scrollable"
+                scrollButtons="on"
+                aria-label="scrollable auto tabs example"
+              >
+                {categories &&
+                  categories.map((el, index) => (
+                    <Tab key={el.id} label={el.name} {...a11yProps(index)} />
+                  ))}
+              </Tabs>
+            </Grid>
+          </Grid>
         </AppBar>
         {maintenceMode && <UnderMaintenanceIllustration />}
         {categories && (
@@ -299,6 +357,45 @@ export function MenuPage({ openCart }) {
           <ShoppingCartIcon />
         </Badge>
       </Fab>
+      <Popover
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        transformOrigin={{
+          vertical: -6,
+          horizontal: 'left',
+        }}
+        PaperProps={{
+          classes: { root: classes.popOverPaper },
+        }}
+      >
+        <MenuList autoFocusItem={open} id="menu-list-grow">
+          {categories &&
+            categories.map((categoryItem, index) => (
+              <MenuItem
+                classes={{
+                  root: classes.expandedMenu,
+                  selected: classes.selected,
+                }}
+                key={categoryItem.id}
+                selected={index === value}
+                onClick={e => {
+                  const newValue = categories
+                    .map(ct => ct.name)
+                    .indexOf(categoryItem.name);
+                  handleChange(e, newValue);
+                  handleClose(e);
+                }}
+              >
+                {categoryItem.name}
+              </MenuItem>
+            ))}
+        </MenuList>
+      </Popover>
 
       <CartPage />
     </div>
