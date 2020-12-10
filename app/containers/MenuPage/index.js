@@ -384,10 +384,7 @@ export function MenuPage({ openCart }) {
                 key={categoryItem.id}
                 selected={index === value}
                 onClick={e => {
-                  const newValue = categories
-                    .map(ct => ct.name)
-                    .indexOf(categoryItem.name);
-                  handleChange(e, newValue);
+                  handleChange(e, index);
                   handleClose(e);
                 }}
               >
