@@ -90,6 +90,7 @@
   "app.containers.DetailsPage.selfPickUp": "Self Pick-up",
   "app.containers.DetailsPage.shippingAddress": "Maklumat",
   "app.containers.DetailsPage.stateProvinceRegion": "Negeri",
+  "app.containers.DetailsPage.submitting": "Sedang pesan...",
   "app.containers.DetailsPage.tableNumber": "Nombor meja",
   "app.containers.DetailsPage.tableNumberError": "Diperlukan, had watak: 20",
   "app.containers.DetailsPage.thankYou": "Terima kasih atas pesanan anda",

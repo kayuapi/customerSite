@@ -90,6 +90,7 @@
   "app.containers.DetailsPage.selfPickUp": "自取",
   "app.containers.DetailsPage.shippingAddress": "资料",
   "app.containers.DetailsPage.stateProvinceRegion": "州属",
+  "app.containers.DetailsPage.submitting": "下单中...",
   "app.containers.DetailsPage.tableNumber": "桌位号码",
   "app.containers.DetailsPage.tableNumberError": "必填， 字数限制：12",
   "app.containers.DetailsPage.thankYou": "谢谢您的订单",

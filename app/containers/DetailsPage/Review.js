@@ -102,7 +102,9 @@ export function Review({
   const classes = useStyles();
   const { handleSubmit } = useForm();
   const { cartItems, clearCartItems } = useCart();
+  const [submitting, setSubmitting] = useState(false);
   const onSubmit = () => {
+    setSubmitting(true);
     try {
       if (cartItems.length === 0) {
         throw new Error('EmptyOrderError');
@@ -254,10 +256,12 @@ export function Review({
           clearCart();
         })
         .catch(err => {
+          setSubmitting(false);
           setIsErrorPopUpOpen(true);
           setErrorMessage(err.errors[0].message);
         });
     } catch (err) {
+      setSubmitting(false);
       if (err.message === 'EmptyOrderError') {
         setIsErrorPopUpOpen(true);
         setErrorMessage(err.message);
@@ -518,29 +522,33 @@ export function Review({
             )}
             <form onSubmit={handleSubmit(onSubmit)}>
               <Button
+                disabled={submitting}
                 variant="contained"
                 color="primary"
                 className={classes.button}
                 type="submit"
               >
-                {currentPage === numberOfPage - 1 &&
+                {!submitting && currentPage === numberOfPage - 1 &&
                   fullOrderToSubmit.fulfillmentMethod ===
                     FULFILLMENT_METHODS.DELIVERY && (
                   <FormattedMessage
                     {...messages.placeOrderAndWhatsappNotify}
                   />
                 )}
-                {currentPage === numberOfPage - 1 &&
+                {!submitting && currentPage === numberOfPage - 1 &&
                   fullOrderToSubmit.fulfillmentMethod ===
                     FULFILLMENT_METHODS.SELF_PICKUP && (
                   <FormattedMessage
                     {...messages.placeOrderAndWhatsappNotify}
                   />
                 )}
-                {currentPage === numberOfPage - 1 &&
+                {!submitting && currentPage === numberOfPage - 1 &&
                   fullOrderToSubmit.fulfillmentMethod ===
                     FULFILLMENT_METHODS.DINE_IN && (
                   <FormattedMessage {...messages.placeOrder} />
+                )}
+                {submitting && currentPage === numberOfPage - 1 && (
+                  <FormattedMessage {...messages.submitting} />
                 )}
                 {currentPage !== numberOfPage - 1 && (
                   <FormattedMessage {...messages.next} />

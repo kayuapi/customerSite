@@ -273,4 +273,8 @@ export default defineMessages({
     defaultMessage:
       '***Click send to notify the shop about this order.***{linebreak}Order number: {orderNumber}.',
   },
+  submitting: {
+    id: `${scope}.submitting`,
+    defaultMessage: 'Placing order...',
+  },
 });

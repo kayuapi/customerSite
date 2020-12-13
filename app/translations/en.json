@@ -90,6 +90,7 @@
   "app.containers.DetailsPage.selfPickUp": "Self Pick-up",
   "app.containers.DetailsPage.shippingAddress": "Contact",
   "app.containers.DetailsPage.stateProvinceRegion": "State/Province/Region",
+  "app.containers.DetailsPage.submitting": "Placing order...",
   "app.containers.DetailsPage.tableNumber": "Table Number",
   "app.containers.DetailsPage.tableNumberError": "Required, character limit: 20",
   "app.containers.DetailsPage.thankYou": "Thank you for your order",
