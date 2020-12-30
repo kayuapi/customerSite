@@ -212,10 +212,10 @@ export function MenuPage({ openCart }) {
       const { categories: categoriesResponse } = retrievedPages;
       if (categoriesResponse) {
         setCategories(categoriesResponse);
-        setCategory(categoriesResponse[0].name);
+        setCategory(categoriesResponse[0].pageId);
         const retrievedPage = await grabFromDb(
           hostName,
-          `PluginMenu%23${categoriesResponse[0].name}`,
+          `PluginMenu%23${categoriesResponse[0].pageId}`,
         );
         const { menuItems: menuItemsResponse } = retrievedPage;
         if (menuItemsResponse) {
@@ -235,13 +235,13 @@ export function MenuPage({ openCart }) {
       const hostName = process.env.BUSINESS_NAME;
       const retrievedPage = await grabFromDb(
         hostName,
-        `PluginMenu%23${categories[newValue].name}`,
+        `PluginMenu%23${categories[newValue].pageId}`,
       );
       return retrievedPage.menuItems;
     }
 
     setValue(newValue);
-    setCategory(categories[newValue].name);
+    setCategory(categories[newValue].pageId);
     requestMenuItems().then(items => {
       setMenuItems(items);
     });
@@ -297,7 +297,7 @@ export function MenuPage({ openCart }) {
             className={classes.tabPanel}
             value={value}
             index={categories
-              .map(e => e.name)
+              .map(e => e.pageId)
               // .map(n => n.name)
               .indexOf(category)}
           >
