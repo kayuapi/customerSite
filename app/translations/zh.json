@@ -129,6 +129,7 @@
   "app.containers.PopUpInfo.updateMessageFromVendor": "此网页已升级",
   "app.containers.Product.choose": "选择",
   "app.containers.Product.orderQuantity": "数量",
+  "app.containers.Product.unavailable": "无库存",
   "app.containers.ShopInfo.address": "地址:",
   "app.containers.ShopInfo.contactNumber": "联络电话:",
   "app.containers.ShopInfo.facebook": "脸书:",

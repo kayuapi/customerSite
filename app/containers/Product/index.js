@@ -163,6 +163,7 @@ SimpleDialog.propTypes = {
 export function Product({
   initVariant,
   item: { id, name, price, image, type, variants, comboVariants },
+  categoryStatus,
 }) {
   useInjectReducer({ key: 'product', reducer });
   const classes = useStyles();
@@ -293,6 +294,23 @@ export function Product({
   return (
     <>
       <Card className={classes.root}>
+        {categoryStatus === 'DISABLED' && (
+          <span
+            style={{
+              background: '#ff0000',
+              color: '#fff',
+              fontSize: '14px',
+              fontWeight: 600,
+              padding: '5px 10px',
+              position: 'absolute',
+              right: '30px',
+              top: '10px',
+              zIndex: 1,
+            }}
+          >
+            <FormattedMessage {...messages.unavailable} />
+          </span>
+        )}
         {image ? (
           <>
             <CardActionArea
@@ -382,6 +400,7 @@ export function Product({
               <>
                 <Grid item xs={6} className={classes.gridItem}>
                   <IconButton
+                    disabled={categoryStatus === 'DISABLED'}
                     className={classes.gridItem2}
                     aria-label="toggle password visibility"
                     onClick={() => {
@@ -403,7 +422,9 @@ export function Product({
                 </Grid>
                 <Grid item xs={6} className={classes.gridItem}>
                   <IconButton
-                    disabled={inCartProductQty === 0}
+                    disabled={
+                      categoryStatus === 'DISABLED' || inCartProductQty === 0
+                    }
                     className={classes.gridItem2}
                     aria-label="toggle password visibility"
                     onClick={() => {
@@ -455,6 +476,7 @@ export function Product({
         (type === 'A_LA_CARTE' && variants && variants.length > 0) ||
         (type === 'COMBO' && comboVariants && comboVariants.length > 0)) && (
         <VariantDialog
+          categoryStatus={categoryStatus}
           name={name}
           type={type}
           price={price}
@@ -476,6 +498,7 @@ export function Product({
 }
 
 Product.propTypes = {
+  categoryStatus: PropTypes.string,
   item: PropTypes.object,
   initVariant: PropTypes.func,
 };

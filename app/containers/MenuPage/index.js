@@ -171,6 +171,8 @@ export function MenuPage({ openCart }) {
   const [maintenceMode, setMaintenanceMode] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  const [categoryStatus, setCategoryStatus] = useState('');
+
   const [open, setOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handleSetAnchorEl = event => {
@@ -213,6 +215,11 @@ export function MenuPage({ openCart }) {
       if (categoriesResponse) {
         setCategories(categoriesResponse);
         setCategory(categoriesResponse[0].pageId);
+        if (categoriesResponse[0].status === 'DISABLED') {
+          setCategoryStatus(categoriesResponse[0].status);
+        } else {
+          setCategoryStatus('');
+        }
         const retrievedPage = await grabFromDb(
           hostName,
           `PluginMenu%23${categoriesResponse[0].pageId}`,
@@ -242,6 +249,11 @@ export function MenuPage({ openCart }) {
 
     setValue(newValue);
     setCategory(categories[newValue].pageId);
+    if (categories[newValue].status === 'DISABLED') {
+      setCategoryStatus(categories[newValue].status);
+    } else {
+      setCategoryStatus('');
+    }
     requestMenuItems().then(items => {
       setMenuItems(items);
     });
@@ -327,7 +339,10 @@ export function MenuPage({ openCart }) {
                   >
                     {menuItems.map(menuItem => (
                       <div key={menuItem.id} data-grid={menuItem.uiLocation}>
-                        <Product item={menuItem} />
+                        <Product
+                          categoryStatus={categoryStatus}
+                          item={menuItem}
+                        />
                       </div>
                     ))}
                   </ResponsiveReactGridLayout>

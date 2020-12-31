@@ -17,4 +17,8 @@ export default defineMessages({
     id: `${scope}.choose`,
     defaultMessage: 'Choose',
   },
+  unavailable: {
+    id: `${scope}.unavailable`,
+    defaultMessage: 'Unavailable',
+  },
 });

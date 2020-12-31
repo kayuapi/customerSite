@@ -28,6 +28,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export function ComboVariantPopUp({
+  categoryStatus,
   name,
   sections,
   price,
@@ -90,7 +91,10 @@ export function ComboVariantPopUp({
           <FormattedMessage {...messages.variantDialogCancel} />
         </Button>
         <Button
-          disabled={!abidingRules.every(el => el === true)}
+          disabled={
+            categoryStatus === 'DISABLED' ||
+            !abidingRules.every(el => el === true)
+          }
           onClick={() => {
             // console.log('productToAddToCart', productToAddToCart);
             createCartItem({
@@ -128,6 +132,7 @@ export function ComboVariantPopUp({
 }
 
 ComboVariantPopUp.propTypes = {
+  categoryStatus: PropTypes.string,
   name: PropTypes.string,
   price: PropTypes.string,
   sections: PropTypes.array,

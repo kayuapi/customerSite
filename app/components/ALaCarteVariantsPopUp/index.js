@@ -31,7 +31,13 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export function ALaCarteVariantPopUp({ name, variants, isOpen, handleClose }) {
+export function ALaCarteVariantPopUp({
+  categoryStatus,
+  name,
+  variants,
+  isOpen,
+  handleClose,
+}) {
   const classes = useStyles();
   const [productsToAddToCart, setProductsToAddToCart] = useState([]);
   const { createCartItem } = useCart();
@@ -88,6 +94,7 @@ export function ALaCarteVariantPopUp({ name, variants, isOpen, handleClose }) {
           <FormattedMessage {...messages.variantDialogCancel} />
         </Button>
         <Button
+          disabled={categoryStatus === 'DISABLED'}
           onClick={() => {
             // console.log('productsToAddToCart', productsToAddToCart);
             if (productsToAddToCart.length >= 1) {
@@ -120,6 +127,7 @@ export function ALaCarteVariantPopUp({ name, variants, isOpen, handleClose }) {
 }
 
 ALaCarteVariantPopUp.propTypes = {
+  categoryStatus: PropTypes.string,
   name: PropTypes.string,
   variants: PropTypes.array,
   isOpen: PropTypes.bool,

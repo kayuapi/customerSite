@@ -129,6 +129,7 @@
   "app.containers.PopUpInfo.updateMessageFromVendor": "The website is updated.",
   "app.containers.Product.choose": "Choose",
   "app.containers.Product.orderQuantity": "qty",
+  "app.containers.Product.unavailable": "Unavailable",
   "app.containers.ShopInfo.address": "Address:",
   "app.containers.ShopInfo.contactNumber": "Contact number:",
   "app.containers.ShopInfo.facebook": "Facebook:",
