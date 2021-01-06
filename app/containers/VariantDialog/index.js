@@ -22,6 +22,7 @@ import ComboVariantSPopUp from '../../components/ComboVariantsPopUp';
 
 export function VariantDialog({
   categoryStatus,
+  status,
   name,
   type: productType,
   price,
@@ -35,6 +36,7 @@ export function VariantDialog({
       {(typeof productType === 'undefined' || productType === 'A_LA_CARTE') && (
         <ALaCarteVariantsPopUp
           categoryStatus={categoryStatus}
+          status={status}
           name={name}
           variants={variants}
           isOpen={isOpen}
@@ -44,6 +46,7 @@ export function VariantDialog({
       {productType === 'COMBO' && (
         <ComboVariantSPopUp
           categoryStatus={categoryStatus}
+          status={status}
           name={name}
           price={price}
           sections={variants}
@@ -57,6 +60,7 @@ export function VariantDialog({
 
 VariantDialog.propTypes = {
   categoryStatus: PropTypes.string,
+  status: PropTypes.string,
   name: PropTypes.string.isRequired,
   type: PropTypes.string,
   price: PropTypes.string,

@@ -163,7 +163,13 @@ export default function CheckboxList({
               primary={name}
             />
             <ListItemSecondaryAction>
-              <ListItemText id={labelId} primary={`+${price}`} />
+              <ListItemText
+                id={labelId}
+                // eslint-disable-next-line no-useless-escape
+                primary={`+RM ${Number(price.replace(/[^0-9\.]+/g, '')).toFixed(
+                  2,
+                )}`}
+              />
             </ListItemSecondaryAction>
           </ListItem>
         );

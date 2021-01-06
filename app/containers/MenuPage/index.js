@@ -297,7 +297,12 @@ export function MenuPage({ openCart }) {
               >
                 {categories &&
                   categories.map((el, index) => (
-                    <Tab key={el.id} label={el.name} {...a11yProps(index)} />
+                    <Tab
+                      style={{ textTransform: 'none' }}
+                      key={el.id}
+                      label={el.name}
+                      {...a11yProps(index)}
+                    />
                   ))}
               </Tabs>
             </Grid>

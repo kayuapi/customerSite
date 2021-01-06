@@ -29,6 +29,7 @@ const useStyles = makeStyles(theme => ({
 
 export function ComboVariantPopUp({
   categoryStatus,
+  status,
   name,
   sections,
   price,
@@ -52,10 +53,10 @@ export function ComboVariantPopUp({
   const [abidingRules, setAbidingRules] = useState(
     new Array(sections.length).fill(false),
   );
-  const observeAbidingRules = (status, ind) => {
+  const observeAbidingRules = (ruleStatus, ind) => {
     setAbidingRules(prev => {
       const abidingRulesCloned = [...prev];
-      abidingRulesCloned[ind] = status;
+      abidingRulesCloned[ind] = ruleStatus;
       return abidingRulesCloned;
     });
   };
@@ -80,7 +81,9 @@ export function ComboVariantPopUp({
             section={section}
             productToAddToCart={productToAddToCart}
             setProductToAddToCart={setProductToAddToCart}
-            modifyAbidingRules={status => observeAbidingRules(status, ind)}
+            modifyAbidingRules={ruleStatus =>
+              observeAbidingRules(ruleStatus, ind)
+            }
           />
         ))}
         {/* // </div> */}
@@ -93,6 +96,7 @@ export function ComboVariantPopUp({
         <Button
           disabled={
             categoryStatus === 'DISABLED' ||
+            status === 'UNAVAILABLE' ||
             !abidingRules.every(el => el === true)
           }
           onClick={() => {
@@ -133,6 +137,7 @@ export function ComboVariantPopUp({
 
 ComboVariantPopUp.propTypes = {
   categoryStatus: PropTypes.string,
+  status: PropTypes.string,
   name: PropTypes.string,
   price: PropTypes.string,
   sections: PropTypes.array,
