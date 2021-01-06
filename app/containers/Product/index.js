@@ -10,9 +10,7 @@
 import React, { useState, useEffect } from 'react';
 
 import PropTypes from 'prop-types';
-import { connect, useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import { compose } from 'redux';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import FastfoodIcon from '@material-ui/icons/Fastfood';
@@ -33,13 +31,13 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
 
 import { useInjectReducer } from 'utils/injectReducer';
 import { useCart } from '../../context/Cart';
 import reducer from './reducer';
 import messages from './messages';
 import VariantDialog from '../VariantDialog/Loadable';
-import { initVariantOfProduct } from '../VariantDialog/actions';
 import 'jquery-ui/ui/effects/effect-slide';
 
 const useStyles = makeStyles(theme => ({
@@ -53,6 +51,9 @@ const useStyles = makeStyles(theme => ({
     'justify-content': 'space-between',
     backgroundColor: theme.mixins.productDisplay.main,
     // color: 'white',
+  },
+  dialog: {
+    minWidth: '80%',
   },
   cardMedia: {
     // paddingTop: '56.25%', // 16:9
@@ -130,20 +131,39 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function SimpleDialog(props) {
-  const { onClose, open, title, image } = props;
-
+  const { onClose, open, title, image, description } = props;
   const handleClose = () => {
     onClose();
   };
-
+  const classes = useStyles();
   return (
     <Dialog
       onClose={handleClose}
       aria-labelledby="simple-dialog-title"
+      PaperProps={{ classes: { root: classes.dialog } }}
       open={open}
     >
       <DialogTitle id="simple-dialog-title">{title}</DialogTitle>
-      <CardMedia component="img" image={image} title={title} />
+      {image && (
+        <DialogContent>
+          <CardMedia component="img" image={image} title={title} />
+          {description && (
+            <Typography style={{ whiteSpace: 'pre-wrap' }} variant="subtitle2">
+              {description}
+            </Typography>
+          )}
+        </DialogContent>
+      )}
+      {!image && (
+        <DialogContent>
+          <FastfoodIcon />
+          {description && (
+            <Typography style={{ whiteSpace: 'pre-wrap' }} variant="subtitle2">
+              {description}
+            </Typography>
+          )}
+        </DialogContent>
+      )}
       <DialogActions>
         <Button onClick={handleClose} color="primary" autoFocus>
           Close
@@ -158,16 +178,25 @@ SimpleDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   title: PropTypes.string,
   image: PropTypes.string,
+  description: PropTypes.string,
 };
 
 export function Product({
-  initVariant,
-  item: { id, name, price, image, type, variants, comboVariants },
+  item: {
+    id,
+    name,
+    price,
+    image,
+    type,
+    variants,
+    comboVariants,
+    description,
+    status,
+  },
   categoryStatus,
 }) {
   useInjectReducer({ key: 'product', reducer });
   const classes = useStyles();
-  const inCartProducts = useSelector(state => state.product);
 
   let inCartProductQty = 0;
 
@@ -264,7 +293,6 @@ export function Product({
       (type === 'COMBO' && comboVariants && comboVariants.length > 0);
 
     if (hasVariants) {
-      initVariant(name, variants, inCartProducts);
       setIsVariantDialogOpen(true);
     } else {
       // animation
@@ -294,7 +322,7 @@ export function Product({
   return (
     <>
       <Card className={classes.root}>
-        {categoryStatus === 'DISABLED' && (
+        {(categoryStatus === 'DISABLED' || status === 'UNAVAILABLE') && (
           <span
             style={{
               background: '#ff0000',
@@ -339,9 +367,14 @@ export function Product({
             </CardContent>
           </>
         ) : (
-          <div style={{ display: 'flex', flex: '1 0 auto' }}>
-            <CardContent className={classes.content2}>
+          <>
+            <CardActionArea
+              className={classes.cardActionArea}
+              onClick={handleImageClickOpen}
+            >
               <FastfoodIcon id={id} />
+            </CardActionArea>
+            <CardContent className={classes.content}>
               <Typography component="div" variant="body1">
                 {name}
               </Typography>
@@ -350,7 +383,19 @@ export function Product({
                 <b>RM {Number(price.replace(/[^0-9\.]+/g, '')).toFixed(2)}</b>
               </Typography>
             </CardContent>
-          </div>
+          </>
+          // <div style={{ display: 'flex', flex: '1 0 auto' }}>
+          //   <CardContent className={classes.content2}>
+          //     <FastfoodIcon id={id} />
+          //     <Typography component="div" variant="body1">
+          //       {name}
+          //     </Typography>
+          //     <Typography variant="body2" color="textSecondary">
+          //       {/* <Typography variant="body2"> */}
+          //       <b>RM {Number(price.replace(/[^0-9\.]+/g, '')).toFixed(2)}</b>
+          //     </Typography>
+          //   </CardContent>
+          // </div>
         )}
         <CardActions className={classes.controls}>
           <Grid container>
@@ -400,7 +445,9 @@ export function Product({
               <>
                 <Grid item xs={6} className={classes.gridItem}>
                   <IconButton
-                    disabled={categoryStatus === 'DISABLED'}
+                    disabled={
+                      categoryStatus === 'DISABLED' || status === 'UNAVAILABLE'
+                    }
                     className={classes.gridItem2}
                     aria-label="toggle password visibility"
                     onClick={() => {
@@ -423,7 +470,9 @@ export function Product({
                 <Grid item xs={6} className={classes.gridItem}>
                   <IconButton
                     disabled={
-                      categoryStatus === 'DISABLED' || inCartProductQty === 0
+                      categoryStatus === 'DISABLED' ||
+                      status === 'UNAVAILABLE' ||
+                      inCartProductQty === 0
                     }
                     className={classes.gridItem2}
                     aria-label="toggle password visibility"
@@ -471,12 +520,14 @@ export function Product({
         onClose={handleClose}
         title={name}
         image={image}
+        description={description}
       />
       {((typeof type === 'undefined' && variants && variants.length > 0) ||
         (type === 'A_LA_CARTE' && variants && variants.length > 0) ||
         (type === 'COMBO' && comboVariants && comboVariants.length > 0)) && (
         <VariantDialog
           categoryStatus={categoryStatus}
+          status={status}
           name={name}
           type={type}
           price={price}
@@ -503,19 +554,8 @@ Product.propTypes = {
   initVariant: PropTypes.func,
 };
 
-function mapDispatchToProps(dispatch) {
-  return {
-    initVariant: (productName, variantList, inCartProducts) =>
-      dispatch(initVariantOfProduct(productName, variantList, inCartProducts)),
-  };
-}
-
-const withConnect = connect(
-  null,
-  mapDispatchToProps,
-);
-
-export default compose(
-  withConnect,
-  // memo,
-)(Product);
+export default Product;
+// export default compose(
+//   withConnect,
+//   // memo,
+// )(Product);
