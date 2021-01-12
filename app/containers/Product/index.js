@@ -50,7 +50,7 @@ const useStyles = makeStyles(theme => ({
     'flex-direction': 'column',
     'justify-content': 'space-between',
     backgroundColor: theme.mixins.productDisplay.main,
-    // color: 'white',
+    color: 'white',
   },
   dialog: {
     minWidth: '80%',
@@ -73,7 +73,7 @@ const useStyles = makeStyles(theme => ({
   resize: {
     fontSize: 16,
     textAlign: 'center',
-    // color: 'white',
+    color: 'white',
   },
   content: {
     flex: '1 0 auto',
@@ -99,7 +99,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
     marginBottom: theme.spacing(0),
     height: '120px',
-    // color: 'white',
+    color: 'white',
   },
   gridItem: {
     display: 'inline-grid',
@@ -109,25 +109,25 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     margin: '0 0 0 0',
-    // color: 'white',
+    color: 'white',
   },
-  // inputLabelRoot: {
-  //   '&$inputLabelOutlined': {
-  //     color: 'white',
-  //   },
-  //   '&$inputLabelShrink': {
-  //     color: 'white',
-  //   },
-  // },
-  // inputLabelOutlined: {},
-  // inputLabelShrink: {},
-  // inputRoot: {
-  //   '&$disabled $notchedOutline': {
-  //     borderColor: 'white',
-  //   },
-  // },
-  // disabled: {},
-  // notchedOutline: {},
+  inputLabelRoot: {
+    '&$inputLabelOutlined': {
+      color: 'white',
+    },
+    '&$inputLabelShrink': {
+      color: 'white',
+    },
+  },
+  inputLabelOutlined: {},
+  inputLabelShrink: {},
+  inputRoot: {
+    '&$disabled $notchedOutline': {
+      borderColor: 'white',
+    },
+  },
+  disabled: {},
+  notchedOutline: {},
 }));
 
 function SimpleDialog(props) {
@@ -360,8 +360,8 @@ export function Product({
               <Typography component="div" variant="body1">
                 {name}
               </Typography>
-              <Typography variant="body2" color="textSecondary">
-                {/* <Typography variant="body2"> */}
+              {/* <Typography variant="body2" color="textSecondary"> */}
+              <Typography variant="body2">
                 <b>RM {Number(price.replace(/[^0-9\.]+/g, '')).toFixed(2)}</b>
               </Typography>
             </CardContent>
@@ -378,8 +378,8 @@ export function Product({
               <Typography component="div" variant="body1">
                 {name}
               </Typography>
-              <Typography variant="body2" color="textSecondary">
-                {/* <Typography variant="body2"> */}
+              {/* <Typography variant="body2" color="textSecondary"> */}
+              <Typography variant="body2">
                 <b>RM {Number(price.replace(/[^0-9\.]+/g, '')).toFixed(2)}</b>
               </Typography>
             </CardContent>
@@ -416,22 +416,23 @@ export function Product({
                   inputMode: 'numeric',
                 }}
                 // eslint-disable-next-line react/jsx-no-duplicate-props
-                InputProps={{ classes: { input: classes.resize } }}
-                // InputLabelProps={{
-                //   classes: {
-                //     root: classes.inputLabelRoot,
-                //     outlined: classes.inputLabelOutlined,
-                //     shrink: classes.inputLabelShrink,
-                //   },
-                // }}
-                // InputProps={{
-                //   classes: {
-                //     root: classes.inputRoot,
-                //     disabled: classes.disabled,
-                //     notchedOutline: classes.notchedOutline,
-                //     input: classes.resize,
-                //   },
-                // }}
+                // InputProps={{ classes: { input: classes.resize } }}
+                InputLabelProps={{
+                  classes: {
+                    root: classes.inputLabelRoot,
+                    outlined: classes.inputLabelOutlined,
+                    shrink: classes.inputLabelShrink,
+                  },
+                }}
+                // eslint-disable-next-line react/jsx-no-duplicate-props
+                InputProps={{
+                  classes: {
+                    root: classes.inputRoot,
+                    disabled: classes.disabled,
+                    notchedOutline: classes.notchedOutline,
+                    input: classes.resize,
+                  },
+                }}
                 className={classes.textField}
               />
             </Grid>

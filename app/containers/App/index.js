@@ -42,15 +42,15 @@ const theme = createMuiTheme({
   palette: {
     primary: {
       light: grey[50],
-      main: grey[700],
-      dark: grey[900],
+      main: grey[900],
+      dark: '#000000',
     },
     secondary: {
       main: grey[900],
     },
     background: {
       paper: '#fff',
-      default: grey[300],
+      default: '#000000',
     },
   },
   mixins: {
@@ -58,7 +58,7 @@ const theme = createMuiTheme({
       height: '150px',
     },
     productDisplay: {
-      main: grey[200],
+      main: '#404040',
     },
     bottomNav: {
       background: '#fff',
