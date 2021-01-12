@@ -164,7 +164,7 @@ export function Review({
         phoneNumber:
           typeof fullOrderToSubmit.phoneNumber === 'undefined'
             ? null
-            : `+6${fullOrderToSubmit.phoneNumber}`,
+            : `+6${fullOrderToSubmit.phoneNumber.replace(/^[+][6]/g, '')}`,
         pickupDate:
           typeof fullOrderToSubmit.pickUpDate === 'undefined'
             ? null
@@ -532,14 +532,14 @@ export function Review({
                   fullOrderToSubmit.fulfillmentMethod ===
                     FULFILLMENT_METHODS.DELIVERY && (
                   <FormattedMessage
-                    {...messages.placeOrderAndWhatsappNotify}
+                    {...messages.placeOrder}
                   />
                 )}
                 {!submitting && currentPage === numberOfPage - 1 &&
                   fullOrderToSubmit.fulfillmentMethod ===
                     FULFILLMENT_METHODS.SELF_PICKUP && (
                   <FormattedMessage
-                    {...messages.placeOrderAndWhatsappNotify}
+                    {...messages.placeOrder}
                   />
                 )}
                 {!submitting && currentPage === numberOfPage - 1 &&
