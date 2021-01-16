@@ -15,10 +15,12 @@ const myLocaleData = require('react-intl/locale-data/my');
 const enTranslationMessages = require('./translations/en.json');
 const zhTranslationMessages = require('./translations/zh.json');
 const myTranslationMessages = require('./translations/my.json');
+const zeTranslationMessages = require('./translations/ze.json');
 
 addLocaleData(enLocaleData);
 addLocaleData(zhLocaleData);
 addLocaleData(myLocaleData);
+addLocaleData({ locale: 'ze', pluralRuleFunction: () => {} });
 
 const DEFAULT_LOCALE = 'zh';
 
@@ -27,6 +29,7 @@ const appLocales = [
   'en',
   'zh',
   'my',
+  'ze',
 ];
 
 const formatTranslationMessages = (locale, messages) => {
@@ -48,6 +51,7 @@ const translationMessages = {
   en: formatTranslationMessages('en', enTranslationMessages),
   zh: formatTranslationMessages('zh', zhTranslationMessages),
   my: formatTranslationMessages('my', myTranslationMessages),
+  ze: formatTranslationMessages('ze', zeTranslationMessages),
 };
 
 exports.appLocales = appLocales;
