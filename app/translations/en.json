@@ -15,6 +15,8 @@
   "app.components.ErrorPopUp.emptyOrderErrorActionToTake": "Empty order error occurs, please order something.",
   "app.components.ErrorPopUp.networkError": "Network Error!",
   "app.components.ErrorPopUp.networkErrorActionToTake": "Network error occurs, please try again later.",
+  "app.components.ErrorPopUp.phoneNumberError": "Phone Number Error!",
+  "app.components.ErrorPopUp.phoneNumberErrorActionToTake": "Phone number error occurs, please enter a valid phone number.",
   "app.components.MyAppBar.chmboxOrdering": "CHMBOX Ordering",
   "app.components.MyAppBar.header": "This is the MyAppBar component!",
   "app.components.MyBottomNavigation.details": "Details",

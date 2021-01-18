@@ -34,6 +34,9 @@ function ErrorPopUp({ open, setOpen, message }) {
           {message === 'EmptyOrderError' && (
             <FormattedMessage {...messages.emptyOrderError} />
           )}
+          {message === 'PhoneNumberError' && (
+            <FormattedMessage {...messages.phoneNumberError} />
+          )}
         </DialogTitle>
         <DialogContent>
           <svg
@@ -184,6 +187,9 @@ function ErrorPopUp({ open, setOpen, message }) {
             )}
             {message === 'EmptyOrderError' && (
               <FormattedMessage {...messages.emptyOrderErrorActionToTake} />
+            )}
+            {message === 'PhoneNumberError' && (
+              <FormattedMessage {...messages.phoneNumberErrorActionToTake} />
             )}
           </DialogContentText>
         </DialogContent>

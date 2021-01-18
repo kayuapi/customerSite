@@ -25,4 +25,13 @@ export default defineMessages({
     id: `${scope}.emptyOrderErrorActionToTake`,
     defaultMessage: 'Empty order error occurs, please order something.',
   },
+  phoneNumberError: {
+    id: `${scope}.phoneNumberError`,
+    defaultMessage: 'Phone Number Error!',
+  },
+  phoneNumberErrorActionToTake: {
+    id: `${scope}.phoneNumberErrorActionToTake`,
+    defaultMessage:
+      'Phone number error occurs, please enter a valid phone number.',
+  },
 });

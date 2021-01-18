@@ -258,7 +258,9 @@ export function Review({
         .catch(err => {
           setSubmitting(false);
           setIsErrorPopUpOpen(true);
-          setErrorMessage(err.errors[0].message);
+          if (err.errors[0].message.includes("valid phone number")) {
+            setErrorMessage('PhoneNumberError');
+          }
         });
     } catch (err) {
       setSubmitting(false);

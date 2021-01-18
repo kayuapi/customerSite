@@ -15,6 +15,8 @@
   "app.components.ErrorPopUp.emptyOrderErrorActionToTake": "发生零订单错误， 购物车里没有物品。",
   "app.components.ErrorPopUp.networkError": "网络信号错误!",
   "app.components.ErrorPopUp.networkErrorActionToTake": "网络信号错误， 请稍候再试。",
+  "app.components.ErrorPopUp.phoneNumberError": "电话号码错误!",
+  "app.components.ErrorPopUp.phoneNumberErrorActionToTake": "发生电话号码错误, 请输入正确的电话号码。",
   "app.components.MyAppBar.chmboxOrdering": "CHMBOX 点餐系统",
   "app.components.MyAppBar.header": "This is the MyAppBar component!",
   "app.components.MyBottomNavigation.details": "资料",

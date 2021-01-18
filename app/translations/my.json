@@ -15,6 +15,8 @@
   "app.components.ErrorPopUp.emptyOrderErrorActionToTake": "berlaku kesilapan troli kosong.",
   "app.components.ErrorPopUp.networkError": "Kesilapan rangkaian internet!",
   "app.components.ErrorPopUp.networkErrorActionToTake": "berlaku kesilapan rangkaian internet, sila cuba sebentar lagi.",
+  "app.components.ErrorPopUp.phoneNumberError": "Kesilapan nombor telefon!",
+  "app.components.ErrorPopUp.phoneNumberErrorActionToTake": "berlaku kesilapan nombor telefon, sila masukkan nombor telefon yang sah.",
   "app.components.MyAppBar.chmboxOrdering": "CHMBOX sistem membuat pesanan",
   "app.components.MyAppBar.header": "",
   "app.components.MyBottomNavigation.details": "Maklumat",
