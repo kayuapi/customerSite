@@ -339,6 +339,16 @@ export function Review({
           </Typography>
         </ListItem>
       </List>
+      <Grid container>
+        <Grid item xs={12}>
+          <Typography style={{ color: 'red' }} gutterBottom>
+            <FormattedMessage
+              {...messages.totalPriceDoesNotIncludeTaxesAndDeliveryFees}
+            />
+          </Typography>
+        </Grid>
+      </Grid>
+
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
           <Typography variant="h6" gutterBottom className={classes.title}>

@@ -100,6 +100,7 @@
   "app.containers.DetailsPage.thankYouOnDelivery": "Terima kasih atas pesanan anda",
   "app.containers.DetailsPage.thankYouOnPremise": "Terima kasih atas pesanan anda",
   "app.containers.DetailsPage.total": "Jumlah",
+  "app.containers.DetailsPage.totalPriceDoesNotIncludeTaxesAndDeliveryFees": "Harga di atas adalah tidak termasuk cukai dan caj penghantaran (jika ada). ",
   "app.containers.DetailsPage.variableTranslate": "{translated}",
   "app.containers.DetailsPage.vehiclePlateNumber": "Nombor plat kenderaan",
   "app.containers.DetailsPage.vehiclePlateNumberError": "Diperlukan, had watak: 20",

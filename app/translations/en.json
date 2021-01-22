@@ -100,6 +100,7 @@
   "app.containers.DetailsPage.thankYouOnDelivery": "Thank you for your order",
   "app.containers.DetailsPage.thankYouOnPremise": "Thank you for your order",
   "app.containers.DetailsPage.total": "Total",
+  "app.containers.DetailsPage.totalPriceDoesNotIncludeTaxesAndDeliveryFees": "Price shown is not inclusive of possible extra tax charges and delivery fees.",
   "app.containers.DetailsPage.variableTranslate": "{translated}",
   "app.containers.DetailsPage.vehiclePlateNumber": "Vehicle Plate Number",
   "app.containers.DetailsPage.vehiclePlateNumberError": "Required, character limit: 20",

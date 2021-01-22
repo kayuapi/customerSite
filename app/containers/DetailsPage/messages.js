@@ -281,4 +281,9 @@ export default defineMessages({
     id: `${scope}.submitting`,
     defaultMessage: 'Placing order...',
   },
+  totalPriceDoesNotIncludeTaxesAndDeliveryFees: {
+    id: `${scope}.totalPriceDoesNotIncludeTaxesAndDeliveryFees`,
+    defaultMessage:
+      'Price shown is not inclusive of possible extra tax charges and delivery fees.',
+  },
 });

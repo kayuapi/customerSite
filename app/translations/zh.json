@@ -100,6 +100,7 @@
   "app.containers.DetailsPage.thankYouOnDelivery": "谢谢您的订单",
   "app.containers.DetailsPage.thankYouOnPremise": "谢谢您的订单",
   "app.containers.DetailsPage.total": "总数",
+  "app.containers.DetailsPage.totalPriceDoesNotIncludeTaxesAndDeliveryFees": "以上价格未包括税收及外送费用(若有)。",
   "app.containers.DetailsPage.variableTranslate": "{translated}",
   "app.containers.DetailsPage.vehiclePlateNumber": "车牌号码",
   "app.containers.DetailsPage.vehiclePlateNumberError": "必填, 字数限制: 20",
