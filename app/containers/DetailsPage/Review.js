@@ -510,6 +510,15 @@ export function Review({
                     {...messages.variableTranslate}
                   />
                 )}
+                {fullOrderToSubmit.paymentMethod ===
+                  PAYMENT_METHODS.QUINPAY && (
+                  <FormattedMessage
+                    values={{
+                      translated: <FormattedMessage {...messages.quinpay} />,
+                    }}
+                    {...messages.variableTranslate}
+                  />
+                )}
               </Typography>
             </Grid>
           </Grid>

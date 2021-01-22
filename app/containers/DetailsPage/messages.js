@@ -248,6 +248,10 @@ export default defineMessages({
     id: `${scope}.qrpay`,
     defaultMessage: 'Maybank QR Pay',
   },
+  quinpay: {
+    id: `${scope}.quinpay`,
+    defaultMessage: 'E-wallet: Quin Pay',
+  },
   dateError: {
     id: `${scope}.dateError`,
     defaultMessage: "only accept next day's order for now",

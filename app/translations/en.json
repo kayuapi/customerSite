@@ -83,6 +83,7 @@
   "app.containers.DetailsPage.postScriptumError": "Maximum characters allowed: 50",
   "app.containers.DetailsPage.qrpay": "Maybank QR Pay",
   "app.containers.DetailsPage.quantity": "Quantity: {quantity}",
+  "app.containers.DetailsPage.quinpay": "E-wallet: Quin Pay",
   "app.containers.DetailsPage.receivedOrder": "Your order number is {orderNumber}. {linebreak}We have received your order.",
   "app.containers.DetailsPage.receivedOrderForDelivery": "Your order number is {orderNumber}. {linebreak}We have received your order.",
   "app.containers.DetailsPage.receivedOrderForOnPremise": "Your order number is {orderNumber}. {linebreak}",

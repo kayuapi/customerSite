@@ -83,6 +83,7 @@
   "app.containers.DetailsPage.postScriptumError": "字数限制：50 Maximum characters allowed: 50",
   "app.containers.DetailsPage.qrpay": "Maybank QR Pay",
   "app.containers.DetailsPage.quantity": "数量 Quantity： {quantity}",
+  "app.containers.DetailsPage.quinpay": "E-wallet: Quin Pay",
   "app.containers.DetailsPage.receivedOrder": "您的订单号码是 Your order number is {orderNumber}. {linebreak}我们已接收到您的订单。We have received your order.",
   "app.containers.DetailsPage.receivedOrderForDelivery": "您的订单号码是 Your order number is {orderNumber}. {linebreak} 我们已接收到您的订单。We have received your order.",
   "app.containers.DetailsPage.receivedOrderForOnPremise": "您的订单号码是 Your order number is {orderNumber}. {linebreak}",

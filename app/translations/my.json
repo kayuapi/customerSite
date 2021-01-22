@@ -83,6 +83,7 @@
   "app.containers.DetailsPage.postScriptumError": "Had watak: 50",
   "app.containers.DetailsPage.qrpay": "Maybank QR Pay",
   "app.containers.DetailsPage.quantity": "Bil: {quantity}",
+  "app.containers.DetailsPage.quinpay": "E-wallet: Quin Pay",
   "app.containers.DetailsPage.receivedOrder": "Nombor pesanan anda ialah {orderNumber}. {linebreak}Kami telah menerima pesanan anda.",
   "app.containers.DetailsPage.receivedOrderForDelivery": "Nombor pesanan anda ialah {orderNumber}. {linebreak}Kami telah menerima pesanan anda.",
   "app.containers.DetailsPage.receivedOrderForOnPremise": "Nombor pesanan anda ialah {orderNumber}. {linebreak}",
