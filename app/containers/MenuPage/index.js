@@ -170,6 +170,7 @@ export function MenuPage({ openCart }) {
   const [menuItems, setMenuItems] = useState([]);
   const [maintenceMode, setMaintenanceMode] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   const [categoryStatus, setCategoryStatus] = useState('');
 
@@ -199,7 +200,7 @@ export function MenuPage({ openCart }) {
       const retrievedItem = await API.get(apiName, path, myInit);
       return retrievedItem;
     } catch (err) {
-      return { error: 'error' };
+      return { err };
     }
   }
   const { cartItems } = useCart();
@@ -211,8 +212,13 @@ export function MenuPage({ openCart }) {
     async function requestCategories() {
       const hostName = process.env.BUSINESS_NAME;
       const retrievedPages = await grabFromDb(hostName, 'PluginMenuPages');
-      const { categories: categoriesResponse } = retrievedPages;
-      if (categoriesResponse) {
+      const {
+        categories: categoriesResponse,
+        err: categoriesErr,
+      } = retrievedPages;
+      if (categoriesErr) {
+        setError(categoriesErr.message);
+      } else if (categoriesResponse) {
         setCategories(categoriesResponse);
         setCategory(categoriesResponse[0].pageId);
         if (categoriesResponse[0].status === 'DISABLED') {
@@ -224,27 +230,45 @@ export function MenuPage({ openCart }) {
           hostName,
           `PluginMenu%23${categoriesResponse[0].pageId}`,
         );
-        const { menuItems: menuItemsResponse } = retrievedPage;
-        if (menuItemsResponse) {
+        const {
+          menuItems: menuItemsResponse,
+          err: menuItemsErr,
+        } = retrievedPage;
+        if (menuItemsErr) {
+          setLoading(false);
+          setError(menuItemsErr.message);
+        } else if (menuItemsResponse) {
+          setLoading(false);
           setMenuItems(() => [...menuItemsResponse]);
         }
+        // empty categoriesResponse
       } else {
+        setLoading(false);
         setMaintenanceMode(true);
       }
     }
     requestCategories();
-    setLoading(false);
   }, []);
 
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
+    setError(false);
+    setLoading(true);
+    setMenuItems([]);
     async function requestMenuItems() {
       const hostName = process.env.BUSINESS_NAME;
       const retrievedPage = await grabFromDb(
         hostName,
         `PluginMenu%23${categories[newValue].pageId}`,
       );
-      return retrievedPage.menuItems;
+      const { menuItems: menuItemsResponse, err: menuItemsErr } = retrievedPage;
+      if (menuItemsErr) {
+        setLoading(false);
+        setError(menuItemsErr.message);
+      } else if (menuItemsResponse) {
+        setLoading(false);
+        setMenuItems(() => [...menuItemsResponse]);
+      }
     }
 
     setValue(newValue);
@@ -254,9 +278,7 @@ export function MenuPage({ openCart }) {
     } else {
       setCategoryStatus('');
     }
-    requestMenuItems().then(items => {
-      setMenuItems(items);
-    });
+    requestMenuItems();
     window.scrollTo({ top: 150, behavior: `smooth` });
   };
 
@@ -309,6 +331,11 @@ export function MenuPage({ openCart }) {
           </Grid>
         </AppBar>
         {maintenceMode && <UnderMaintenanceIllustration />}
+        {error === 'Network Error' && (
+          <Typography component="h2" style={{ padding: '2rem' }} align="center">
+            <FormattedMessage {...messages.networkError} />
+          </Typography>
+        )}
         {categories && (
           <TabPanel
             className={classes.tabPanel}

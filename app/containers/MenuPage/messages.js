@@ -65,4 +65,8 @@ export default defineMessages({
     id: `${scope}.submitOrderSuccess`,
     defaultMessage: 'Order is submitted!',
   },
+  networkError: {
+    id: `${scope}.networkError`,
+    defaultMessage: 'Bad connection, please refresh and try again.',
+  },
 });

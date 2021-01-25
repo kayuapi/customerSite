@@ -119,6 +119,7 @@
   "app.containers.MenuPage.dialogOrder": "下单 Make order",
   "app.containers.MenuPage.dialogPrice": "价格 Price",
   "app.containers.MenuPage.dialogTitle": "请确认下单项目 Confirmation on orders",
+  "app.containers.MenuPage.networkError": "网络信号差， 请刷新再试一次。Bad connection, please refresh and try again.",
   "app.containers.MenuPage.poweredBy": "Chmbox 提供, powered by Chmbox",
   "app.containers.MenuPage.submitOrderSuccess": "菜单提交成功 Order is submitted!",
   "app.containers.PopUpInfo.dialogClose": "好的！ Okay!",

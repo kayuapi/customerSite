@@ -119,6 +119,7 @@
   "app.containers.MenuPage.dialogOrder": "Make order",
   "app.containers.MenuPage.dialogPrice": "Price",
   "app.containers.MenuPage.dialogTitle": "Confirmation on orders",
+  "app.containers.MenuPage.networkError": "Bad connection, please refresh and try again.",
   "app.containers.MenuPage.poweredBy": "powered by Chmbox",
   "app.containers.MenuPage.submitOrderSuccess": "Order is submitted!",
   "app.containers.PopUpInfo.dialogClose": "Okay!",

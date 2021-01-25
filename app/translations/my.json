@@ -119,6 +119,7 @@
   "app.containers.MenuPage.dialogOrder": "Pesan",
   "app.containers.MenuPage.dialogPrice": "Harga",
   "app.containers.MenuPage.dialogTitle": "Sila pastikan pesanan",
+  "app.containers.MenuPage.networkError": "Sambungan internet teruk, sila cuba lagi.",
   "app.containers.MenuPage.poweredBy": "Disediakan oleh Chmbox",
   "app.containers.MenuPage.submitOrderSuccess": "Pesanan berjaya dihantar",
   "app.containers.PopUpInfo.dialogClose": "Okay!",
