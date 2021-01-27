@@ -268,6 +268,7 @@ export function MenuPage({ openCart }) {
       } else if (menuItemsResponse) {
         setLoading(false);
         setMenuItems(() => [...menuItemsResponse]);
+        window.scrollTo({ top: 150, behavior: `smooth` });
       }
     }
 
@@ -279,7 +280,6 @@ export function MenuPage({ openCart }) {
       setCategoryStatus('');
     }
     requestMenuItems();
-    window.scrollTo({ top: 150, behavior: `smooth` });
   };
 
   return (
