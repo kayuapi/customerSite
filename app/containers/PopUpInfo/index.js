@@ -17,7 +17,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 import Button from '@material-ui/core/Button';
-
+import TextureImage from './background.jpg';
 // import { makeStyles, useTheme, createMuiTheme } from '@material-ui/core/styles';
 
 import messages from './messages';
@@ -32,6 +32,12 @@ export function PopUpInfo({ isOpen, setPopUpOpen, updateMessageFromVendor }) {
 
   return (
     <Dialog
+      PaperProps={{
+        style: {
+          backgroundImage: `url(${TextureImage})`,
+          backgroundSize: 'cover',
+        },
+      }}
       open={isOpen}
       onClose={closePopUp}
       aria-labelledby="alert-dialog-title"
